@@ -1,0 +1,17 @@
+# Ignore build artifacts and directories
+build/
+bin/
+lib/
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore VSCode settings
+.vscode/
