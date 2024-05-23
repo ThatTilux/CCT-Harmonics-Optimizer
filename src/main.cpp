@@ -23,7 +23,7 @@
 
 int main() {
     // INPUT SETTINGS
-    const boost::filesystem::path json_file_path = "./toroid/model.json";
+    const boost::filesystem::path json_file_path = "../data/model.json";
     
     if (!boost::filesystem::exists(json_file_path)) {
         std::cerr << "JSON file not found: " << json_file_path << std::endl;
