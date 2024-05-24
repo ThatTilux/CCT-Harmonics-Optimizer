@@ -1,10 +1,10 @@
 {
-	"date" : "13-05-2024",
+	"date" : "24-05-2024",
 	"major_version" : 2,
 	"minor_version" : 17,
 	"num_nodes" : 224,
 	"patch_version" : 6,
-	"time" : "16:13:18",
+	"time" : "17:28:29",
 	"tree" : 
 	{
 		"calc_tree" : 
@@ -1304,7 +1304,7 @@
 												"theta_lead2" : 0.78539816339744828,
 												"theta_lead3" : 0.78539816339744828,
 												"theta_lead4" : 0.78539816339744828,
-												"tree_open" : false,
+												"tree_open" : true,
 												"twist" : 
 												{
 													"enable" : true,
@@ -1750,7 +1750,7 @@
 											]
 										}
 									],
-									"tree_open" : true,
+									"tree_open" : false,
 									"type" : "rat::mdl::modelcoil",
 									"use_current_density" : false,
 									"use_custom_color" : false
@@ -2679,7 +2679,7 @@
 											]
 										}
 									],
-									"tree_open" : true,
+									"tree_open" : false,
 									"type" : "rat::mdl::modelcoil",
 									"use_current_density" : false,
 									"use_custom_color" : true
@@ -2836,7 +2836,7 @@
 												},
 												"id" : 160,
 												"is_skew" : false,
-												"name" : "B6",
+												"name" : "B6 (unused)",
 												"normalize_length" : true,
 												"num_poles" : 6,
 												"tree_open" : false,
@@ -3406,7 +3406,7 @@
 												},
 												"id" : 191,
 												"is_skew" : false,
-												"name" : "B6",
+												"name" : "B6 (unused)",
 												"normalize_length" : true,
 												"num_poles" : 6,
 												"tree_open" : false,
