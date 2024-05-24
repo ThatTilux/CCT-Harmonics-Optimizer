@@ -15,9 +15,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-# Add source files
-set(SOURCES src/main.cpp)
-
 # Add include directories
 include_directories(include)
 
@@ -26,8 +23,10 @@ find_package(RatModels 2.017.7 REQUIRED)
 find_package(Armadillo REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem)
 
-# Create the executable
-add_executable(rat_extension ${SOURCES})
+# Create the main executable
+add_executable(main src/main.cpp)
+target_link_libraries(main PRIVATE Rat::Models armadillo Boost::filesystem)
 
-# Link libraries
-target_link_libraries(rat_extension PRIVATE Rat::Models armadillo Boost::filesystem)
+# Create the cct executable
+add_executable(cct src/cct.cpp)
+target_link_libraries(cct PRIVATE Rat::Models armadillo Boost::filesystem)

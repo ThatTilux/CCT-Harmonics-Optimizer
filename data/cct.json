@@ -1,0 +1,650 @@
+{
+	"date" : "23-05-2024",
+	"major_version" : 2,
+	"minor_version" : 17,
+	"num_nodes" : 35,
+	"patch_version" : 7,
+	"time" : "14:24:52",
+	"tree" : 
+	{
+		"calc_tree" : 
+		{
+			"calc_list" : 
+			[
+				{
+					"bg" : 
+					{
+						"type" : "cmn::null"
+					},
+					"compensate_curvature" : true,
+					"enable" : true,
+					"id" : 32,
+					"input_path" : 
+					{
+						"axis" : 122,
+						"dl" : 0.001,
+						"ell" : 0.5,
+						"enable" : true,
+						"id" : 31,
+						"name" : "Axisz",
+						"position_x" : 0.0,
+						"position_y" : 0.0,
+						"position_z" : 0.0,
+						"trans" : 
+						[
+							{
+								"enable" : true,
+								"id" : 30,
+								"name" : "Bend",
+								"offset" : 0.0,
+								"radius" : 0.14999999999999999,
+								"tree_open" : false,
+								"type" : "rat::mdl::transbend",
+								"vector1" : 
+								[
+									0.0,
+									1.0,
+									0.0
+								],
+								"vector2" : 
+								[
+									1.0,
+									0.0,
+									0.0
+								]
+							}
+						],
+						"transverse_direction" : 121,
+						"tree_open" : false,
+						"type" : "rat::mdl::pathaxis"
+					},
+					"model" : 
+					{
+						"target_index" : 28,
+						"type" : "cmn::link"
+					},
+					"name" : "Cylindrical Harmonics",
+					"num_max" : 10,
+					"num_theta" : 64,
+					"num_times" : 1,
+					"output_dir" : "",
+					"reference_radius" : 0.016666666666666666,
+					"stngs" : 
+					{
+						"allow_subdivision" : true,
+						"direct" : 2,
+						"direct_tresh" : 1048576.0,
+						"fmm_enable_gpu" : false,
+						"gpu_devices" : 
+						[
+							0
+						],
+						"id" : 29,
+						"large_ilist" : true,
+						"m2l_sorting" : 0,
+						"max_levels" : 10,
+						"memory_efficient_l2t" : true,
+						"memory_efficient_s2m" : true,
+						"min_levels" : 3,
+						"morton_weights" : 
+						[
+							1,
+							2,
+							4
+						],
+						"no_allocate" : true,
+						"num_exp" : 7,
+						"num_refine" : 128.0,
+						"num_refine_min" : 5.0,
+						"num_rescale_max" : 25,
+						"num_subdivide_max" : 5,
+						"parallel_l2l" : true,
+						"parallel_l2t" : true,
+						"parallel_m2l" : true,
+						"parallel_m2m" : true,
+						"parallel_tree_setup" : true,
+						"persistent_memory" : false,
+						"refine_stop_criterion" : 5,
+						"so2mp_enable_gpu" : false,
+						"so2ta_enable_gpu" : false,
+						"split_m2l" : false,
+						"split_s2t" : false,
+						"type" : "rat::fmm::settings",
+						"use_m2l_batch_sorting" : false
+					},
+					"t1" : 0.0,
+					"t2" : 0.0,
+					"time" : 0.0,
+					"tree_open" : false,
+					"type" : "rat::mdl::calcharmonics",
+					"use_magnetic_field" : false,
+					"visibility" : true
+				}
+			],
+			"enable" : true,
+			"id" : 33,
+			"name" : "Calculation Tree",
+			"num_times" : 1,
+			"output_dir" : "",
+			"t1" : 0.0,
+			"t2" : 0.0,
+			"time" : 0.0,
+			"tree_open" : true,
+			"type" : "rat::mdl::calcgroup",
+			"use_group_time" : true
+		},
+		"color" : 
+		{
+			"B" : 0.23073999583721161,
+			"G" : 0.21952599287033081,
+			"R" : 0.11953800171613693
+		},
+		"enable" : true,
+		"id" : 34,
+		"material" : 
+		{
+			"type" : "cmn::null"
+		},
+		"model_tree" : 
+		{
+			"color" : 
+			{
+				"B" : 0.23073999583721161,
+				"G" : 0.21952599287033081,
+				"R" : 0.11953800171613693
+			},
+			"enable" : true,
+			"id" : 28,
+			"is_part" : false,
+			"material" : 
+			{
+				"type" : "cmn::null"
+			},
+			"models" : 
+			[
+				{
+					"circuit_index" : 0,
+					"color" : 
+					{
+						"B" : 0.23073999583721161,
+						"G" : 0.21952599287033081,
+						"R" : 0.11953800171613693
+					},
+					"current_drive" : 
+					{
+						"enable" : true,
+						"id" : 26,
+						"name" : "DC",
+						"scaling" : 1.0,
+						"tree_open" : false,
+						"type" : "rat::mdl::drivedc"
+					},
+					"enable" : true,
+					"enable_current_sharing" : false,
+					"id" : 27,
+					"input_cross" : 
+					{
+						"dn" : 0.001,
+						"dt" : 0.001,
+						"enable" : true,
+						"enable_gauss" : false,
+						"id" : 24,
+						"n1" : -0.001,
+						"n2" : 0.001,
+						"name" : "Rectangle",
+						"t1" : 0.0,
+						"t2" : 0.0050000000000000001,
+						"tree_open" : false,
+						"type" : "rat::mdl::crossrectangle"
+					},
+					"input_path" : 
+					{
+						"bending_arc_length" : 0.0,
+						"bending_origin" : false,
+						"bending_radius" : 0.14999999999999999,
+						"enable" : true,
+						"enable_lead1" : false,
+						"enable_lead2" : false,
+						"enable_lead3" : false,
+						"enable_lead4" : false,
+						"harmonics" : 
+						[
+							{
+								"b2" : 0.0,
+								"enable" : true,
+								"harmonic_drive" : 
+								{
+									"dt" : 0.0,
+									"enable" : true,
+									"id" : 19,
+									"name" : "Interpolation",
+									"ti" : 
+									[
+										-20.0,
+										20.0
+									],
+									"tree_open" : false,
+									"type" : "rat::mdl::driveinterp",
+									"vi" : 
+									[
+										-0.029999999999999999,
+										-0.029999999999999999
+									]
+								},
+								"id" : 20,
+								"is_skew" : false,
+								"name" : "Dipole",
+								"normalize_length" : false,
+								"num_poles" : 1,
+								"tree_open" : false,
+								"type" : "rat::mdl::cctharmonicdrive",
+								"use_skew_angle" : false
+							},
+							{
+								"b2" : 0.0,
+								"enable" : true,
+								"harmonic_drive" : 
+								{
+									"amplitude" : 0.0070000000000000001,
+									"enable" : true,
+									"frequency" : 1.0,
+									"id" : 21,
+									"name" : "AC",
+									"offset" : 0.0022000000000000001,
+									"phase" : 0.0,
+									"phase_velocity" : 0.0,
+									"tree_open" : false,
+									"type" : "rat::mdl::driveac"
+								},
+								"id" : 22,
+								"is_skew" : false,
+								"name" : "Quadrupole",
+								"normalize_length" : true,
+								"num_poles" : 2,
+								"tree_open" : false,
+								"type" : "rat::mdl::cctharmonicdrive",
+								"use_skew_angle" : false
+							}
+						],
+						"id" : 23,
+						"is_reverse" : false,
+						"is_reverse_solenoid" : false,
+						"is_solenoid" : false,
+						"leadness1" : 0.050000000000000003,
+						"leadness2" : 0.050000000000000003,
+						"leadness3" : 0.050000000000000003,
+						"leadness4" : 0.050000000000000003,
+						"name" : "Custom CCT",
+						"normal_scaling" : 
+						{
+							"enable" : true,
+							"id" : 18,
+							"name" : "DC",
+							"scaling" : 1.0,
+							"tree_open" : false,
+							"type" : "rat::mdl::drivedc"
+						},
+						"normalize_length" : true,
+						"nt1" : -20.0,
+						"nt1nrm" : -20.0,
+						"nt2" : 20.0,
+						"nt2nrm" : 20.0,
+						"nt3" : -0.0,
+						"nt4" : 0.0,
+						"num_layers" : 2,
+						"num_nodes_per_turn" : 120,
+						"num_sect_per_turn" : 4,
+						"omega" : 
+						{
+							"enable" : true,
+							"id" : 15,
+							"name" : "DC",
+							"scaling" : 0.0060000000000000001,
+							"tree_open" : false,
+							"type" : "rat::mdl::drivedc"
+						},
+						"rho" : 
+						{
+							"enable" : true,
+							"id" : 16,
+							"name" : "DC",
+							"scaling" : 0.025000000000000001,
+							"tree_open" : false,
+							"type" : "rat::mdl::drivedc"
+						},
+						"rho_increment" : 0.0070000000000000001,
+						"same_alpha" : false,
+						"theta_lead1" : 0.78539816339744828,
+						"theta_lead2" : 0.78539816339744828,
+						"theta_lead3" : 0.78539816339744828,
+						"theta_lead4" : 0.78539816339744828,
+						"tree_open" : false,
+						"twist" : 
+						{
+							"enable" : true,
+							"id" : 17,
+							"name" : "DC",
+							"scaling" : 0.0,
+							"tree_open" : false,
+							"type" : "rat::mdl::drivedc"
+						},
+						"type" : "rat::mdl::pathcctcustom",
+						"use_binormal" : false,
+						"use_field_style_omega" : false,
+						"use_frenet_serret" : false,
+						"use_layer_jumps" : false,
+						"use_local_radius" : false,
+						"use_omega_normal" : false,
+						"use_radius" : true,
+						"zlead1" : 0.10000000000000001,
+						"zlead2" : 0.10000000000000001,
+						"zlead3" : 0.10000000000000001,
+						"zlead4" : 0.10000000000000001
+					},
+					"material" : 
+					{
+						"dinsu" : 0.0,
+						"enable" : true,
+						"fcabling" : 1.0,
+						"id" : 14,
+						"insu" : 
+						{
+							"type" : "cmn::null"
+						},
+						"keystone" : 0.0,
+						"name" : "rutherford",
+						"num_strands" : 10,
+						"pitch" : 0.0,
+						"strand" : 
+						{
+							"diameter" : 0.000825,
+							"enable" : true,
+							"fnc2sc" : 1.8999999999999999,
+							"id" : 13,
+							"name" : "LHC Strand (CERN)",
+							"nc" : 
+							{
+								"classification" : "metals",
+								"cp_fit" : 
+								{
+									"a" : -1.9184399999999999,
+									"b" : -0.15973000000000001,
+									"c" : 8.6101299999999998,
+									"d" : -18.995999999999999,
+									"e" : 21.966100000000001,
+									"enable" : true,
+									"f" : -12.732799999999999,
+									"g" : 3.5432199999999998,
+									"h" : -0.37969999999999998,
+									"i" : 0.0,
+									"id" : 10,
+									"is_public" : true,
+									"link" : "https://trc.nist.gov/cryogenics/materials/OFHC%20Copper/OFHC_Copper_rev1.htm",
+									"name" : "Copper OFHC",
+									"property_str" : "Heat Capacity",
+									"source" : "NIST",
+									"standard" : "UNS C10100/C10200",
+									"t1" : 4.0,
+									"t2" : 300.0,
+									"tree_open" : false,
+									"type" : "rat::mat::nist8sumfit"
+								},
+								"d_fit" : 
+								{
+									"enable" : true,
+									"id" : 11,
+									"is_public" : true,
+									"link" : "https://en.wikipedia.org/wiki/Copper",
+									"name" : "Copper OFHC",
+									"property_str" : "Density",
+									"source" : "Wikipedia",
+									"standard" : "unknown",
+									"t1" : 1.0,
+									"t2" : 300.0,
+									"tree_open" : false,
+									"type" : "rat::mat::constfit",
+									"value" : 8960.0
+								},
+								"enable" : true,
+								"id" : 12,
+								"k_fit" : 
+								{
+									"enable" : true,
+									"id" : 8,
+									"is_public" : true,
+									"krho_fit" : 
+									{
+										"C0" : 1.7,
+										"C1" : 2330000000.0,
+										"C2" : 957000.0,
+										"C3" : 163.0,
+										"RRR" : 150.0,
+										"enable" : true,
+										"id" : 7,
+										"is_public" : true,
+										"link" : "-",
+										"name" : "Copper OFHC",
+										"p" : 0.37,
+										"property_str" : "Electrical Resistivity",
+										"q" : 0.00050000000000000001,
+										"source" : "CUDI Manual",
+										"standard" : "unknown",
+										"t1" : 4.0,
+										"t2" : 300.0,
+										"tree_open" : false,
+										"type" : "rat::mat::cudifit"
+									},
+									"link" : "https://en.wikipedia.org/wiki/Wiedemann%E2%80%93Franz_law",
+									"name" : "Copper OFHC",
+									"property_str" : "Thermal Conductivity",
+									"source" : "Wikipedia",
+									"standard" : "unknown",
+									"t1" : 1.0,
+									"t2" : 300.0,
+									"tree_open" : false,
+									"type" : "rat::mat::wflfit"
+								},
+								"name" : "Copper OFHC RRR150",
+								"rho_fit" : 
+								{
+									"C0" : 1.7,
+									"C1" : 2330000000.0,
+									"C2" : 957000.0,
+									"C3" : 163.0,
+									"RRR" : 150.0,
+									"enable" : true,
+									"id" : 9,
+									"is_public" : true,
+									"link" : "-",
+									"name" : "Copper OFHC",
+									"p" : 0.37,
+									"property_str" : "Electrical Resistivity",
+									"q" : 0.00050000000000000001,
+									"source" : "CUDI Manual",
+									"standard" : "unknown",
+									"t1" : 4.0,
+									"t2" : 300.0,
+									"tree_open" : false,
+									"type" : "rat::mat::cudifit"
+								},
+								"tree_open" : false,
+								"type" : "rat::mat::baseconductor"
+							},
+							"sc" : 
+							{
+								"E0" : 1.0000000000000001e-05,
+								"classification" : "superconductors",
+								"cp_fit" : 
+								{
+									"a" : -3.2397999999999998,
+									"b" : 13.9497,
+									"c" : -47.942500000000003,
+									"d" : 104.3045,
+									"e" : -127.3105,
+									"enable" : true,
+									"f" : 90.973600000000005,
+									"g" : -37.773400000000002,
+									"h" : 8.4170999999999996,
+									"i" : -0.77700000000000002,
+									"id" : 2,
+									"is_public" : true,
+									"link" : "-",
+									"name" : "NbTi LHC",
+									"property_str" : "Heat Capacity",
+									"source" : "-",
+									"standard" : "unknown",
+									"t1" : 4.0,
+									"t2" : 250.0,
+									"tree_open" : false,
+									"type" : "rat::mat::nist8sumfit"
+								},
+								"d_fit" : 
+								{
+									"enable" : true,
+									"id" : 3,
+									"is_public" : true,
+									"link" : "-",
+									"name" : "NbTi LHC",
+									"property_str" : "Density",
+									"source" : "unknown",
+									"standard" : "unknown",
+									"t1" : 1.0,
+									"t2" : 300.0,
+									"tree_open" : false,
+									"type" : "rat::mat::constfit",
+									"value" : 8570.0
+								},
+								"enable" : true,
+								"id" : 6,
+								"jc_fit" : 
+								{
+									"Bc20" : 14.5,
+									"C0" : 31.399999999999999,
+									"Jrefsi" : 3000000000.0,
+									"Tc0" : 9.1999999999999993,
+									"alpha" : 0.63,
+									"beta" : 1.0,
+									"enable" : true,
+									"gamma" : 2.2999999999999998,
+									"id" : 4,
+									"is_public" : true,
+									"link" : "https://cds.cern.ch/record/411159/files/lhc-project-report-358.pdf",
+									"n" : 1.7,
+									"name" : "NbTi LHC",
+									"property_str" : "Critical Current",
+									"source" : "CERN",
+									"standard" : "-",
+									"t1" : 1.0,
+									"t2" : 20.0,
+									"tree_open" : false,
+									"type" : "rat::mat::lubellkramerfit"
+								},
+								"k_fit" : 
+								{
+									"a" : 20.157499999999999,
+									"b" : -126.7509,
+									"c" : 304.57479999999998,
+									"d" : -380.03579999999999,
+									"e" : 274.47120000000001,
+									"enable" : true,
+									"f" : -116.9727,
+									"g" : 28.2591,
+									"h" : -3.3839000000000001,
+									"i" : 0.13250000000000001,
+									"id" : 0,
+									"is_public" : true,
+									"link" : "-",
+									"name" : "NbTi LHC",
+									"property_str" : "Thermal Conductivity",
+									"source" : "-",
+									"standard" : "unknown",
+									"t1" : 4.0,
+									"t2" : 250.0,
+									"tree_open" : false,
+									"type" : "rat::mat::nist8sumfit"
+								},
+								"name" : "NbTi LHC",
+								"nv_fit" : 
+								{
+									"enable" : true,
+									"id" : 5,
+									"is_public" : true,
+									"link" : "https://cds.cern.ch/record/411159/files/lhc-project-report-358.pdf",
+									"name" : "NbTi LHC",
+									"property_str" : "N-Value",
+									"source" : "CERN",
+									"standard" : "-",
+									"t1" : 1.0,
+									"t2" : 300.0,
+									"tree_open" : false,
+									"type" : "rat::mat::constfit",
+									"value" : 50.0
+								},
+								"rho_fit" : 
+								{
+									"C0" : 5.9599999999999999e-07,
+									"C1" : 3.5600000000000001e-10,
+									"enable" : true,
+									"id" : 1,
+									"is_public" : true,
+									"link" : "-",
+									"name" : "NbTi LHC",
+									"property_str" : "Electrical Resistivity",
+									"source" : "unknown",
+									"standard" : "unknown",
+									"t1" : 1.0,
+									"t2" : 300.0,
+									"tree_open" : false,
+									"type" : "rat::mat::linearfit"
+								},
+								"tree_open" : false,
+								"type" : "rat::mat::superconductor"
+							},
+							"tree_open" : false,
+							"type" : "rat::mat::ltswire"
+						},
+						"thickness" : 0.002,
+						"tree_open" : false,
+						"type" : "rat::mat::rutherfordcable",
+						"voids" : 
+						{
+							"type" : "cmn::null"
+						},
+						"width" : 0.0050000000000000001
+					},
+					"name" : "Custom CCT",
+					"num_gauss" : 2,
+					"number_turns" : 10.0,
+					"operating_current" : 480.0,
+					"operating_current_density" : 0.0,
+					"operating_temperature" : 4.5,
+					"softening" : 1.3999999999999999,
+					"temperature_drive" : 
+					{
+						"enable" : true,
+						"id" : 25,
+						"name" : "DC",
+						"scaling" : 1.0,
+						"tree_open" : false,
+						"type" : "rat::mdl::drivedc"
+					},
+					"tree_open" : false,
+					"type" : "rat::mdl::modelcoil",
+					"use_current_density" : false,
+					"use_custom_color" : false
+				}
+			],
+			"name" : "Model Tree",
+			"tree_open" : true,
+			"type" : "rat::mdl::modelgroup",
+			"use_custom_color" : false
+		},
+		"name" : "Custom CCT",
+		"t1" : 0.0,
+		"t2" : 0.0,
+		"tree_open" : false,
+		"type" : "rat::mdl::modelroot",
+		"use_custom_color" : false
+	},
+	"version" : "2.017.7"
+}
