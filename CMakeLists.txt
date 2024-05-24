@@ -25,10 +25,9 @@ find_package(RatModels 2.017.7 REQUIRED)
 find_package(Armadillo REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem)
 
-# Create the main executable
-add_executable(main src/main.cpp)
-target_link_libraries(main PRIVATE Rat::Models armadillo Boost::filesystem)
+# Get all source files in src directory
+file(GLOB SOURCES "src/*.cpp")
 
-# Create the cct executable
-add_executable(cct src/cct.cpp)
-target_link_libraries(cct PRIVATE Rat::Models armadillo Boost::filesystem)
+# Create the main executable
+add_executable(main ${SOURCES})
+target_link_libraries(main PRIVATE Rat::Models armadillo Boost::filesystem)
