@@ -43,6 +43,7 @@ int main() {
         return -1;
     }
 
+
     const bool run_coil_field = false;
     const bool run_grid = false;
     const bool run_polar_grid = true;
