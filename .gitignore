@@ -15,3 +15,7 @@ Thumbs.db
 
 # Ignore VSCode settings
 .vscode/
+
+
+data/*
+!data/
