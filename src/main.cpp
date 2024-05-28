@@ -7,10 +7,18 @@
 
 // Function to print harmonic drive values
 void print_harmonic_drive_values(const std::vector<std::pair<int, double>>& harmonic_drive_values) {
-    std::cout << "Harmonic Drive Values:" << std::endl;
+    std::cout << "Harmonic Drive Values: (units are m/coil and m)" << std::endl;
     for (const auto& value : harmonic_drive_values) {
         std::cout << "B" << value.first << ": " << value.second << std::endl;
     }
+}
+
+// Function to ask the user if they want to proceed
+bool askUserToProceed() {
+    std::string input;
+    std::cout << "The harmonic drive values above will be optimized to achieve bn values within the maximum value specified above. Do you want to proceed with the optimization? (Y/n): ";
+    std::getline(std::cin, input);
+    return input.empty() || input == "Y" || input == "y";
 }
 
 
@@ -20,11 +28,13 @@ double getUserInput(const std::string& prompt, double default_value) {
     double value;
     std::string input;
     std::getline(std::cin, input);
-    if (input.empty()) {
-        return default_value;
-    }
     try {
-        value = std::stod(input);
+        if (input.empty()) {
+            value = default_value;
+        } else {
+            value = std::stod(input);
+        }
+        std::cout << "Using " << value << " as maximum absolute bn value." << std::endl;
     } catch (...) {
         std::cerr << "Invalid input. Using default value: " << default_value << std::endl;
         value = default_value;
@@ -107,6 +117,12 @@ int main() {
 
     // Print them
     print_harmonic_drive_values(harmonic_drive_values);
+
+    // Ask the user if they want to proceed
+    if (!askUserToProceed()) {
+        std::cout << "Optimization aborted by user." << std::endl;
+        return 0;
+    }
 
 
     // Loop for optimizing the harmonic drive values to get 0 for all bn
