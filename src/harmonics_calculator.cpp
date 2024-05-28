@@ -66,6 +66,7 @@ std::vector<double> HarmonicsCalculator::compute_bn()
 
 // reloads the model from the json and computes the bn values
 std::vector<double> HarmonicsCalculator::reload_and_compute_bn(const boost::filesystem::path &json_file_path){
+    std::cout << "Reloading model..." << std::endl;
     load_model(json_file_path);
     return compute_bn();
 }
