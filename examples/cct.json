@@ -916,7 +916,7 @@
 															"id" : 36,
 															"name" : "lineardrive",
 															"offset" : 0.0035409999999999999,
-															"slope" : -1.7412032259631583e-05,
+															"slope" : -1.8412032259631583e-05,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivelinear"
 														},
@@ -1846,7 +1846,7 @@
 															"id" : 97,
 															"name" : "lineardrive",
 															"offset" : 0.0035409999999999999,
-															"slope" : -1.7412032259631583e-05,
+															"slope" : -1.8412032259631583e-05,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivelinear"
 														},
