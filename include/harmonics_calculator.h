@@ -17,7 +17,8 @@ class HarmonicsCalculator
 public:
     HarmonicsCalculator(const boost::filesystem::path &json_file_path);
 
-    std::vector<rat::fltp> compute_bn();
+    std::vector<double> compute_bn();
+    std::vector<double> reload_and_compute_bn(const boost::filesystem::path &json_file_path);
 
 private:
     bool load_model(const boost::filesystem::path &json_file_path);
@@ -25,7 +26,7 @@ private:
     load_model_from_json(const boost::filesystem::path &json_file_path);
 
     std::tuple<rat::mdl::ShCalcHarmonicsPr, std::string> find_first_calcharmonics(const rat::mdl::ShCalcGroupPr &calc_tree);
-    std::vector<rat::fltp> convert_bn_to_vector(const arma::Row<rat::fltp>& bn);
+    std::vector<double> convert_bn_to_vector(const arma::Row<rat::fltp>& bn);
 
     rat::mdl::ShModelPr model_;
     rat::mdl::ShModelRootPr root_;
@@ -35,6 +36,6 @@ private:
     std::string harmonics_calc_name_;
 };
 
-void print_bn(const std::vector<rat::fltp>& bn_values);
+void print_bn(const std::vector<double>& bn_values);
 
 #endif // HARMONICS_CALCULATOR_H

@@ -1,36 +1,156 @@
 #include "harmonics_calculator.h"
 #include "model_handler.h"
+#include <iostream>
+#include <limits>
+#include <vector>
+#include <numeric>
 
-int main()
-{
-    const boost::filesystem::path json_file_path = "../data/quad_double_HTS_3mm_22_5_ole_nokink_optimized_V03.json";
-    
-    // handles manipulations of the json file
-    ModelHandler model_handler(json_file_path);
-    // handles calculations for the model
-    HarmonicsCalculator calculator(json_file_path);
-
-    // get all the scaling values for the custom cct harmonics
-    std::vector<std::pair<int, double>> harmonic_drive_values = model_handler.getHarmonicDriveValues();
-
-    // print them
+// Function to print harmonic drive values
+void print_harmonic_drive_values(const std::vector<std::pair<int, double>>& harmonic_drive_values) {
     std::cout << "Harmonic Drive Values:" << std::endl;
     for (const auto& value : harmonic_drive_values) {
         std::cout << "B" << value.first << ": " << value.second << std::endl;
     }
+}
 
 
-
-
-    auto bn_values = calculator.compute_bn();
-    if (!bn_values.empty())
-    {
-        print_bn(bn_values);
+// Function to get user input with a default value
+double getUserInput(const std::string& prompt, double default_value) {
+    std::cout << prompt << " (default: " << default_value << "): ";
+    double value;
+    std::string input;
+    std::getline(std::cin, input);
+    if (input.empty()) {
+        return default_value;
     }
-    else
-    {
-        std::cerr << "Failed to compute bn values." << std::endl;
+    try {
+        value = std::stod(input);
+    } catch (...) {
+        std::cerr << "Invalid input. Using default value: " << default_value << std::endl;
+        value = default_value;
     }
+    return value;
+}
+
+// Function to perform linear regression and find the root
+double linearRegression(const std::vector<std::pair<double, double>>& points) {
+    size_t n = points.size();
+    if (n < 2) {
+        throw std::runtime_error("Not enough points for linear regression.");
+    }
+
+    double sum_x = 0, sum_y = 0, sum_xx = 0, sum_xy = 0;
+    for (const auto& point : points) {
+        sum_x += point.first;
+        sum_y += point.second;
+        sum_xx += point.first * point.first;
+        sum_xy += point.first * point.second;
+    }
+
+    double slope = (n * sum_xy - sum_x * sum_y) / (n * sum_xx - sum_x * sum_x);
+    double intercept = (sum_y - slope * sum_x) / n;
+    double optimized_value = -intercept / slope;
+
+    return optimized_value;
+}
+
+
+int main() {
+    const boost::filesystem::path json_file_path = "../data/quad_double_HTS_3mm_22_5_ole_nokink_optimized_V03_test.json";
+    
+    // Handles manipulations of the JSON file
+    ModelHandler model_handler(json_file_path);
+    // get path of the temp model
+    const boost::filesystem::path temp_json_file_path = model_handler.getTempJsonPath();
+    // Handles calculations for the model
+    HarmonicsCalculator calculator(json_file_path);
+
+    // Get user input for maximum harmonic value
+    double max_harmonic_value = getUserInput("Enter the maximum absolute value for harmonic values", 0.1);
+
+    // TEMP set B1 to 0.5 to 
+    model_handler.setHarmonicDriveValue("B1", -2.75403e-05);
+
+    // Get all the scaling values for the custom CCT harmonics
+    std::vector<std::pair<int, double>> harmonic_drive_values = model_handler.getHarmonicDriveValues();
+
+
+    // Print them
+    print_harmonic_drive_values(harmonic_drive_values);
+
+    // Loop for optimizing the harmonic drive values to get 0 for all bn
+    bool all_within_margin;
+    std::vector<double> current_bn_values;
+    // optimize as long as not all bn values are within the margin
+    do {
+        all_within_margin = true;
+
+        // get the current bn values
+        current_bn_values = calculator.reload_and_compute_bn(temp_json_file_path);
+        
+        // optimize each harmonic drive value
+        for (auto& harmonic : harmonic_drive_values) {
+            // get current values
+            std::string name = "B" + std::to_string(harmonic.first);
+            double current_value = harmonic.second;
+            double current_bn = current_bn_values[harmonic.first - 1];
+
+
+            // if value is not optimized yet, do it
+            if (std::abs(current_bn) > max_harmonic_value) {
+                all_within_margin = false;
+                
+                
+                // print info
+                std::cout << "Now optimizing harmonic B" << harmonic.first << ". Current drive value is " << current_value << " with bn " << current_bn << std::endl;
+
+                // collect all datapoints (x=drive value, y=bn) for a regression
+                std::vector<std::pair<double, double>> data_points;
+                data_points.emplace_back(current_value, current_bn);
+
+                // while the harmonic is not optimized yet
+                while (true) {
+                    // Take a small step in the scaling/slope value
+                    double step = 0.01 * current_value;
+                    model_handler.setHarmonicDriveValue(name, current_value + step);
+
+                    // Compute the new bn values
+                    std::vector<double> new_bn_values = calculator.reload_and_compute_bn(temp_json_file_path);
+                    double new_bn = new_bn_values[harmonic.first - 1];
+
+                    // Add the new data point
+                    data_points.emplace_back(current_value + step, new_bn);
+
+                    // Perform linear regression to find the root
+                    double optimized_value = linearRegression(data_points);
+
+                    // Set the optimized value and recompute bn
+                    model_handler.setHarmonicDriveValue(name, optimized_value);
+                    std::vector<double> optimized_bn_values = calculator.reload_and_compute_bn(temp_json_file_path);
+                    double optimized_bn = optimized_bn_values[harmonic.first - 1];
+
+                    if (std::abs(optimized_bn) <= max_harmonic_value) {
+                        // set the new values for the next iteration
+                        current_bn_values = optimized_bn_values;
+                        harmonic.second = optimized_value;
+                        // print new harmonic drive value to console console
+                        std::cout << "Optimized " << name << " with drive value " << optimized_value << " and bn value: " << optimized_bn << std::endl;
+                        break;
+                    }
+
+                    current_value = optimized_value;
+                    current_bn = optimized_bn;
+                }
+            }
+        }
+    } while (!all_within_margin);
+
+    // all bn values are within the specified margin
+    std::cout << "=== All harmonics have been optimized ===" << std::endl;
+    std::cout << "User-specified margin was: " << max_harmonic_value << std::endl;
+    print_harmonic_drive_values(harmonic_drive_values);
+    print_bn(current_bn_values);
+
 
     return 0;
 }

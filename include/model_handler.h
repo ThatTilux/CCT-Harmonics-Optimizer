@@ -13,11 +13,13 @@ public:
 
     std::vector<std::pair<int, double>> getHarmonicDriveValues(const std::string& prefix = "B");
     void setHarmonicDriveValue(const std::string& name, double value);
+    boost::filesystem::path getTempJsonPath() const;
 
 private:
     void createTemporaryFolder(const boost::filesystem::path& json_file_path);
     void parseHarmonicDrive(const Json::Value& root, const std::string& prefix, std::map<int, double>& harmonics_map);
     void updateHarmonicDrive(Json::Value& root, const std::string& name, double value);
+
 
     boost::filesystem::path temp_folder_;
     boost::filesystem::path temp_json_path_;

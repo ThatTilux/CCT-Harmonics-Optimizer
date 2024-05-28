@@ -100,4 +100,11 @@ void ModelHandler::updateHarmonicDrive(Json::Value& root, const std::string& nam
     for (Json::Value& element : root) {
         updateHarmonicDrive(element, name, value);
     }
+
 }
+
+// Getter for the temporary JSON file path
+boost::filesystem::path ModelHandler::getTempJsonPath() const {
+    return temp_json_path_;
+}
+

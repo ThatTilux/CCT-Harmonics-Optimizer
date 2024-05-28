@@ -34,7 +34,7 @@ bool HarmonicsCalculator::load_model(const boost::filesystem::path &json_file_pa
     return true;
 }
 
-std::vector<rat::fltp> HarmonicsCalculator::compute_bn()
+std::vector<double> HarmonicsCalculator::compute_bn()
 {
     if (harmonics_calc_)
     {
@@ -62,6 +62,12 @@ std::vector<rat::fltp> HarmonicsCalculator::compute_bn()
         }
     }
     return {};
+}
+
+// reloads the model from the json and computes the bn values
+std::vector<double> HarmonicsCalculator::reload_and_compute_bn(const boost::filesystem::path &json_file_path){
+    load_model(json_file_path);
+    return compute_bn();
 }
 
 std::tuple<rat::mdl::ShModelPr, rat::mdl::ShModelRootPr, rat::mdl::ShModelGroupPr, rat::mdl::ShCalcGroupPr>
@@ -130,9 +136,9 @@ std::tuple<rat::mdl::ShCalcHarmonicsPr, std::string> HarmonicsCalculator::find_f
     return {nullptr, ""};
 }
 
-std::vector<rat::fltp> HarmonicsCalculator::convert_bn_to_vector(const arma::Row<rat::fltp>& bn)
+std::vector<double> HarmonicsCalculator::convert_bn_to_vector(const arma::Row<rat::fltp>& bn)
 {
-    std::vector<rat::fltp> bn_values;
+    std::vector<double> bn_values;
     for (arma::uword i = 1; i <= std::min(10u, (unsigned int)(bn.n_elem - 1)); ++i)
     {
         bn_values.push_back(bn(i));
@@ -141,7 +147,7 @@ std::vector<rat::fltp> HarmonicsCalculator::convert_bn_to_vector(const arma::Row
 }
 
 // Function to print bn values from a vector
-void print_bn(const std::vector<rat::fltp>& bn_values)
+void print_bn(const std::vector<double>& bn_values)
 {
     std::cout << "bn values:" << std::endl;
     for (size_t i = 0; i < bn_values.size(); ++i)

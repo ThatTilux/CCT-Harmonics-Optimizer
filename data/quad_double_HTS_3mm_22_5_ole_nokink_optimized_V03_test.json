@@ -908,7 +908,7 @@
 															"id" : 36,
 															"name" : "lineardrive",
 															"offset" : 0.0035409999999999999,
-															"slope" : -1.7540324000000001e-05,
+															"slope" : -2.7540324000000001e-05,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivelinear"
 														},
@@ -930,7 +930,7 @@
 															"id" : 38,
 															"name" : "lineardrive",
 															"offset" : 0.00083500000000000002,
-															"slope" : -2.2062600000000001e-06,
+															"slope" : -3.2062600000000001e-06,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivelinear"
 														},
@@ -952,7 +952,7 @@
 															"id" : 40,
 															"name" : "Linear",
 															"offset" : -0.00052000000000000006,
-															"slope" : 1.2388600000000001e-06,
+															"slope" : 1.7388600000000001e-06,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivelinear"
 														},
@@ -973,7 +973,7 @@
 															"enable" : true,
 															"id" : 42,
 															"name" : "",
-															"scaling" : 8.6600000000000005e-07,
+															"scaling" : 10.6600000000000005e-07,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
@@ -994,7 +994,7 @@
 															"enable" : true,
 															"id" : 44,
 															"name" : "",
-															"scaling" : -0.00013660000000000001,
+															"scaling" : -0.00003660000000000001,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
@@ -1099,7 +1099,7 @@
 															"enable" : true,
 															"id" : 54,
 															"name" : "",
-															"scaling" : -9.800000000000001e-05,
+															"scaling" : -6.800000000000001e-05,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
@@ -1120,7 +1120,7 @@
 															"enable" : true,
 															"id" : 56,
 															"name" : "",
-															"scaling" : 7.4480000000000005e-05,
+															"scaling" : 8.4480000000000005e-05,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
@@ -1837,7 +1837,7 @@
 															"id" : 97,
 															"name" : "lineardrive",
 															"offset" : 0.0035409999999999999,
-															"slope" : -1.7540324000000001e-05,
+															"slope" : -2.7540324000000001e-05,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivelinear"
 														},
@@ -1859,7 +1859,7 @@
 															"id" : 99,
 															"name" : "lineardrive",
 															"offset" : 0.00083500000000000002,
-															"slope" : -2.2062600000000001e-06,
+															"slope" : -3.2062600000000001e-06,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivelinear"
 														},
@@ -1881,7 +1881,7 @@
 															"id" : 101,
 															"name" : "Linear",
 															"offset" : -0.00052000000000000006,
-															"slope" : 1.2388600000000001e-06,
+															"slope" : 1.7388600000000001e-06,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivelinear"
 														},
@@ -1902,7 +1902,7 @@
 															"enable" : true,
 															"id" : 103,
 															"name" : "",
-															"scaling" : 8.6600000000000005e-07,
+															"scaling" : 10.6600000000000005e-07,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
@@ -1923,7 +1923,7 @@
 															"enable" : true,
 															"id" : 105,
 															"name" : "",
-															"scaling" : -0.00013660000000000001,
+															"scaling" : -0.00003660000000000001,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
@@ -2028,7 +2028,7 @@
 															"enable" : true,
 															"id" : 115,
 															"name" : "",
-															"scaling" : -9.800000000000001e-05,
+															"scaling" : -6.800000000000001e-05,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
@@ -2049,7 +2049,7 @@
 															"enable" : true,
 															"id" : 117,
 															"name" : "",
-															"scaling" : 7.4480000000000005e-05,
+															"scaling" : 8.4480000000000005e-05,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
