@@ -50,9 +50,9 @@ An example model `cct.json` can be found in the `examples` directory. To test th
     ```sh
     ./bin/main
     ```
-3. Follow the prompts to select the correct JSON file and enter the default value of 0.1 as the maximum absolute bn value.
+3. Follow the prompts to select the correct JSON file and enter 0.1 (or higher) as the maximum absolute bn value.
 
-The program will terminate after a few minutes, providing the optimal parameters.
+The program will terminate after a some minutes, providing the optimal parameters.
 
 ## Optimizer
 
@@ -60,7 +60,7 @@ The optimizer leverages the almost-linear relationship between the scaling funct
 
 1. The software performs harmonic calculations for at least two different values of the respective scaling function parameter (constant or slope).
 2. A linear regression is applied to extrapolate the optimal parameter value that results in a bn value of 0.
-3. The optimization is done iteratively in rounds since the relationship is not completely linear and changing the scaling function of one harmonics affects other harmonics.
+3. The optimization is done iteratively in rounds since the relationship is not completely linear and changing the scaling function of one harmonic affects other harmonics.
 
 The optimizer continues to adjust parameters until the desired result is achieved. It only optimizes the bn values of those BX components that have a corresponding custom harmonic named BX (which should have X poles).
 
