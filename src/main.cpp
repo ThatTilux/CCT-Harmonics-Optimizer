@@ -21,33 +21,43 @@ bool askUserToProceed()
     std::string input;
     std::cout << "The harmonic drive values above will be optimized to achieve bn values within the maximum value specified above. Do you want to proceed with the optimization? (Y/n): ";
     std::getline(std::cin, input);
-    return input.empty() || input == "Y" || input == "y";
+    return input == "Y" || input == "y";
 }
 
 // Function to get user input with a default value
 double getUserInput(const std::string &prompt, double default_value)
 {
-    std::cout << prompt << " (default: " << default_value << "): ";
-    double value;
+    double value = 0;
     std::string input;
-    std::getline(std::cin, input);
-    try
+
+    while (value == 0)
     {
+        std::cout << prompt << " (default: " << default_value << "): ";
+        std::getline(std::cin, input);
+
         if (input.empty())
         {
             value = default_value;
         }
         else
         {
-            value = std::stod(input);
+            try
+            {
+                value = std::stod(input);
+                if (value <= 0)
+                {
+                    value = 0;
+                    std::cerr << "Input must be greater than 0. Please try again." << std::endl;
+                }
+            }
+            catch (...)
+            {
+                std::cerr << "Invalid input. Please enter a valid number." << std::endl;
+            }
         }
-        std::cout << "Using " << value << " as maximum absolute bn value." << std::endl;
     }
-    catch (...)
-    {
-        std::cerr << "Invalid input. Using default value: " << default_value << std::endl;
-        value = default_value;
-    }
+
+    std::cout << "Using " << value << " as maximum absolute bn value." << std::endl;
     return value;
 }
 
