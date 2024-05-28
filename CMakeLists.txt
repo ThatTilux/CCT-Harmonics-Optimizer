@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
-project(RatExtension VERSION 1.0.0 LANGUAGES CXX)
+project(CCTHarmonicsOptimizer VERSION 1.0.0 LANGUAGES CXX)
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
