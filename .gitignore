@@ -18,4 +18,4 @@ Thumbs.db
 
 
 data/*
-!data/
+!data/.gitkeep
