@@ -54,6 +54,39 @@ double linearRegression(const std::vector<std::pair<double, double>>& points) {
     return optimized_value;
 }
 
+// Function to copy model from src to the build dir with appending timestamp
+void copyModelWithTimestamp(const boost::filesystem::path& src_path) {
+    if (!boost::filesystem::exists(src_path)) {
+        std::cerr << "Source file does not exist: " << src_path << std::endl;
+        return;
+    }
+
+    std::string filename = src_path.filename().string();
+    auto now = std::chrono::system_clock::now();
+    auto now_sec = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
+
+    std::string base_filename = src_path.stem().string();  // filename without extension
+    std::string extension = src_path.extension().string(); // file extension
+
+    std::string new_filename = base_filename + "_" + std::to_string(now_sec) + extension;
+    boost::filesystem::path dest_path = "./optimized_cct/" + new_filename;
+
+    try {
+        boost::filesystem::create_directory("./optimized_cct");
+        boost::filesystem::copy_file(src_path, dest_path);
+        
+        // add the build path for clarity
+        std::string modified_dest_path = dest_path.string();
+        modified_dest_path.insert(1, "/build");
+
+        // print to console
+        std::cout << "The optimized model has been exported to: " << modified_dest_path << std::endl;
+    } catch (const boost::filesystem::filesystem_error& e) {
+        std::cerr << "Error while exporting optimized model: " << e.what() << std::endl;
+        std::cerr << "The optimized model has instead been saved to: " << src_path << std::endl;
+    }
+}
+
 
 int main() {
     const boost::filesystem::path json_file_path = "../data/quad_double_HTS_3mm_22_5_ole_nokink_optimized_V03_test.json";
@@ -68,15 +101,13 @@ int main() {
     // Get user input for maximum harmonic value
     double max_harmonic_value = getUserInput("Enter the maximum absolute value for harmonic values", 0.1);
 
-    // TEMP set B1 to 0.5 to 
-    model_handler.setHarmonicDriveValue("B1", -2.75403e-05);
-
     // Get all the scaling values for the custom CCT harmonics
     std::vector<std::pair<int, double>> harmonic_drive_values = model_handler.getHarmonicDriveValues();
 
 
     // Print them
     print_harmonic_drive_values(harmonic_drive_values);
+
 
     // Loop for optimizing the harmonic drive values to get 0 for all bn
     bool all_within_margin;
@@ -150,6 +181,9 @@ int main() {
     std::cout << "User-specified margin was: " << max_harmonic_value << std::endl;
     print_harmonic_drive_values(harmonic_drive_values);
     print_bn(current_bn_values);
+
+    // export the model
+    copyModelWithTimestamp(temp_json_file_path);
 
 
     return 0;
