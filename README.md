@@ -40,6 +40,7 @@ The optimizer requires a JSON file of a CCT magnet, created by the [RAT-GUI soft
 
 
 Place the JSON file in the `data` directory. Run the program using the command specified above (`./bin/main`). You will be prompted to enter the maximum absolute bn value. For example, entering `0.1` will optimize the harmonics to achieve bn values within the range of -0.1 to 0.1.
+Caution is advised for values below 0.1 as runtime will explode.
 
 ### Example
 
