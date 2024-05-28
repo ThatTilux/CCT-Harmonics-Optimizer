@@ -63,6 +63,8 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
                 {
                     // Take a small step in the scaling/slope value
                     double step = 0.01 * current_value;
+                    // to get a different datapoint when the drive value was 0 
+                    if (step == 0) step = 0.000001;
                     model_handler.setHarmonicDriveValue(name, current_value + step);
 
                     // Compute the new bn values
