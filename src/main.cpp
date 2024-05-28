@@ -117,15 +117,13 @@ void copyModelWithTimestamp(const boost::filesystem::path &src_path)
 // function to optimize all harmonic drive values so the corresponding (absolute) bn values are all within the max_harmonic_value 
 void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std::vector<double> &current_bn_values, std::vector<std::pair<int, double>> &harmonic_drive_values, double max_harmonic_value, const boost::filesystem::path &temp_json_file_path)
 {
-    // Loop for optimizing the harmonic drive values to get 0 for all bn
     bool all_within_margin;
+    // get the current bn values
+    current_bn_values = calculator.reload_and_compute_bn(temp_json_file_path);
     // optimize as long as not all bn values are within the margin
     do
     {
         all_within_margin = true;
-
-        // get the current bn values
-        current_bn_values = calculator.reload_and_compute_bn(temp_json_file_path);
 
         // optimize each harmonic drive value
         for (auto &harmonic : harmonic_drive_values)
