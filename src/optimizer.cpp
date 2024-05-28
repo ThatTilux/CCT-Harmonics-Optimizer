@@ -1,4 +1,5 @@
 #include "optimizer.h"
+#include "constants.h"
 #include <iostream>
 #include <cmath>
 
@@ -82,13 +83,18 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
                     std::vector<double> optimized_bn_values = calculator.reload_and_compute_bn(temp_json_file_path);
                     double optimized_bn = optimized_bn_values[harmonic.first - 1];
 
-                    if (std::abs(optimized_bn) <= max_harmonic_value)
+                    if (std::abs(optimized_bn) <= max_harmonic_value || data_points.size() >= OPTIMIZER_MAX_DATAPOINTS)
                     {
                         // set the new values for the next iteration
                         current_bn_values = optimized_bn_values;
                         harmonic.second = optimized_value;
-                        // print new harmonic drive value to console console
-                        std::cout << "Optimized " << name << " with drive value " << optimized_value << " and bn value: " << optimized_bn << std::endl;
+                        // check if the optimizer stopped because of the max datapoints limit
+                        if (data_points.size() >= OPTIMIZER_MAX_DATAPOINTS){
+                            std::cout << "Optimizer moved on from " << name << " after " << OPTIMIZER_MAX_DATAPOINTS << " datapoints. This harmonic will be optimized in the next iteration." << std::endl;
+                        } else {
+                            // print new harmonic drive value to console console
+                            std::cout << "Optimized " << name << " with drive value " << optimized_value << " and bn value: " << optimized_bn << std::endl;
+                        }
                         break;
                     }
 
