@@ -321,6 +321,13 @@ int main()
     // Get all the scaling values for the custom CCT harmonics
     std::vector<std::pair<int, double>> harmonic_drive_values = model_handler.getHarmonicDriveValues();
 
+    // Check that there are harmonic drives
+    if (harmonic_drive_values.empty())
+    {
+        std:cerr << "The program could not find any custom CCT harmonics (rat::mdl::cctharmonicdrive) whose name starts with the letter 'B'. Aborting..." << std::endl;
+        return 1;
+    }
+
     // Print them
     print_harmonic_drive_values(harmonic_drive_values);
 
