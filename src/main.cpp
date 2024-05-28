@@ -4,6 +4,16 @@
 #include <limits>
 #include <vector>
 #include <numeric>
+#include <termios.h>
+#include <unistd.h>
+#include <boost/filesystem.hpp>
+
+
+// CONSTANTS
+std::string DATA_DIR_PATH = "../data";
+std::string MODEL_OUTPUT_DIR = "./optimized_cct/";
+
+
 
 // Function to print harmonic drive values
 void print_harmonic_drive_values(const std::vector<std::pair<int, double>> &harmonic_drive_values)
@@ -13,6 +23,28 @@ void print_harmonic_drive_values(const std::vector<std::pair<int, double>> &harm
     {
         std::cout << "B" << value.first << ": " << value.second << std::endl;
     }
+}
+
+// Function to get a single character input without echoing to the console (POSIX)
+char getch()
+{
+    char buf = 0;
+    struct termios old = {0};
+    if (tcgetattr(STDIN_FILENO, &old) < 0)
+        perror("tcsetattr()");
+    old.c_lflag &= ~ICANON;
+    old.c_lflag &= ~ECHO;
+    old.c_cc[VMIN] = 1;
+    old.c_cc[VTIME] = 0;
+    if (tcsetattr(STDIN_FILENO, TCSANOW, &old) < 0)
+        perror("tcsetattr ICANON");
+    if (read(STDIN_FILENO, &buf, 1) < 0)
+        perror("read()");
+    old.c_lflag |= ICANON;
+    old.c_lflag |= ECHO;
+    if (tcsetattr(STDIN_FILENO, TCSADRAIN, &old) < 0)
+        perror("tcsetattr ~ICANON");
+    return buf;
 }
 
 // Function to ask the user if they want to proceed
@@ -103,11 +135,11 @@ void copyModelWithTimestamp(const boost::filesystem::path &src_path)
     std::string extension = src_path.extension().string(); // file extension
 
     std::string new_filename = base_filename + "_" + std::to_string(now_sec) + extension;
-    boost::filesystem::path dest_path = "./optimized_cct/" + new_filename;
+    boost::filesystem::path dest_path = MODEL_OUTPUT_DIR + new_filename;
 
     try
     {
-        boost::filesystem::create_directory("./optimized_cct");
+        boost::filesystem::create_directory(MODEL_OUTPUT_DIR);
         boost::filesystem::copy_file(src_path, dest_path);
 
         // add the build path for clarity
@@ -195,9 +227,86 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
     } while (!all_within_margin);
 }
 
+// Function to display files in a directory and allow user to select one
+boost::filesystem::path selectJsonFile()
+{
+    boost::filesystem::path dir_path(DATA_DIR_PATH);
+    std::vector<boost::filesystem::path> json_files;
+
+    if (boost::filesystem::exists(dir_path) && boost::filesystem::is_directory(dir_path))
+    {
+        for (const auto &entry : boost::filesystem::directory_iterator(dir_path))
+        {
+            if (boost::filesystem::is_regular_file(entry) && entry.path().extension() == ".json")
+            {
+                json_files.push_back(entry.path());
+            }
+        }
+    }
+
+    if (json_files.empty())
+    {
+        throw std::runtime_error("No JSON files found in the " + DATA_DIR_PATH + " directory. Please add the JSON file of the model you wish to optimize there.");
+    }
+
+    int selected_index = 0;
+    char key;
+    while (true)
+    {
+        system("clear"); // Clear the terminal screen on POSIX systems
+        std::cout << "Select the JSON file for the model you wish to optimize. If your model is not in the list, make sure it is placed in the " << DATA_DIR_PATH << " directory."<< std::endl;
+        std::cout << "Use arrow keys and enter to select."<< std::endl;
+        for (size_t i = 0; i < json_files.size(); ++i)
+        {
+            if (i == selected_index)
+            {
+                std::cout << "> " << json_files[i].filename().string() << std::endl;
+            }
+            else
+            {
+                std::cout << "  " << json_files[i].filename().string() << std::endl;
+            }
+        }
+
+        key = getch();
+
+        if (key == '\033')
+        { // arrow keys for POSIX
+            getch();    // skip the [
+            switch (getch())
+            {
+            case 'A': // up
+                if (selected_index > 0)
+                    selected_index--;
+                break;
+            case 'B': // down
+                if (selected_index < json_files.size() - 1)
+                    selected_index++;
+                break;
+            }
+        }
+        else if (key == '\r' || key == '\n')
+        {
+            break;
+        }
+    }
+
+    return json_files[selected_index];
+}
+
 int main()
 {
-    const boost::filesystem::path json_file_path = "../data/quad_double_HTS_3mm_22_5_ole_nokink_optimized_V04.json";
+    // Get the JSON file path from user selection
+    boost::filesystem::path json_file_path;
+    try
+    {
+        json_file_path = selectJsonFile();
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << std::endl;
+        return 1;
+    }
 
     // Handles manipulations of the JSON file
     ModelHandler model_handler(json_file_path);
