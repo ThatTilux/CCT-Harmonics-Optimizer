@@ -131,15 +131,3 @@ std::tuple<rat::mdl::ShCalcHarmonicsPr, std::string> HarmonicsCalculator::find_f
 
     return {nullptr, ""};
 }
-
-
-
-// Function to print bn values from a vector
-void print_bn(const std::vector<double>& bn_values)
-{
-    std::cout << "bn values:" << std::endl;
-    for (size_t i = 0; i < bn_values.size(); ++i)
-    {
-        std::cout << "bn[" << i + 1 << "] = " << bn_values[i] << std::endl;
-    }
-}
