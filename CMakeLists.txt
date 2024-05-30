@@ -25,6 +25,7 @@ find_package(RatModels 2.017.7 REQUIRED)
 find_package(Armadillo REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem)
 
+
 # Get all source files in src directory
 file(GLOB SOURCES "src/*.cpp")
 

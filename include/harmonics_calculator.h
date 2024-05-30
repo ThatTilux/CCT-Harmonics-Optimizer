@@ -11,14 +11,16 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "harmonics_handler.h"
 
 class HarmonicsCalculator
 {
 public:
     HarmonicsCalculator(const boost::filesystem::path &json_file_path);
 
-    std::vector<double> compute_bn();
-    std::vector<double> reload_and_compute_bn(const boost::filesystem::path &json_file_path);
+    void calc(HarmonicsHandler& harmonics_handler);
+    void reload_and_calc(const boost::filesystem::path &json_file_path, HarmonicsHandler& harmonics_handler);
+
 
 private:
     bool load_model(const boost::filesystem::path &json_file_path);

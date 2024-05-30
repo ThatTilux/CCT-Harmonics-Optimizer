@@ -188,3 +188,25 @@ void copyModelWithTimestamp(const boost::filesystem::path &src_path)
         std::cerr << "The optimized model has instead been saved to: " << src_path << std::endl;
     }
 }
+
+// exports a vector to a csv with ascending indexing
+void export_vector_to_csv(const std::vector<double>& vector, const std::string& csv_path)
+{
+    std::ofstream csv_file(csv_path);
+    if (!csv_file)
+    {
+        std::cerr << "Failed to open CSV file: " << csv_path << std::endl;
+        return;
+    }
+
+    // Write the header
+    csv_file << "Index,Value\n";
+
+    for (size_t i = 0; i < vector.size(); ++i)
+    {
+        csv_file << i << "," << vector[i] << "\n";
+    }
+    csv_file.close();
+
+    std::cout << "Vector exported to CSV file: " << csv_path << std::endl;
+}

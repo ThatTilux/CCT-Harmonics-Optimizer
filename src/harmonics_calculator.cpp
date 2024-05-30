@@ -34,41 +34,35 @@ bool HarmonicsCalculator::load_model(const boost::filesystem::path &json_file_pa
     return true;
 }
 
-std::vector<double> HarmonicsCalculator::compute_bn()
+// function for doing the harmonics calculation. Will update create a new HarmonicsHandler object that provides access to the results.
+void HarmonicsCalculator::calc(HarmonicsHandler& harmonics_handler)
 {
     if (harmonics_calc_)
     {
+        // do the harmonics calculation
         const rat::fltp output_time = RAT_CONST(0.0);
         const rat::cmn::ShLogPr lg = rat::cmn::Log::create(rat::cmn::Log::LogoType::RAT);
         const rat::mdl::ShSolverCachePr cache = rat::mdl::SolverCache::create();
 
-        auto harmonics_data = harmonics_calc_->calculate_harmonics(output_time, lg, cache);
+        rat::mdl::ShHarmonicsDataPr harmonics_data = harmonics_calc_->calculate_harmonics(output_time, lg, cache);
 
         if (harmonics_data)
         {
-            arma::Row<rat::fltp> An, Bn;
-            harmonics_data->get_harmonics(An, Bn);
-
-            const arma::uword idx = arma::index_max(arma::max(arma::abs(An), arma::abs(Bn)));
-            const rat::fltp ABmax = std::max(std::abs(An(idx)), std::abs(Bn(idx)));
-            const arma::Row<rat::fltp> an = 1e4 * An / ABmax;
-            const arma::Row<rat::fltp> bn = 1e4 * Bn / ABmax;
-
-            return convert_bn_to_vector(bn);
+            harmonics_handler = HarmonicsHandler(harmonics_data);
         }
         else
         {
             std::cerr << "Harmonics calculation failed." << std::endl;
+            harmonics_handler = HarmonicsHandler();
         }
     }
-    return {};
 }
 
 // reloads the model from the json and computes the bn values
-std::vector<double> HarmonicsCalculator::reload_and_compute_bn(const boost::filesystem::path &json_file_path){
+void HarmonicsCalculator::reload_and_calc(const boost::filesystem::path &json_file_path, HarmonicsHandler& harmonics_handler){
     std::cout << "Reloading model..." << std::endl;
     load_model(json_file_path);
-    return compute_bn();
+    calc(harmonics_handler);
 }
 
 std::tuple<rat::mdl::ShModelPr, rat::mdl::ShModelRootPr, rat::mdl::ShModelGroupPr, rat::mdl::ShCalcGroupPr>
@@ -117,6 +111,7 @@ HarmonicsCalculator::load_model_from_json(const boost::filesystem::path &json_fi
     return {model, root, model_tree, calc_tree};
 }
 
+// function to saerch the calculation tree of a model for a harmonics calculation. Will return the top-most harmonics calculation of the tree
 std::tuple<rat::mdl::ShCalcHarmonicsPr, std::string> HarmonicsCalculator::find_first_calcharmonics(const rat::mdl::ShCalcGroupPr &calc_tree)
 {
     if (!calc_tree)
@@ -137,15 +132,7 @@ std::tuple<rat::mdl::ShCalcHarmonicsPr, std::string> HarmonicsCalculator::find_f
     return {nullptr, ""};
 }
 
-std::vector<double> HarmonicsCalculator::convert_bn_to_vector(const arma::Row<rat::fltp>& bn)
-{
-    std::vector<double> bn_values;
-    for (arma::uword i = 1; i <= std::min(10u, (unsigned int)(bn.n_elem - 1)); ++i)
-    {
-        bn_values.push_back(bn(i));
-    }
-    return bn_values;
-}
+
 
 // Function to print bn values from a vector
 void print_bn(const std::vector<double>& bn_values)

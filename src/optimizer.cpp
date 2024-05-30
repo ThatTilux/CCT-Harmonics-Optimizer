@@ -32,8 +32,11 @@ double linearRegression(const std::vector<std::pair<double, double>> &points)
 void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std::vector<double> &current_bn_values, std::vector<std::pair<int, double>> &harmonic_drive_values, double max_harmonic_value, const boost::filesystem::path &temp_json_file_path)
 {
     bool all_within_margin;
+    // handler for handling the results of the harmonics calculation
+    HarmonicsHandler harmonics_handler;
     // get the current bn values
-    current_bn_values = calculator.reload_and_compute_bn(temp_json_file_path);
+    calculator.reload_and_calc(temp_json_file_path, harmonics_handler);
+    current_bn_values = harmonics_handler.get_bn();
     // optimize as long as not all bn values are within the margin
     do
     {
@@ -69,7 +72,9 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
                     model_handler.setHarmonicDriveValue(name, current_value + step);
 
                     // Compute the new bn values
-                    std::vector<double> new_bn_values = calculator.reload_and_compute_bn(temp_json_file_path);
+                    // get the current bn values
+                    calculator.reload_and_calc(temp_json_file_path, harmonics_handler);
+                    std::vector<double> new_bn_values = harmonics_handler.get_bn();
                     double new_bn = new_bn_values[harmonic.first - 1];
 
                     // Add the new data point
@@ -80,9 +85,13 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
 
                     // Set the optimized value and recompute bn
                     model_handler.setHarmonicDriveValue(name, optimized_value);
-                    std::vector<double> optimized_bn_values = calculator.reload_and_compute_bn(temp_json_file_path);
+                    calculator.reload_and_calc(temp_json_file_path, harmonics_handler);
+                    std::vector<double> optimized_bn_values = harmonics_handler.get_bn();
+
+                    // get the bn value for the component currently being optimized
                     double optimized_bn = optimized_bn_values[harmonic.first - 1];
 
+                    // check if the optimization was successfull or if it has to be aborted
                     if (std::abs(optimized_bn) <= max_harmonic_value || data_points.size() >= OPTIMIZER_MAX_DATAPOINTS)
                     {
                         // set the new values for the next iteration
