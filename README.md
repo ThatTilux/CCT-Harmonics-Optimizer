@@ -10,6 +10,8 @@ This software utilizes the open-source RAT Library. For more information about t
 
 **Note: This software only works on Linux.**
 
+TODO: add libgtest-dev requirement
+
 1. Follow the [RAT documentation](https://gitlab.com/Project-Rat/rat-documentation) to install the RAT library. This may take some time.
 
 2. Clone this repository and build the software:
@@ -22,7 +24,12 @@ This software utilizes the open-source RAT Library. For more information about t
     make
     ```
 
-3. To run the program:
+3. Run all tests:
+    ```sh
+    ./bin/runTests
+    ```
+
+4. To run the program:
     ```sh
     ./bin/main
     ```
