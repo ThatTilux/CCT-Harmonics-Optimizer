@@ -210,3 +210,13 @@ void export_vector_to_csv(const std::vector<double>& vector, const std::string& 
 
     std::cout << "Vector exported to CSV file: " << csv_path << std::endl;
 }
+
+// Function to print values from a vector
+void print_vector(const std::vector<double>& data, std::string label)
+{
+    std::cout << label << " values:" << std::endl;
+    for (size_t i = 0; i < data.size(); ++i)
+    {
+        std::cout << label << "[" << i + 1 << "] = " << data[i] << std::endl;
+    }
+}

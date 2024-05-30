@@ -13,7 +13,7 @@ protected:
 
     // Setup before each test
     void SetUp() override {
-        test_file = TEST_DATA_DIR + "/quad_test.json";
+        test_file = TEST_DATA_DIR + "quad_test.json";
         temp_dir = boost::filesystem::temp_directory_path() / "model_temp";
 
         // Ensure the temp directory is clean

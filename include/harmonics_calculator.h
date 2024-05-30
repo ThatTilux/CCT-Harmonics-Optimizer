@@ -12,15 +12,18 @@
 #include <string>
 #include <vector>
 #include "harmonics_handler.h"
+#include <SilentLog.hh>
+
 
 class HarmonicsCalculator
 {
 public:
     HarmonicsCalculator(const boost::filesystem::path &json_file_path);
 
-    void calc(HarmonicsHandler& harmonics_handler);
-    void reload_and_calc(const boost::filesystem::path &json_file_path, HarmonicsHandler& harmonics_handler);
+    void calc(HarmonicsHandler &harmonics_handler, bool disable_logging = false);
+    void reload_and_calc(const boost::filesystem::path &json_file_path, HarmonicsHandler &harmonics_handler, bool disable_logging = false);
 
+    bool has_harmonics_calc();
 
 private:
     bool load_model(const boost::filesystem::path &json_file_path);

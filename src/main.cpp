@@ -9,6 +9,10 @@
 
 int main()
 {
+
+
+
+
     // Get the JSON file path from user selection
     boost::filesystem::path json_file_path;
     try
@@ -61,7 +65,7 @@ int main()
     std::cout << "=== All harmonics have been optimized ===" << std::endl;
     std::cout << "User-specified margin was: " << max_harmonic_value << std::endl;
     print_harmonic_drive_values(harmonic_drive_values);
-    print_bn(current_bn_values);
+    print_vector(current_bn_values, "bn");
 
     // export the model
     copyModelWithTimestamp(temp_json_file_path);

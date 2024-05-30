@@ -28,6 +28,7 @@ private:
     std::vector<double> convert_bn_to_vector(const arma::Row<rat::fltp> &bn);
     std::vector<double> extract_bn(rat::mdl::ShHarmonicsDataPr harmonics_data);
     std::vector<double> convert_row_to_vector(const arma::Row<rat::fltp> &row);
+    std::vector<double> convert_col_to_vector(const arma::Col<rat::fltp>& col);
     std::tuple<std::vector<double>, std::vector<std::vector<double>>> extract_ell_Bn(rat::mdl::ShHarmonicsDataPr harmonics_data);
 
 

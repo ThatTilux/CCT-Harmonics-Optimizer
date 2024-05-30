@@ -35,13 +35,13 @@ bool HarmonicsCalculator::load_model(const boost::filesystem::path &json_file_pa
 }
 
 // function for doing the harmonics calculation. Will update create a new HarmonicsHandler object that provides access to the results.
-void HarmonicsCalculator::calc(HarmonicsHandler& harmonics_handler)
+void HarmonicsCalculator::calc(HarmonicsHandler& harmonics_handler, bool disable_logging)
 {
     if (harmonics_calc_)
     {
         // do the harmonics calculation
         const rat::fltp output_time = RAT_CONST(0.0);
-        const rat::cmn::ShLogPr lg = rat::cmn::Log::create(rat::cmn::Log::LogoType::RAT);
+        const rat::cmn::ShLogPr lg = disable_logging ? rat::cmn::SilentLog::create() : rat::cmn::Log::create(rat::cmn::Log::LogoType::RAT);
         const rat::mdl::ShSolverCachePr cache = rat::mdl::SolverCache::create();
 
         rat::mdl::ShHarmonicsDataPr harmonics_data = harmonics_calc_->calculate_harmonics(output_time, lg, cache);
@@ -59,10 +59,10 @@ void HarmonicsCalculator::calc(HarmonicsHandler& harmonics_handler)
 }
 
 // reloads the model from the json and computes the bn values
-void HarmonicsCalculator::reload_and_calc(const boost::filesystem::path &json_file_path, HarmonicsHandler& harmonics_handler){
+void HarmonicsCalculator::reload_and_calc(const boost::filesystem::path &json_file_path, HarmonicsHandler& harmonics_handler, bool disable_logging){
     std::cout << "Reloading model..." << std::endl;
     load_model(json_file_path);
-    calc(harmonics_handler);
+    calc(harmonics_handler, disable_logging);
 }
 
 std::tuple<rat::mdl::ShModelPr, rat::mdl::ShModelRootPr, rat::mdl::ShModelGroupPr, rat::mdl::ShCalcGroupPr>
@@ -130,4 +130,8 @@ std::tuple<rat::mdl::ShCalcHarmonicsPr, std::string> HarmonicsCalculator::find_f
     }
 
     return {nullptr, ""};
+}
+
+bool HarmonicsCalculator::has_harmonics_calc(){
+    return harmonics_calc_ != nullptr;
 }

@@ -62,13 +62,13 @@ std::vector<double> HarmonicsHandler::convert_bn_to_vector(const arma::Row<rat::
 }
 
 // converts an arma::Row to a std::vector
-std::vector<double> HarmonicsHandler::convert_row_to_vector(const arma::Row<rat::fltp> &row){
-    std::vector<double> vector;
-    for (arma::uword i = 0; i <= row.n_elem - 1; ++i)
-    {
-        vector.push_back(row(i));
-    }
-    return vector;
+std::vector<double> HarmonicsHandler::convert_row_to_vector(const arma::Row<rat::fltp>& row) {
+    return std::vector<double>(row.begin(), row.end());
+}
+
+// Convert column to vector
+std::vector<double> HarmonicsHandler::convert_col_to_vector(const arma::Col<rat::fltp>& col) {
+    return std::vector<double>(col.begin(), col.end());
 }
 
 // function for extracting the ell and all the Bn data. ell includes the length along the magnet and Bn is a matrix with the strength of each component at each of these ell locations.
@@ -85,8 +85,8 @@ std::tuple<std::vector<double>, std::vector<std::vector<double>>> HarmonicsHandl
     // skip the first column (dummy 0 values) 
     for (arma::uword i = 1; i < Bn.n_cols; ++i)
     {
-        arma::Row<rat::fltp> column = Bn.col(i);
-        std::vector<double> bn_values = convert_row_to_vector(column);
+        arma::Col<rat::fltp> column = Bn.col(i);
+        std::vector<double> bn_values = convert_col_to_vector(column);
         all_Bn.push_back(bn_values);
     }
 
