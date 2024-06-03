@@ -32,7 +32,7 @@ std::vector<double> HarmonicsHandler::get_Bn(int component){
     }
 }
 
-// function for getting the bn data for all components. The bn value for a components is computed using a fourier transformation on the Bn data. It describes the strength of the component along the whole magnet.
+// function for getting the bn data for all components. The bn value for a components is computed using a fourier transformation on the Bn data. It describes the strength of the component along the whole magnet. The resulting vector is 0-indexed
 std::vector<double> HarmonicsHandler::get_bn(){
     return bn_;
 }
