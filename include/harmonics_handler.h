@@ -38,4 +38,6 @@ private:
     std::vector<std::vector<double>> Bn_per_component_;
 };
 
+std::vector<std::pair<double, double>> combinePoints(const std::vector<double> &x, const std::vector<double> &y);
+
 #endif // HARMONICS_HANDLER_H

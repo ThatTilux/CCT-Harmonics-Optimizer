@@ -71,6 +71,7 @@ std::vector<double> HarmonicsHandler::convert_col_to_vector(const arma::Col<rat:
     return std::vector<double>(col.begin(), col.end());
 }
 
+
 // function for extracting the ell and all the Bn data. ell includes the length along the magnet and Bn is a matrix with the strength of each component at each of these ell locations.
 std::tuple<std::vector<double>, std::vector<std::vector<double>>> HarmonicsHandler::extract_ell_Bn(rat::mdl::ShHarmonicsDataPr harmonics_data){
     arma::Row<rat::fltp> ell;
@@ -107,7 +108,26 @@ void HarmonicsHandler::export_Bns_to_csv(const std::string& dir_path){
     for (int i = 1; i <= Bn_per_component_.size(); ++i){
         std::string file_path = dir_path + "/Bn_component_" + std::to_string(i) + ".csv";
         
-        // export the file
-        export_vector_to_csv(get_Bn(i), file_path);
+        // get Bn and ell values and stitch them together
+        std::vector<double> Bn_data = get_Bn(i);
+        std::vector<double> ell = get_ell();
+
+        std::vector<std::pair<double, double>> data = combinePoints(ell, Bn_data);
+
+        // export the Bn values
+        export_data_to_csv(data, file_path);
     }
+}
+
+// Function to combine x and y points into a vector of pairs
+std::vector<std::pair<double, double>> combinePoints(const std::vector<double> &x, const std::vector<double> &y) {
+    if (x.size() != y.size()) {
+        throw std::runtime_error("Vectors x and y must have the same length.");
+    }
+
+    std::vector<std::pair<double, double>> points;
+    for (size_t i = 0; i < x.size(); ++i) {
+        points.emplace_back(x[i], y[i]);
+    }
+    return points;
 }

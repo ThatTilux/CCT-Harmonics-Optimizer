@@ -3,8 +3,8 @@
 #include <iostream>
 #include <cmath>
 
-// Function to perform linear regression and find the root
-double linearRegression(const std::vector<std::pair<double, double>> &points)
+// Function to perform linear regression and return the slope and intercept
+std::pair<double, double> linearRegression(const std::vector<std::pair<double, double>> &points)
 {
     size_t n = points.size();
     if (n < 2)
@@ -23,12 +23,74 @@ double linearRegression(const std::vector<std::pair<double, double>> &points)
 
     double slope = (n * sum_xy - sum_x * sum_y) / (n * sum_xx - sum_x * sum_x);
     double intercept = (sum_y - slope * sum_x) / n;
-    double optimized_value = -intercept / slope;
 
-    return optimized_value;
+    return {slope, intercept};
 }
 
-// function to optimize all harmonic drive values so the corresponding (absolute) bn values are all within the max_harmonic_value 
+// Function to fit a linear function to data and extract the root
+double fitLinearGetRoot(const std::vector<std::pair<double, double>> &points)
+{
+    auto [slope, intercept] = linearRegression(points);
+    double root = -intercept / slope;
+
+    return root;
+}
+
+// Function to compute the variance of y values with Bessel's correction
+double computeVariance(const std::vector<double> &y)
+{
+    double mean = std::accumulate(y.begin(), y.end(), 0.0) / y.size();
+    double variance = 0;
+    for (const auto &value : y)
+    {
+        variance += (value - mean) * (value - mean);
+    }
+    variance /= (y.size() - 1); // Bessel's correction
+    return variance;
+}
+
+// Function to compute chi-squared distance between (1) a function described by the points vector and (2) a linear function described by slope, intercept
+double computeChiSquared(const std::vector<std::pair<double, double>> &points, double slope, double intercept, double variance_y)
+{
+    double chi_squared = 0;
+    for (const auto &point : points)
+    {
+        double y_fit = slope * point.first + intercept;
+        double residual = point.second - y_fit;
+        chi_squared += (residual * residual) / variance_y;
+    }
+    return chi_squared;
+}
+
+// Function to compute the chi square for a Bn component. A linear function will be fitted to the data and chi square will be computed between that and the data
+double chiSquared(HarmonicsHandler &harmonics_handler, int component)
+{
+    // get the Bn and ell
+    std::vector<double> Bn = harmonics_handler.get_Bn(component);
+    std::vector<double> ell = harmonics_handler.get_ell();
+
+    // get the variance of Bn
+    double variance = computeVariance(Bn);
+
+    // stitch ell and Bn together
+    std::vector<std::pair<double, double>> points = combinePoints(ell, Bn);
+
+    // fit a linear function
+    auto [slope, intercept] = linearRegression(points);
+
+    // TODO TEMP START --------------------
+
+    std::cout << "Slope: " << slope << ", Intercept: " << intercept << std::endl;
+
+    // TODO TEMP END  --------------------
+
+    // compute chi squared between the function and the original data
+    double chi_squared = computeChiSquared(points, slope, intercept, variance);
+
+    return chi_squared;
+}
+
+// function to optimize all harmonic drive values so the corresponding (absolute) bn values are all within the max_harmonic_value
 void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std::vector<double> &current_bn_values, std::vector<std::pair<int, double>> &harmonic_drive_values, double max_harmonic_value, const boost::filesystem::path &temp_json_file_path)
 {
     bool all_within_margin;
@@ -37,6 +99,20 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
     // get the current bn values
     calculator.reload_and_calc(temp_json_file_path, harmonics_handler);
     current_bn_values = harmonics_handler.get_bn();
+
+    // TODO TEMP START --------------------
+
+    harmonics_handler.export_Bns_to_csv("./Bn");
+
+    for (int i = 1; i <= 10; i++)
+    {
+        std::cout << "B" << i << ": " << std::endl;
+        double chi_squared = chiSquared(harmonics_handler, i);
+        std::cout << "ChiSquared" << ": " << chi_squared << std::endl;
+    }
+
+    // TODO TEMP END --------------------
+
     // optimize as long as not all bn values are within the margin
     do
     {
@@ -67,8 +143,9 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
                 {
                     // Take a small step in the scaling/slope value
                     double step = 0.01 * current_value;
-                    // to get a different datapoint when the drive value was 0 
-                    if (step == 0) step = 0.000001;
+                    // to get a different datapoint when the drive value was 0
+                    if (step == 0)
+                        step = 0.000001;
                     model_handler.setHarmonicDriveValue(name, current_value + step);
 
                     // Compute the new bn values
@@ -81,7 +158,7 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
                     data_points.emplace_back(current_value + step, new_bn);
 
                     // Perform linear regression to find the root
-                    double optimized_value = linearRegression(data_points);
+                    double optimized_value = fitLinearGetRoot(data_points);
 
                     // Set the optimized value and recompute bn
                     model_handler.setHarmonicDriveValue(name, optimized_value);
@@ -98,9 +175,12 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
                         current_bn_values = optimized_bn_values;
                         harmonic.second = optimized_value;
                         // check if the optimizer stopped because of the max datapoints limit
-                        if (data_points.size() >= OPTIMIZER_MAX_DATAPOINTS){
+                        if (data_points.size() >= OPTIMIZER_MAX_DATAPOINTS)
+                        {
                             std::cout << "Optimizer moved on from " << name << " after " << OPTIMIZER_MAX_DATAPOINTS << " datapoints. This harmonic will be optimized in the next iteration." << std::endl;
-                        } else {
+                        }
+                        else
+                        {
                             // print new harmonic drive value to console console
                             std::cout << "Optimized " << name << " with drive value " << optimized_value << " and bn value: " << optimized_bn << std::endl;
                         }

@@ -192,6 +192,18 @@ void copyModelWithTimestamp(const boost::filesystem::path &src_path)
 // exports a vector to a csv with ascending indexing
 void export_vector_to_csv(const std::vector<double>& vector, const std::string& csv_path)
 {
+    std::vector<std::pair<double, double>> indexed_vector;
+    for (size_t i = 0; i < vector.size(); ++i)
+    {
+        indexed_vector.push_back(std::make_pair(static_cast<double>(i), vector[i]));
+    }
+
+    export_data_to_csv(indexed_vector, csv_path);
+}
+
+// exports a vector of pairs to a csv
+void export_data_to_csv(const std::vector<std::pair<double, double>>& vector, const std::string& csv_path)
+{
     std::ofstream csv_file(csv_path);
     if (!csv_file)
     {
@@ -204,7 +216,7 @@ void export_vector_to_csv(const std::vector<double>& vector, const std::string& 
 
     for (size_t i = 0; i < vector.size(); ++i)
     {
-        csv_file << i << "," << vector[i] << "\n";
+        csv_file << vector[i].first << "," << vector[i].second << "\n";
     }
     csv_file.close();
 

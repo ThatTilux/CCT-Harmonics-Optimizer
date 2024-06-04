@@ -10,9 +10,6 @@
 int main()
 {
 
-
-
-
     // Get the JSON file path from user selection
     boost::filesystem::path json_file_path;
     try
