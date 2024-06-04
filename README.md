@@ -33,7 +33,7 @@ The optimizer requires a JSON file of a CCT magnet, created by the [RAT-GUI soft
 
 - The JSON file should contain a harmonics calculation in the calculation tree. The optimizer will use the first harmonics calculation in the tree.
 - The JSON file should include at least one custom CCT harmonic in the model tree. These harmonics will be optimized by the software.
-    - The harmonics should have names that start with 'B' (e.g., B1 for dipole harmonics, B10 for decapole harmonics).
+    - The harmonics should have names that start with 'B' (e.g., B1 for dipole harmonics, B3 for sextupole harmonics).
     - The main harmonic, which needs a bn value of 10,000, should be named differently to prevent optimization by the software.
     - Custom CCT harmonics must have an 'amplitude' of 'constant' or 'linear'. For 'constant', the 'constant' parameter will be optimized. For 'linear', the 'slope' parameter will be optimized.
     - All custom harmonics with the same number of poles should have the same name and scaling function parameters, ensuring they are optimized together.
