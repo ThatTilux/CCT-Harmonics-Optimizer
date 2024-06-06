@@ -4,8 +4,16 @@
 #include <vector>
 #include <string>
 #include <boost/filesystem.hpp>
+#include <iostream>
+#include <termios.h>
+#include <unistd.h>
+#include <boost/filesystem.hpp>
+#include <constants.h>
+#include <chrono>
+#include "harmonic_drive_parameter.h"
+#include "model_handler.h"
 
-void print_harmonic_drive_values(const std::vector<std::pair<int, double>> &harmonic_drive_values);
+void print_harmonic_drive_values(HarmonicDriveParameterMap &harmonic_drive_values);
 char getch();
 bool askUserToProceed();
 double getUserInput(const std::string &prompt, double default_value);

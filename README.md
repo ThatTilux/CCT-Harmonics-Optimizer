@@ -10,7 +10,8 @@ This software utilizes the open-source RAT Library. For more information about t
 
 **Note: This software only works on Linux.**
 
-TODO: add libgtest-dev requirement
+TODO: 
+- add libgtest-dev requirement
 
 1. Follow the [RAT documentation](https://gitlab.com/Project-Rat/rat-documentation) to install the RAT library. This may take some time.
 
@@ -35,6 +36,8 @@ TODO: add libgtest-dev requirement
     ```
 
 ## Usage
+
+**TODO**: only linear custom ccts allowed, otherwise change? Also: update naming convention of custom harmonics
 
 The optimizer requires a JSON file of a CCT magnet, created by the [RAT-GUI software](https://rat-gui.com/index.html). Ensure that the JSON file meets the following criteria:
 

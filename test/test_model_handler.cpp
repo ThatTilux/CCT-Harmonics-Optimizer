@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+#include "harmonic_drive_parameter.h"
 #include "model_handler.h"
 #include <boost/filesystem.hpp>
 #include <fstream>
@@ -8,12 +9,13 @@
 class ModelHandlerTest : public ::testing::Test {
 protected:
     boost::filesystem::path test_file;
+    boost::filesystem::path test_file_2;
     boost::filesystem::path temp_dir;
-    boost::filesystem::path temp_json_path;
 
     // Setup before each test
     void SetUp() override {
         test_file = TEST_DATA_DIR + "quad_test.json";
+        test_file_2 = TEST_DATA_DIR + "quad_test_B5_linear.json";
         temp_dir = boost::filesystem::temp_directory_path() / "model_temp";
 
         // Ensure the temp directory is clean
@@ -32,6 +34,8 @@ protected:
 
 // Test the constructor and createTemporaryFolder method
 TEST_F(ModelHandlerTest, ConstructorAndCreateTemporaryFolder) {
+    boost::filesystem::path temp_json_path;
+    
     ASSERT_NO_THROW({
         ModelHandler handler(test_file);
         temp_json_path = handler.getTempJsonPath();
@@ -42,9 +46,9 @@ TEST_F(ModelHandlerTest, ConstructorAndCreateTemporaryFolder) {
     EXPECT_TRUE(boost::filesystem::exists(temp_json_path));
 }
 
-bool containsPair(const std::vector<std::pair<int, double>>& pairs, int first, double second, double margin) {
-        for (const auto& pair : pairs) {
-            if (pair.first == first && std::abs(pair.second - second) <= margin) {
+bool containsParameterValue(HarmonicDriveParameterMap map, std::string name, HarmonicDriveParameterType type, double value, double margin) {
+        for (const auto& pair : map) {
+            if (pair.first == name && std::abs(pair.second.get(type) - value) <= margin) {
                 return true;
             }
         }
@@ -54,7 +58,7 @@ bool containsPair(const std::vector<std::pair<int, double>>& pairs, int first, d
 // Test the getHarmonicDriveValues method
 TEST_F(ModelHandlerTest, GetHarmonicDriveValues) {
     ModelHandler handler(test_file);
-    std::vector<std::pair<int, double>> harmonic_drive_values;
+    HarmonicDriveParameterMap harmonic_drive_values;
     
     ASSERT_NO_THROW({
         harmonic_drive_values = handler.getHarmonicDriveValues("B");
@@ -63,33 +67,57 @@ TEST_F(ModelHandlerTest, GetHarmonicDriveValues) {
     // Verify the parsed values
     EXPECT_EQ(harmonic_drive_values.size(), 9);
 
-    EXPECT_TRUE(containsPair(harmonic_drive_values, 1, 3.0274872794616347e-05, 1e-6));
-    EXPECT_TRUE(containsPair(harmonic_drive_values, 3, -0.00018617604979581347, 1e-6));
-    EXPECT_TRUE(containsPair(harmonic_drive_values, 4, -0.00024645416164351607, 1e-6));
-    EXPECT_TRUE(containsPair(harmonic_drive_values, 5, -0.00020169498553400584, 1e-6));
-    EXPECT_TRUE(containsPair(harmonic_drive_values, 6, -0.001462563623493985, 1e-6));
-    EXPECT_TRUE(containsPair(harmonic_drive_values, 7, 0, 1e-6));
-    EXPECT_TRUE(containsPair(harmonic_drive_values, 8, 0, 1e-6));
-    EXPECT_TRUE(containsPair(harmonic_drive_values, 9, 0, 1e-6));
-    EXPECT_TRUE(containsPair(harmonic_drive_values, 10, 0, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B1", HarmonicDriveParameterType::Constant, 3.0274872794616347e-05, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B3", HarmonicDriveParameterType::Constant, -0.00018617604979581347, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B4", HarmonicDriveParameterType::Constant, -0.00024645416164351607, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B5", HarmonicDriveParameterType::Constant, -0.00020169498553400584, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B6", HarmonicDriveParameterType::Constant, -0.001462563623493985, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B7", HarmonicDriveParameterType::Constant, 0, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B8", HarmonicDriveParameterType::Constant, 0, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B9", HarmonicDriveParameterType::Constant, 0, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B10", HarmonicDriveParameterType::Constant, 0, 1e-6));
 }
 
-// Test the setHarmonicDriveValue method
-TEST_F(ModelHandlerTest, SetHarmonicDriveValue) {
+
+// Test the setHarmonicDriveValue method (aplitude = constant)
+TEST_F(ModelHandlerTest, SetHarmonicDriveValueConstant) {
     ModelHandler handler(test_file);
     double new_value = 1.23456789;
 
+
     ASSERT_NO_THROW({
-        handler.setHarmonicDriveValue("B1", new_value);
+        handler.setHarmonicDriveValue("B1", HarmonicDriveParameters(new_value, HarmonicDriveParameterType::Constant));
     });
 
     // Verify the updated value
-    std::vector<std::pair<int, double>> harmonic_drive_values;
+    HarmonicDriveParameterMap harmonic_drive_values;
     ASSERT_NO_THROW({
         harmonic_drive_values = handler.getHarmonicDriveValues("B");
     });
 
-    EXPECT_TRUE(containsPair(harmonic_drive_values, 1, 1.23456789, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B1", HarmonicDriveParameterType::Constant, 1.23456789, 1e-6));
+}
+
+// Test the setHarmonicDriveValue method (aplitude = linear)
+TEST_F(ModelHandlerTest, SetHarmonicDriveValueLinear) {
+    ModelHandler handler(test_file_2);
+    double new_slope = 1.23456789;
+    double new_offset = 2.23456789;
+
+
+    ASSERT_NO_THROW({
+        handler.setHarmonicDriveValue("B5", HarmonicDriveParameters(new_slope, HarmonicDriveParameterType::Slope));
+        handler.setHarmonicDriveValue("B5", HarmonicDriveParameters(new_offset, HarmonicDriveParameterType::Offset));
+    });
+
+    // Verify the updated value
+    HarmonicDriveParameterMap harmonic_drive_values;
+    ASSERT_NO_THROW({
+        harmonic_drive_values = handler.getHarmonicDriveValues("B");
+    });
+
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B5", HarmonicDriveParameterType::Slope, 1.23456789, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B5", HarmonicDriveParameterType::Offset, 2.23456789, 1e-6));
 }
 
 // Test to ensure that no files in test_data directory are modified after tests
@@ -101,7 +129,7 @@ TEST_F(ModelHandlerTest, NoModificationOfOriginalFiles) {
     // Perform operations that modify the temporary file
     ModelHandler handler(test_file);
     double new_value = 1.23456789;
-    handler.setHarmonicDriveValue("quad", new_value);
+    handler.setHarmonicDriveValue("quad",HarmonicDriveParameters(new_value, HarmonicDriveParameterType::Constant));
 
     // Check file size and modification time of the original JSON file again
     auto final_size = boost::filesystem::file_size(test_file);

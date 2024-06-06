@@ -33,7 +33,7 @@ int main()
     double max_harmonic_value = getUserInput("Enter the maximum absolute value for harmonic values", 0.1);
 
     // Get all the scaling values for the custom CCT harmonics
-    std::vector<std::pair<int, double>> harmonic_drive_values = model_handler.getHarmonicDriveValues();
+    HarmonicDriveParameterMap harmonic_drive_values = model_handler.getHarmonicDriveValues();
 
     // Check that there are harmonic drives
     if (harmonic_drive_values.empty())

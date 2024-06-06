@@ -1,18 +1,13 @@
 #include "input_output.h"
-#include <iostream>
-#include <termios.h>
-#include <unistd.h>
-#include <boost/filesystem.hpp>
-#include <constants.h>
-#include <chrono>
+
 
 // Function to print harmonic drive values
-void print_harmonic_drive_values(const std::vector<std::pair<int, double>> &harmonic_drive_values)
+void print_harmonic_drive_values(HarmonicDriveParameterMap &harmonic_drive_values)
 {
     std::cout << "Harmonic Drive Values: (units are m/coil and m)" << std::endl;
     for (const auto &value : harmonic_drive_values)
     {
-        std::cout << "B" << value.first << ": " << value.second << std::endl;
+        std::cout << value.first << ": " << to_string(value.second) << std::endl;
     }
 }
 
