@@ -1,17 +1,26 @@
 #include "objective_function.h"
 
+ObjectiveFunction::ObjectiveFunction(const ModelHandler &model_handler)
+    : model_handler_(model_handler),
+      json_file_path_(model_handler_.getTempJsonPath()),
+      calculator_(json_file_path_)
+{
+    // check that there are only custom harmonics with an 'amplitude' of linear
+    HarmonicDriveParameterMap params = model_handler_.getHarmonicDriveValues();
+    for (auto &param : params)
+    {
+        if (!param.second.isOffsetAndSlope())
+            throw std::runtime_error("The selected model has one or more custom harmonics with an 'amplitude' value other than 'linear'. This is not supported for this optimizer.");
+    }
+}
 
-ObjectiveFunction::ObjectiveFunction(const boost::filesystem::path &json_file_path, const ModelHandler &model_handler)
-    : json_file_path_(json_file_path), 
-      calculator_(json_file_path), 
-      model_handler_(model_handler){}
-
-
-// objective function for Bayesian Optimization. Incorporates the sum of the bn values (except the main one) and chi-square differences to a fitted linear function
-// input parameters 18 params: offset and slope for all customs harmonics B1...B10 except for the main one
-double ObjectiveFunction::objective_function(const std::unordered_map<std::string, HarmonicDriveParameters> &params, double weight_chisquared){
+// Objective function for Bayesian Optimization. Incorporates the sum of the bn values (except the main one) and chi-square differences to a fitted linear function
+// A lower value is better, 0 is the minimum
+// There are 18 input params: offset and slope for all customs harmonics B1...B10 except for the main one
+double ObjectiveFunction::objective_function(const HarmonicDriveParameterMap &params, double weight_chisquared)
+{
     // apply all paramaters
-    model_handler_.apply_params(params); 
+    model_handler_.apply_params(params);
 
     // do the computation
     HarmonicsHandler harmonics_handler;
@@ -23,8 +32,10 @@ double ObjectiveFunction::objective_function(const std::unordered_map<std::strin
 
     // sum up all chi squared values except for the main one
     double sum_chisquared = 0;
-    for(int i = 1; i <= 10; i++){
-        if (current_bn_values[i - 1] != 10000) {
+    for (int i = 1; i <= 10; i++)
+    {
+        if (current_bn_values[i - 1] != 10000)
+        {
             sum_chisquared += chiSquared(harmonics_handler, i);
         }
     }
@@ -75,7 +86,6 @@ double chiSquared(HarmonicsHandler &harmonics_handler, int component)
 
     return chi_squared;
 }
-
 
 // Function to perform linear regression and return the slope and intercept
 std::pair<double, double> linearRegression(const std::vector<std::pair<double, double>> &points)

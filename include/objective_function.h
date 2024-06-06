@@ -12,9 +12,9 @@
 
 class ObjectiveFunction{    
     public:
-        ObjectiveFunction(const boost::filesystem::path &json_file_path, const ModelHandler &model_handler);
+        ObjectiveFunction(const ModelHandler &model_handler);
 
-        double objective_function(const std::unordered_map<std::string, HarmonicDriveParameters> &params, double weight_chisquared);
+        double objective_function(const HarmonicDriveParameterMap &params, double weight_chisquared);
         
     private:
 
