@@ -8,6 +8,7 @@ lib/
 *.dll
 *.so
 *.dylib
+*/__pycache__
 
 # Ignore system files
 .DS_Store
@@ -16,6 +17,11 @@ Thumbs.db
 # Ignore VSCode settings
 .vscode/
 
+# Ignore logs
+logs/
+
+# Ignore googletest
+googletest-download/
 
 data/*
 !data/.gitkeep

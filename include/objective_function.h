@@ -12,15 +12,16 @@
 
 class ObjectiveFunction{    
     public:
-        ObjectiveFunction(const ModelHandler &model_handler);
+        ObjectiveFunction(const ModelHandler &model_handler, double weight_chisquared);
 
-        double objective_function(const HarmonicDriveParameterMap &params, double weight_chisquared);
+        double objective_function(const HarmonicDriveParameterMap &params);
         
     private:
 
         boost::filesystem::path json_file_path_;
         HarmonicsCalculator calculator_;
         ModelHandler model_handler_;
+        double weight_chisquared_;
 };
 
 

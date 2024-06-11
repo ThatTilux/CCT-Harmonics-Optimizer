@@ -101,6 +101,21 @@ boost::filesystem::path selectJsonFile()
         throw std::runtime_error("No JSON files found in the " + DATA_DIR_PATH + " directory. Please add the JSON file of the model you wish to optimize there.");
     }
 
+    // convert file names to a string
+    std::vector<std::string> json_file_names;
+    for (const auto& file : json_files)
+    {
+        json_file_names.push_back(file.filename().string());
+    }
+
+    // let the user select a file
+    int selected_index = selectFromList(json_file_names);
+
+    return json_files[selected_index];
+}
+
+// displayes strings in the terminal and lets the user select one. Returns the selected index
+int selectFromList(std::vector<std::string> options){
     int selected_index = 0;
     char key;
     while (true)
@@ -108,15 +123,15 @@ boost::filesystem::path selectJsonFile()
         system("clear"); // Clear the terminal screen on POSIX systems
         std::cout << "Select the JSON file for the model you wish to optimize. If your model is not in the list, make sure it is placed in the " << DATA_DIR_PATH << " directory."<< std::endl;
         std::cout << "Use arrow keys and enter to select."<< std::endl;
-        for (size_t i = 0; i < json_files.size(); ++i)
+        for (size_t i = 0; i < options.size(); ++i)
         {
             if (i == selected_index)
             {
-                std::cout << "> " << json_files[i].filename().string() << std::endl;
+                std::cout << "> " << options[i] << std::endl;
             }
             else
             {
-                std::cout << "  " << json_files[i].filename().string() << std::endl;
+                std::cout << "  " << options[i] << std::endl;
             }
         }
 
@@ -132,7 +147,7 @@ boost::filesystem::path selectJsonFile()
                     selected_index--;
                 break;
             case 'B': // down
-                if (selected_index < json_files.size() - 1)
+                if (selected_index < options.size() - 1)
                     selected_index++;
                 break;
             }
@@ -143,7 +158,7 @@ boost::filesystem::path selectJsonFile()
         }
     }
 
-    return json_files[selected_index];
+    return selected_index;
 }
 
 // Function to copy model from src to the build dir with appending timestamp

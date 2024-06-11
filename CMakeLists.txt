@@ -9,7 +9,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Set build type
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release)
+  set(CMAKE_BUILD_TYPE Debug)
 endif()
 
 # Set output directories
@@ -20,18 +20,25 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 # Add include directories
 include_directories(include)
 
+# Ensure Python library path is included
+link_directories(${Python3_LIBRARY_DIRS})
+
 # Find and link external libraries
 find_package(RatModels 2.017.7 REQUIRED)
 find_package(Armadillo REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem)
+find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+find_package(pybind11 REQUIRED)
 
-# Get all source files in src directory except main.cpp
+# Get all source files in src directory
 file(GLOB SOURCES "src/*.cpp")
 list(REMOVE_ITEM SOURCES "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
+
 # Create the main executable
 add_executable(main ${CMAKE_SOURCE_DIR}/src/main.cpp ${SOURCES})
-target_link_libraries(main PRIVATE Rat::Models armadillo Boost::filesystem)
+target_include_directories(main PRIVATE ${Python3_INCLUDE_DIRS} ${pybind11_INCLUDE_DIRS})
+target_link_libraries(main PRIVATE Rat::Models armadillo Boost::filesystem ${Python3_LIBRARIES} pybind11::embed)
 
 # Google Test integration
 # Download and unpack googletest at configure time
@@ -49,8 +56,7 @@ if(result)
   message(FATAL_ERROR "Build step for googletest failed: ${result}")
 endif()
 
-# Add googletest directly to our build. This defines
-# the gtest and gtest_main targets.
+# Add googletest directly to our build. This defines the gtest and gtest_main targets.
 add_subdirectory(${CMAKE_BINARY_DIR}/googletest-src
                  ${CMAKE_BINARY_DIR}/googletest-build)
 
@@ -60,9 +66,10 @@ file(GLOB TEST_SOURCES "test/*.cpp")
 # Enable testing
 enable_testing()
 
-# Create the test executable without main.cpp
+# Create the test executable
 add_executable(runTests ${SOURCES} ${TEST_SOURCES})
-target_link_libraries(runTests PRIVATE gtest_main Rat::Models armadillo Boost::filesystem)
+target_include_directories(runTests PRIVATE ${Python3_INCLUDE_DIRS} ${pybind11_INCLUDE_DIRS})
+target_link_libraries(runTests PRIVATE gtest_main Rat::Models armadillo Boost::filesystem ${Python3_LIBRARIES} pybind11::embed)
 
 # Add tests
 add_test(NAME runTests COMMAND runTests)
@@ -72,3 +79,14 @@ set(CMAKE_SUPPRESS_REGENERATION true)
 
 # Disable CDash
 set(CTEST_USE_LAUNCHERS OFF)
+
+# Add the shared library for optimizer_bindings.cpp
+add_library(optimizer_module SHARED ${SOURCES} src/optimizer_bindings.cpp)
+target_include_directories(optimizer_module PRIVATE ${Python3_INCLUDE_DIRS} ${pybind11_INCLUDE_DIRS})
+target_link_libraries(optimizer_module PRIVATE Rat::Models armadillo Boost::filesystem ${Python3_LIBRARIES} pybind11::module)
+
+# ensure optimizer_module is built before main
+add_dependencies(main optimizer_module)
+
+# Ensure the shared library name matches the Python import name
+set_target_properties(optimizer_module PROPERTIES PREFIX "" SUFFIX ".so")

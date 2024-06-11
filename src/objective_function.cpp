@@ -1,9 +1,10 @@
 #include "objective_function.h"
 
-ObjectiveFunction::ObjectiveFunction(const ModelHandler &model_handler)
+ObjectiveFunction::ObjectiveFunction(const ModelHandler &model_handler, double weight_chisquared)
     : model_handler_(model_handler),
-      json_file_path_(model_handler_.getTempJsonPath()),
-      calculator_(json_file_path_)
+      json_file_path_(model_handler.getTempJsonPath()),
+      calculator_(model_handler.getTempJsonPath()),
+      weight_chisquared_(weight_chisquared)
 {
     // check that there are only custom harmonics with an 'amplitude' of linear
     HarmonicDriveParameterMap params = model_handler_.getHarmonicDriveValues();
@@ -17,8 +18,12 @@ ObjectiveFunction::ObjectiveFunction(const ModelHandler &model_handler)
 // Objective function for Bayesian Optimization. Incorporates the sum of the bn values (except the main one) and chi-square differences to a fitted linear function
 // A lower value is better, 0 is the minimum
 // There are 18 input params: offset and slope for all customs harmonics B1...B10 except for the main one
-double ObjectiveFunction::objective_function(const HarmonicDriveParameterMap &params, double weight_chisquared)
+double ObjectiveFunction::objective_function(const HarmonicDriveParameterMap &params)
 {
+    // TODO select correct component (incase it is not the 10,000 one)
+    // TODO take absolute of bn values
+    // also investigate if chiSquared can be negative
+
     // apply all paramaters
     model_handler_.apply_params(params);
 
@@ -41,7 +46,7 @@ double ObjectiveFunction::objective_function(const HarmonicDriveParameterMap &pa
     }
 
     // compute the objective function
-    double objective_value = sum_bn + weight_chisquared * sum_chisquared;
+    double objective_value = sum_bn + weight_chisquared_ * sum_chisquared;
 
     return objective_value;
 }

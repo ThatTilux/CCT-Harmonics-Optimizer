@@ -42,10 +42,10 @@ TEST_F(ObjectiveFunctionTest, ConstructorOnlyLinearScalingFunctions)
     ModelHandler handler_2(test_file_3);
 
     // this should throw an exception
-    ASSERT_THROW({ ObjectiveFunction obj(handler); }, std::runtime_error);
+    ASSERT_THROW({ ObjectiveFunction obj(handler, 1); }, std::runtime_error);
 
     // this model has only linears
     ASSERT_NO_THROW({
-        ObjectiveFunction obj(handler_2);
+        ObjectiveFunction obj(handler_2, 1);
     });
 }

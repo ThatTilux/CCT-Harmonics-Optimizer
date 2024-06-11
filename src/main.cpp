@@ -1,15 +1,20 @@
 #include "harmonics_calculator.h"
+#include "optimizer_bindings.h"
 #include "model_handler.h"
 #include "input_output.h"
 #include "optimizer.h"
 #include "constants.h"
 
+#include <pybind11/embed.h>
 #include <iostream>
 #include <vector>
+#include <fstream>
+#include <sstream>
 
-int main()
-{
+namespace py = pybind11;
 
+
+int run_bn_optimization(){
     // Get the JSON file path from user selection
     boost::filesystem::path json_file_path;
     try
@@ -26,11 +31,12 @@ int main()
     ModelHandler model_handler(json_file_path);
     // get path of the temp model
     const boost::filesystem::path temp_json_file_path = model_handler.getTempJsonPath();
-    // Handles calculations for the model
-    HarmonicsCalculator calculator(json_file_path);
 
     // Get user input for maximum harmonic value
     double max_harmonic_value = getUserInput("Enter the maximum absolute value for harmonic values", 0.1);
+
+    // Handles calculations for the model
+    HarmonicsCalculator calculator(temp_json_file_path);
 
     // Get all the scaling values for the custom CCT harmonics
     HarmonicDriveParameterMap harmonic_drive_values = model_handler.getHarmonicDriveValues();
@@ -68,4 +74,85 @@ int main()
     copyModelWithTimestamp(temp_json_file_path);
 
     return 0;
+}
+
+int run_bn_chisquare_optimization(){
+    // TODO figure out a good value for chiSquared
+
+    Py_Initialize(); // Manually initialize the Python interpreter
+
+    try {
+        py::exec(R"(
+            import sys
+            sys.path.append('../scripts') 
+        )");
+
+        py::exec(R"(
+            import optimizer_module
+
+            optimizer_module.check_objective_state()
+            print("Before importing bayesian_optimization")
+
+            try:
+                import bayesian_optimization
+            except Exception as e:
+                print(f"Exception during import: {e}")
+
+            optimizer_module.check_objective_state()
+            print("After importing bayesian_optimization")
+        )");
+    } catch (const py::error_already_set &e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
+    Py_Finalize(); // Manually finalize the Python interpreter
+
+
+    // read results
+    std::ifstream file("optimization_results.txt");
+    std::string line;
+    std::vector<double> best_params;
+
+    if (file.is_open()) {
+        while (getline(file, line)) {
+            if (line.find("Best parameters:") != std::string::npos) {
+                size_t pos = line.find(":");
+                std::string params_str = line.substr(pos + 1);
+                std::stringstream ss(params_str);
+                double param;
+                while (ss >> param) {
+                    best_params.push_back(param);
+                }
+            }
+        }
+        file.close();
+    }
+
+    // print them
+    std::cout << "Best parameters found:" << std::endl;
+    for (double param : best_params) {
+        std::cout << param << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+
+
+int main()
+{   
+
+    // check which optimization the user wants to do
+    std::vector<std::string> optimization_options = {"bn optimization", "bn and chiSquare optimization"};
+    int selected_optimization = selectFromList(optimization_options);
+
+    if(selected_optimization == 0){
+        // only bn optimization
+        return run_bn_optimization();
+    } else if (selected_optimization == 1){
+        // bn and chiSquare optimization
+        return run_bn_chisquare_optimization();
+    }
+
+    
 }
