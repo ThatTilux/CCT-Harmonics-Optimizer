@@ -84,22 +84,12 @@ int run_bn_chisquare_optimization(){
     try {
         py::exec(R"(
             import sys
-            sys.path.append('../scripts') 
+            sys.path.append('../scripts')
+            sys.path.append('../build/lib')
         )");
 
         py::exec(R"(
-            import optimizer_module
-
-            optimizer_module.check_objective_state()
-            print("Before importing bayesian_optimization")
-
-            try:
-                import bayesian_optimization
-            except Exception as e:
-                print(f"Exception during import: {e}")
-
-            optimizer_module.check_objective_state()
-            print("After importing bayesian_optimization")
+            import bayesian_optimization # this will run the file
         )");
     } catch (const py::error_already_set &e) {
         std::cerr << "Error: " << e.what() << std::endl;

@@ -18,11 +18,9 @@ public:
 
     void setObjective(std::shared_ptr<ObjectiveFunction> pObjective) {
         objective = pObjective;
-        std::cout << "Objective set: " << pObjective.get() << std::endl;
     }
 
     std::shared_ptr<ObjectiveFunction> getObjective() {
-        std::cout << "Get Objective: " << objective.get() << std::endl;
         return objective;
     }
 
@@ -38,7 +36,5 @@ private:
 void init_objective_binding(std::shared_ptr<ObjectiveFunction> pObjective);
 
 double objective_binding(const std::vector<double> &params);
-// TODO TEMP REMOVE
-void check_objective_state();
 
 #endif // OPTIMIZER_BINDINGS_H

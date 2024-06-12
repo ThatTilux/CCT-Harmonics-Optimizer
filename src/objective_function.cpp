@@ -20,9 +20,8 @@ ObjectiveFunction::ObjectiveFunction(const ModelHandler &model_handler, double w
 // There are 18 input params: offset and slope for all customs harmonics B1...B10 except for the main one
 double ObjectiveFunction::objective_function(const HarmonicDriveParameterMap &params)
 {
-    // TODO select correct component (incase it is not the 10,000 one)
-    // TODO take absolute of bn values
-    // also investigate if chiSquared can be negative
+    // TODO for simplicity, we assume that B2 is the main component
+    int main_component = 2; // B2
 
     // apply all paramaters
     model_handler_.apply_params(params);
@@ -32,21 +31,36 @@ double ObjectiveFunction::objective_function(const HarmonicDriveParameterMap &pa
     calculator_.reload_and_calc(json_file_path_, harmonics_handler);
     std::vector<double> current_bn_values = harmonics_handler.get_bn();
 
-    // get the sum of all bns except for the 10,000 one
-    double sum_bn = std::accumulate(current_bn_values.begin(), current_bn_values.end(), 0.0) - 10000;
+    // print bn values
+    print_vector(current_bn_values, "bn");
 
+    // get the sum of all abslute bns except for the main one
+    double sum_bn = std::accumulate(current_bn_values.begin(), current_bn_values.end(), 0.0, [](double a, double b)
+                                    { return a + std::abs(b); }) -
+                    std::abs(current_bn_values[main_component - 1]);
+    
+    
     // sum up all chi squared values except for the main one
     double sum_chisquared = 0;
+    std::cout << "chiSquared values:" << std::endl;
     for (int i = 1; i <= 10; i++)
     {
-        if (current_bn_values[i - 1] != 10000)
+        if (i != main_component)
         {
-            sum_chisquared += chiSquared(harmonics_handler, i);
+            double value = chiSquared(harmonics_handler, i);
+            sum_chisquared += value;
+            std::cout << "chiSquared[" << i << "]: " << value << std::endl;
         }
     }
 
+    std::cout << "bn objective value: " << sum_bn << std::endl;    
+    std::cout << "chiSquared objective value: " << sum_chisquared << ", weighted: " << sum_chisquared * weight_chisquared_ << std::endl;    
+
     // compute the objective function
     double objective_value = sum_bn + weight_chisquared_ * sum_chisquared;
+
+    std::cout << "objective function value: " << objective_value << std::endl;    
+
 
     return objective_value;
 }
@@ -79,12 +93,6 @@ double chiSquared(HarmonicsHandler &harmonics_handler, int component)
 
     // fit a linear function
     auto [slope, intercept] = linearRegression(points);
-
-    // TODO TEMP START --------------------
-
-    std::cout << "Slope: " << slope << ", Intercept: " << intercept << std::endl;
-
-    // TODO TEMP END  --------------------
 
     // compute chi squared between the function and the original data
     double chi_squared = computeChiSquared(points, slope, intercept, variance);

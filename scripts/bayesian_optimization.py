@@ -1,10 +1,13 @@
+import sys, os
 from skopt import gp_minimize
 from skopt.space import Real
+
+# Set the path to the shared library
+lib_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../build/lib'))
+sys.path.append(lib_path)
+
 import optimizer_module # type: ignore (IDE does not find the package, but it's there :)
 
-
-# TODO TEMP REMOVE
-optimizer_module.check_objective_state()
 
 # Param Ranges
 OFFSET_MAX = 0.05 # 5 mm
@@ -40,7 +43,7 @@ def objective(params):
     value = optimizer_module.objective_binding(params)
     # error code
     if value == -1.0:
-        raise RuntimeError
+        raise RuntimeError('objective binding returned error code')
     return value
 
 # Run Bayesian Optimization
