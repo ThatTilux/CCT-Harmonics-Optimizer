@@ -4,10 +4,10 @@
 // Function to print harmonic drive values
 void print_harmonic_drive_values(HarmonicDriveParameterMap &harmonic_drive_values)
 {
-    std::cout << "Harmonic Drive Values: (units are m/coil and m)" << std::endl;
+    Logger::info("Harmonic Drive Values: (units are m/coil and m)");
     for (const auto &value : harmonic_drive_values)
     {
-        std::cout << value.first << ": " << to_string(value.second) << std::endl;
+        Logger::info(value.first + ": " + to_string(value.second));
     }
 }
 
@@ -75,7 +75,8 @@ double getUserInput(const std::string &prompt, double default_value)
         }
     }
 
-    std::cout << "Using " << value << " as maximum absolute bn value." << std::endl;
+    Logger::info("Using " + std::to_string(value) + " as maximum absolute bn value.");
+
     return value;
 }
 
@@ -109,19 +110,20 @@ boost::filesystem::path selectJsonFile()
     }
 
     // let the user select a file
-    int selected_index = selectFromList(json_file_names);
+    std::string prompt = "Select the JSON file for the model you wish to optimize. If your model is not in the list, make sure it is placed in the " + DATA_DIR_PATH + " directory.";
+    int selected_index = selectFromList(json_file_names, prompt);
 
     return json_files[selected_index];
 }
 
 // displayes strings in the terminal and lets the user select one. Returns the selected index
-int selectFromList(std::vector<std::string> options){
+int selectFromList(std::vector<std::string> options, std::string user_prompt){
     int selected_index = 0;
     char key;
     while (true)
     {
         system("clear"); // Clear the terminal screen on POSIX systems
-        std::cout << "Select the JSON file for the model you wish to optimize. If your model is not in the list, make sure it is placed in the " << DATA_DIR_PATH << " directory."<< std::endl;
+        std::cout << user_prompt << std::endl;
         std::cout << "Use arrow keys and enter to select."<< std::endl;
         for (size_t i = 0; i < options.size(); ++i)
         {
@@ -166,7 +168,7 @@ void copyModelWithTimestamp(const boost::filesystem::path &src_path)
 {
     if (!boost::filesystem::exists(src_path))
     {
-        std::cerr << "Source file does not exist: " << src_path << std::endl;
+        Logger::error("Source file does not exist: " + src_path.string());
         return;
     }
 
@@ -189,13 +191,12 @@ void copyModelWithTimestamp(const boost::filesystem::path &src_path)
         std::string modified_dest_path = dest_path.string();
         modified_dest_path.insert(1, "/build");
 
-        // print to console
-        std::cout << "The optimized model has been exported to: " << modified_dest_path << std::endl;
+        Logger::info("The optimized model has been exported to: " + modified_dest_path);
     }
     catch (const boost::filesystem::filesystem_error &e)
     {
-        std::cerr << "Error while exporting optimized model: " << e.what() << std::endl;
-        std::cerr << "The optimized model has instead been saved to: " << src_path << std::endl;
+        Logger::error("Error while exporting optimized model: " + std::string(e.what()));
+        Logger::error("The optimized model has instead been saved to: " + src_path.string());
     }
 }
 
@@ -217,7 +218,7 @@ void export_data_to_csv(const std::vector<std::pair<double, double>>& vector, co
     std::ofstream csv_file(csv_path);
     if (!csv_file)
     {
-        std::cerr << "Failed to open CSV file: " << csv_path << std::endl;
+        Logger::error("Failed to open CSV file: " + csv_path);
         return;
     }
 
@@ -230,15 +231,15 @@ void export_data_to_csv(const std::vector<std::pair<double, double>>& vector, co
     }
     csv_file.close();
 
-    std::cout << "Vector exported to CSV file: " << csv_path << std::endl;
+    Logger::info("Vector exported to CSV file: " + csv_path);
 }
 
 // Function to print values from a vector
 void print_vector(const std::vector<double>& data, std::string label)
 {
-    std::cout << label << " values:" << std::endl;
+    Logger::info(label + " values:");
     for (size_t i = 0; i < data.size(); ++i)
     {
-        std::cout << label << "[" << i + 1 << "] = " << data[i] << std::endl;
+        Logger::info(label + "[" + std::to_string(i + 1) + "] = " + std::to_string(data[i]));
     }
 }

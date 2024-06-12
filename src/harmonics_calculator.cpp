@@ -24,15 +24,16 @@ bool HarmonicsCalculator::load_model(const boost::filesystem::path &json_file_pa
     std::tie(harmonics_calc_, harmonics_calc_name_) = find_first_calcharmonics(calc_tree_);
     if (!harmonics_calc_)
     {
-        std::cerr << "No Harmonics Calculation could be found in the calculation tree. Exiting." << std::endl;
-        std::cout << "Press Enter to continue..." << std::endl;
+        Logger::error("No Harmonics Calculation could be found in the calculation tree. Exiting.");
+        Logger::info("Press Enter to continue...");
         std::cin.get();
         return false;
     }
 
-    std::cout << "Found Harmonics Calculation with the name: " << harmonics_calc_name_ << std::endl;
+    Logger::info("Found Harmonics Calculation with the name: " + harmonics_calc_name_);
     return true;
 }
+
 
 // function for doing the harmonics calculation. Will update create a new HarmonicsHandler object that provides access to the results.
 void HarmonicsCalculator::calc(HarmonicsHandler& harmonics_handler, bool disable_logging)
@@ -60,8 +61,8 @@ void HarmonicsCalculator::calc(HarmonicsHandler& harmonics_handler, bool disable
 
 // reloads the model from the json and computes the bn values
 void HarmonicsCalculator::reload_and_calc(const boost::filesystem::path &json_file_path, HarmonicsHandler& harmonics_handler, bool disable_logging){
-    std::cout << "Reloading model..." << std::endl;
     load_model(json_file_path);
+    Logger::info("Model reloaded.");
     calc(harmonics_handler, disable_logging);
 }
 

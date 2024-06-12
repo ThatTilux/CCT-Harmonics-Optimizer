@@ -23,7 +23,7 @@ int run_bn_optimization(){
     }
     catch (const std::exception &e)
     {
-        std::cerr << e.what() << std::endl;
+        Logger::error(e.what());
         return 1;
     }
 
@@ -42,9 +42,8 @@ int run_bn_optimization(){
     HarmonicDriveParameterMap harmonic_drive_values = model_handler.getHarmonicDriveValues();
 
     // Check that there are harmonic drives
-    if (harmonic_drive_values.empty())
-    {
-        std::cerr << "The program could not find any custom CCT harmonics (rat::mdl::cctharmonicdrive) whose name starts with the letter 'B'. Aborting..." << std::endl;
+    if (harmonic_drive_values.empty()) {
+        Logger::error("The program could not find any custom CCT harmonics (rat::mdl::cctharmonicdrive) whose name starts with the letter 'B'. Aborting...");
         return 1;
     }
 
@@ -52,9 +51,8 @@ int run_bn_optimization(){
     print_harmonic_drive_values(harmonic_drive_values);
 
     // Ask the user if they want to proceed
-    if (!askUserToProceed())
-    {
-        std::cout << "Optimization aborted by user." << std::endl;
+    if (!askUserToProceed()) {
+        Logger::info("Optimization aborted by user.");
         return 0;
     }
 
@@ -65,8 +63,8 @@ int run_bn_optimization(){
     optimize(calculator, model_handler, current_bn_values, harmonic_drive_values, max_harmonic_value, temp_json_file_path);
 
     // optimization was successful, print results
-    std::cout << "=== All harmonics have been optimized ===" << std::endl;
-    std::cout << "User-specified margin was: " << max_harmonic_value << std::endl;
+    Logger::info("=== All harmonics have been optimized ===");
+    Logger::info("User-specified margin was: " + std::to_string(max_harmonic_value));
     print_harmonic_drive_values(harmonic_drive_values);
     print_vector(current_bn_values, "bn");
 
@@ -92,7 +90,7 @@ int run_bn_chisquare_optimization(){
             import bayesian_optimization # this will run the file
         )");
     } catch (const py::error_already_set &e) {
-        std::cerr << "Error: " << e.what() << std::endl;
+        Logger::error("Error: " + std::string(e.what()));
     }
 
     Py_Finalize(); // Manually finalize the Python interpreter
@@ -119,11 +117,10 @@ int run_bn_chisquare_optimization(){
     }
 
     // print them
-    std::cout << "Best parameters found:" << std::endl;
+    Logger::info("Best parameters found:");
     for (double param : best_params) {
-        std::cout << param << " ";
+        Logger::info(std::to_string(param) + " ");
     }
-    std::cout << std::endl;
 
     return 0;
 }
@@ -134,7 +131,7 @@ int main()
 
     // check which optimization the user wants to do
     std::vector<std::string> optimization_options = {"bn optimization", "bn and chiSquare optimization"};
-    int selected_optimization = selectFromList(optimization_options);
+    int selected_optimization = selectFromList(optimization_options, "Please select the desired optimization:");
 
     if(selected_optimization == 0){
         // only bn optimization

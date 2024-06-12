@@ -27,12 +27,12 @@ double objective_binding(const std::vector<double> &params)
 {
 
     counter_++;
-    std::cout << "=== Bayesian Optimization run " << counter_ << " ===" << std::endl;
+    Logger::info("=== Bayesian Optimization run " + std::to_string(counter_) + " ===");
 
     // Get the objective
     if(ObjectiveManager::getInstance().getObjective() == nullptr){
         manually_set_objective();
-        std::cout << "Manually set objective" << std::endl;
+        Logger::debug("Manually set objective");
     }
 
     std::shared_ptr<ObjectiveFunction> objective = ObjectiveManager::getInstance().getObjective();
@@ -51,17 +51,17 @@ double objective_binding(const std::vector<double> &params)
     }
 
     // print
-    std::cout << "New parameters:" << std::endl;
+    Logger::info("New parameters:");
 
     for (auto &param : param_map)
     {
-        std::cout << param.first << ": " << to_string(param.second) << std::endl;
+        Logger::info(param.first + ": " + to_string(param.second));
     }
 
     ObjectiveFunction obj = *objective;
     double result = obj.objective_function(param_map);
 
-    std::cout << "=== end of run " << counter_ << " ===" << std::endl;
+    Logger::info("=== end of run " + std::to_string(counter_) + " ===");
 
     return result;
 }

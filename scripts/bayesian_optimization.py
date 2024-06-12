@@ -46,7 +46,7 @@ def objective(params):
         raise RuntimeError('objective binding returned error code')
     return value
 
-# Run Bayesian Optimization
+# Run Bayesian Optimization (tries to minimize the objective function)
 result = gp_minimize(objective, space, n_calls=50, n_random_starts=10, acq_func="EI")
 
 # Print the results

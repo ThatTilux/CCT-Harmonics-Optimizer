@@ -5,6 +5,7 @@
 #include "objective_function.h"
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include "Logger.hh"
 
 namespace py = pybind11;
 

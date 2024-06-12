@@ -23,47 +23,47 @@ double ObjectiveFunction::objective_function(const HarmonicDriveParameterMap &pa
     // TODO for simplicity, we assume that B2 is the main component
     int main_component = 2; // B2
 
-    // apply all paramaters
+    // apply all parameters
     model_handler_.apply_params(params);
 
     // do the computation
     HarmonicsHandler harmonics_handler;
+    Logger::info("Running harmonics calculation...");
     calculator_.reload_and_calc(json_file_path_, harmonics_handler);
     std::vector<double> current_bn_values = harmonics_handler.get_bn();
 
     // print bn values
     print_vector(current_bn_values, "bn");
 
-    // get the sum of all abslute bns except for the main one
+    // get the sum of all absolute bns except for the main one
     double sum_bn = std::accumulate(current_bn_values.begin(), current_bn_values.end(), 0.0, [](double a, double b)
                                     { return a + std::abs(b); }) -
                     std::abs(current_bn_values[main_component - 1]);
-    
-    
+
     // sum up all chi squared values except for the main one
     double sum_chisquared = 0;
-    std::cout << "chiSquared values:" << std::endl;
+    Logger::info("chiSquared values:");
     for (int i = 1; i <= 10; i++)
     {
         if (i != main_component)
         {
             double value = chiSquared(harmonics_handler, i);
             sum_chisquared += value;
-            std::cout << "chiSquared[" << i << "]: " << value << std::endl;
+            Logger::info("chiSquared[" + std::to_string(i) + "]: " + std::to_string(value));
         }
     }
 
-    std::cout << "bn objective value: " << sum_bn << std::endl;    
-    std::cout << "chiSquared objective value: " << sum_chisquared << ", weighted: " << sum_chisquared * weight_chisquared_ << std::endl;    
+    Logger::info("bn objective value: " + std::to_string(sum_bn));
+    Logger::info("chiSquared objective value: " + std::to_string(sum_chisquared) + ", weighted: " + std::to_string(sum_chisquared * weight_chisquared_));
 
     // compute the objective function
     double objective_value = sum_bn + weight_chisquared_ * sum_chisquared;
 
-    std::cout << "objective function value: " << objective_value << std::endl;    
-
+    Logger::info("objective function value: " + std::to_string(objective_value));
 
     return objective_value;
 }
+
 
 // Function to compute chi-squared distance between (1) a function described by the points vector and (2) a linear function described by slope, intercept
 double computeChiSquared(const std::vector<std::pair<double, double>> &points, double slope, double intercept, double variance_y)

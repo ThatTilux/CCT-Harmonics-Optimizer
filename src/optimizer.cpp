@@ -29,9 +29,9 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
 
     for (int i = 1; i <= 10; i++)
     {
-        std::cout << "B" << i << ": " << std::endl;
+        Logger::info("B" + std::to_string(i) + ": ");
         double chi_squared = chiSquared(harmonics_handler, i);
-        std::cout << "ChiSquared" << ": " << chi_squared << std::endl;
+        Logger::info("ChiSquared: " + std::to_string(chi_squared));
     }
 
     // TODO TEMP END --------------------
@@ -69,8 +69,8 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
             {
                 all_within_margin = false;
 
-                // print info
-                std::cout << "Now optimizing harmonic " << harmonic.first << ". Current drive value is " << current_drive_value << " with bn " << current_bn << std::endl;
+                // log info
+                Logger::info("Now optimizing harmonic " + harmonic.first + ". Current drive value is " + std::to_string(current_drive_value) + " with bn " + std::to_string(current_bn));
 
                 // collect all datapoints (x=drive value, y=bn) for a regression
                 std::vector<std::pair<double, double>> data_points;
@@ -106,7 +106,7 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
                     // get the bn value for the component currently being optimized
                     double optimized_bn = optimized_bn_values[component - 1];
 
-                    // check if the optimization was successfull or if it has to be aborted
+                    // check if the optimization was successful or if it has to be aborted
                     if (std::abs(optimized_bn) <= max_harmonic_value || data_points.size() >= OPTIMIZER_MAX_DATAPOINTS)
                     {
                         // set the new values for the next iteration
@@ -115,12 +115,12 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
                         // check if the optimizer stopped because of the max datapoints limit
                         if (data_points.size() >= OPTIMIZER_MAX_DATAPOINTS)
                         {
-                            std::cout << "Optimizer moved on from " << name << " after " << OPTIMIZER_MAX_DATAPOINTS << " datapoints. This harmonic will be optimized in the next iteration." << std::endl;
+                            Logger::info("Optimizer moved on from " + name + " after " + std::to_string(OPTIMIZER_MAX_DATAPOINTS) + " datapoints. This harmonic will be optimized in the next iteration.");
                         }
                         else
                         {
-                            // print new harmonic drive value to console console
-                            std::cout << "Optimized " << name << " with drive value " << optimized_value << " and bn value: " << optimized_bn << std::endl;
+                            // log new harmonic drive value
+                            Logger::info("Optimized " + name + " with drive value " + std::to_string(optimized_value) + " and bn value: " + std::to_string(optimized_bn));
                         }
                         break;
                     }
@@ -132,3 +132,4 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
         }
     } while (!all_within_margin);
 }
+
