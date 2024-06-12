@@ -18,7 +18,7 @@ Thumbs.db
 .vscode/
 
 # Ignore logs
-logs/
+logs/*
 
 # Ignore googletest
 googletest-download/

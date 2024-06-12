@@ -40,6 +40,9 @@ double ObjectiveFunction::objective_function(const HarmonicDriveParameterMap &pa
                                     { return a + std::abs(b); }) -
                     std::abs(current_bn_values[main_component - 1]);
 
+    // distance of the main bn value to 10,000
+    double distance_main_10000 = 10000 - std::abs(current_bn_values[main_component - 1]);
+
     // sum up all chi squared values except for the main one
     double sum_chisquared = 0;
     Logger::info("chiSquared values:");
@@ -54,16 +57,16 @@ double ObjectiveFunction::objective_function(const HarmonicDriveParameterMap &pa
     }
 
     Logger::info("bn objective value: " + std::to_string(sum_bn));
+    Logger::info("distance of main bn to 10,000: " + std::to_string(distance_main_10000));
     Logger::info("chiSquared objective value: " + std::to_string(sum_chisquared) + ", weighted: " + std::to_string(sum_chisquared * weight_chisquared_));
 
     // compute the objective function
-    double objective_value = sum_bn + weight_chisquared_ * sum_chisquared;
+    double objective_value = sum_bn + distance_main_10000 + weight_chisquared_ * sum_chisquared;
 
     Logger::info("objective function value: " + std::to_string(objective_value));
 
     return objective_value;
 }
-
 
 // Function to compute chi-squared distance between (1) a function described by the points vector and (2) a linear function described by slope, intercept
 double computeChiSquared(const std::vector<std::pair<double, double>> &points, double slope, double intercept, double variance_y)
