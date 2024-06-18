@@ -17,14 +17,28 @@ ObjectiveFunction::ObjectiveFunction(const ModelHandler &model_handler, double w
 
 // Objective function for Bayesian Optimization. Incorporates the sum of the bn values (except the main one) and chi-square differences to a fitted linear function
 // A lower value is better, 0 is the minimum
-// There are 18 input params: offset and slope for all customs harmonics B1...B10 except for the main one
-double ObjectiveFunction::objective_function(const HarmonicDriveParameterMap &params)
+// There are 18 input params: offset and slope for all customs harmonics B1...B10 except for the main one (or 9 with just the offsets incase the bn optimizer is used)
+double ObjectiveFunction::objective_function(HarmonicDriveParameterMap &params)
 {
+    // TODO MAKE THIS MORE MODULAR 
+
     // TODO for simplicity, we assume that B2 is the main component
     int main_component = 2; // B2
 
     // apply all parameters
     model_handler_.apply_params(params);
+
+    // if the bn optimizer should be used, apply it
+    if(USE_BN_OPTIMIZER_IN_CHISQUARED){
+        Logger::info("= Starting bn optimizer... =");
+        // dummy vector that optimize puts the results in; we don't need this here
+        std::vector<double> bn;
+        //get drive values
+        HarmonicDriveParameterMap harmonic_drive_values = model_handler_.getHarmonicDriveValues();
+        // run the bn optimizer
+        optimize(calculator_, model_handler_, bn, harmonic_drive_values, DEFAULT_MAX_BN_VALUE, model_handler_.getTempJsonPath());
+        Logger::info("= bn optimizer has finished =");
+    }
 
     // do the computation
     HarmonicsHandler harmonics_handler;
@@ -61,7 +75,13 @@ double ObjectiveFunction::objective_function(const HarmonicDriveParameterMap &pa
     Logger::info("chiSquared objective value: " + std::to_string(sum_chisquared) + ", weighted: " + std::to_string(sum_chisquared * weight_chisquared_));
 
     // compute the objective function
-    double objective_value = sum_bn + distance_main_10000 + weight_chisquared_ * sum_chisquared;
+    double objective_value;
+    if (USE_BN_OPTIMIZER_IN_CHISQUARED){
+        Logger::info("Only including chiSquared for the objective function");
+        objective_value = sum_chisquared;
+    } else {
+        objective_value = sum_bn + distance_main_10000 + weight_chisquared_ * sum_chisquared;
+    }
 
     Logger::info("objective function value: " + std::to_string(objective_value));
 

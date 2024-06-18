@@ -17,24 +17,25 @@ SLOPE_MIN = -SLOPE_MAX
 
 # Define the parameter space
 # TODO REMOVE MANUAL B2 OMITTANCE
+# TODO LET USER DECIDE IF ONLY OFFSETS
 space = [Real(OFFSET_MIN, OFFSET_MAX, name='B1; offset'),
-         Real(SLOPE_MIN, SLOPE_MAX, name='B1; slope'),
+         #Real(SLOPE_MIN, SLOPE_MAX, name='B1; slope'),
          Real(OFFSET_MIN, OFFSET_MAX, name='B3; offset'),
-         Real(SLOPE_MIN, SLOPE_MAX, name='B3; slope'),
+         #Real(SLOPE_MIN, SLOPE_MAX, name='B3; slope'),
          Real(OFFSET_MIN, OFFSET_MAX, name='B4; offset'),
-         Real(SLOPE_MIN, SLOPE_MAX, name='B4; slope'),
+         #Real(SLOPE_MIN, SLOPE_MAX, name='B4; slope'),
          Real(OFFSET_MIN, OFFSET_MAX, name='B5; offset'),
-         Real(SLOPE_MIN, SLOPE_MAX, name='B5; slope'),
+         #Real(SLOPE_MIN, SLOPE_MAX, name='B5; slope'),
          Real(OFFSET_MIN, OFFSET_MAX, name='B6; offset'),
-         Real(SLOPE_MIN, SLOPE_MAX, name='B6; slope'),
+         #Real(SLOPE_MIN, SLOPE_MAX, name='B6; slope'),
          Real(OFFSET_MIN, OFFSET_MAX, name='B7; offset'),
-         Real(SLOPE_MIN, SLOPE_MAX, name='B7; slope'),
+         #Real(SLOPE_MIN, SLOPE_MAX, name='B7; slope'),
          Real(OFFSET_MIN, OFFSET_MAX, name='B8; offset'),
-         Real(SLOPE_MIN, SLOPE_MAX, name='B8; slope'),
+         #Real(SLOPE_MIN, SLOPE_MAX, name='B8; slope'),
          Real(OFFSET_MIN, OFFSET_MAX, name='B9; offset'),
-         Real(SLOPE_MIN, SLOPE_MAX, name='B9; slope'),
+         #Real(SLOPE_MIN, SLOPE_MAX, name='B9; slope'),
          Real(OFFSET_MIN, OFFSET_MAX, name='B10; offset'),
-         Real(SLOPE_MIN, SLOPE_MAX, name='B10; slope'),
+         #Real(SLOPE_MIN, SLOPE_MAX, name='B10; slope'),
         ]
 
 
@@ -49,11 +50,4 @@ def objective(params):
 # Run Bayesian Optimization (tries to minimize the objective function)
 result = gp_minimize(objective, space, n_calls=50, n_random_starts=10, acq_func="EI")
 
-# Print the results
-print("Best score:", result.fun)
-print("Best parameters:", result.x)
-
-# Save results for later use in C++
-with open('optimization_results.txt', 'w') as f:
-    f.write(f"Best score: {result.fun}\n")
-    f.write("Best parameters: " + " ".join(map(str, result.x)) + "\n")
+# results do not need to be exported, they are logged in the objective binding

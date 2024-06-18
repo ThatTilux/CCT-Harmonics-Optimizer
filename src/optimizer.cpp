@@ -23,19 +23,6 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
     calculator.reload_and_calc(temp_json_file_path, harmonics_handler);
     current_bn_values = harmonics_handler.get_bn();
 
-    // TODO TEMP START --------------------
-
-    harmonics_handler.export_Bns_to_csv("./Bn");
-
-    for (int i = 1; i <= 10; i++)
-    {
-        Logger::info("B" + std::to_string(i) + ": ");
-        double chi_squared = chiSquared(harmonics_handler, i);
-        Logger::info("ChiSquared: " + std::to_string(chi_squared));
-    }
-
-    // TODO TEMP END --------------------
-
     // optimize as long as not all bn values are within the margin
     do
     {
@@ -83,7 +70,7 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
                     double step = 0.01 * current_drive_value;
                     // to get a different datapoint when the drive value was 0
                     if (step == 0)
-                        step = 0.000001;
+                        step = 0.000001; // TODO: make this a global constant
                     model_handler.setHarmonicDriveValue(name, HarmonicDriveParameters(current_drive_value + step, drive_type));
 
                     // Compute the new bn values

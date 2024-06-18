@@ -33,7 +33,7 @@ int run_bn_optimization(){
     const boost::filesystem::path temp_json_file_path = model_handler.getTempJsonPath();
 
     // Get user input for maximum harmonic value
-    double max_harmonic_value = getUserInput("Enter the maximum absolute value for harmonic values", 0.1);
+    double max_harmonic_value = getUserInput("Enter the maximum absolute value for harmonic values", DEFAULT_MAX_BN_VALUE);
 
     // Handles calculations for the model
     HarmonicsCalculator calculator(temp_json_file_path);
@@ -96,31 +96,7 @@ int run_bn_chisquare_optimization(){
     Py_Finalize(); // Manually finalize the Python interpreter
 
 
-    // read results
-    std::ifstream file("optimization_results.txt");
-    std::string line;
-    std::vector<double> best_params;
-
-    if (file.is_open()) {
-        while (getline(file, line)) {
-            if (line.find("Best parameters:") != std::string::npos) {
-                size_t pos = line.find(":");
-                std::string params_str = line.substr(pos + 1);
-                std::stringstream ss(params_str);
-                double param;
-                while (ss >> param) {
-                    best_params.push_back(param);
-                }
-            }
-        }
-        file.close();
-    }
-
-    // print them
-    Logger::info("Best parameters found:");
-    for (double param : best_params) {
-        Logger::info(std::to_string(param) + " ");
-    }
+    // results are logged in the Logger, no need to export them
 
     return 0;
 }

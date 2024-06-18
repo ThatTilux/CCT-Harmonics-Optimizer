@@ -6,6 +6,7 @@
 #include "harmonics_handler.h"
 #include "model_handler.h"
 #include "constants.h"
+#include "optimizer.h"
 #include <iostream>
 #include <cmath>
 
@@ -14,7 +15,7 @@ class ObjectiveFunction{
     public:
         ObjectiveFunction(const ModelHandler &model_handler, double weight_chisquared);
 
-        double objective_function(const HarmonicDriveParameterMap &params);
+        double objective_function(HarmonicDriveParameterMap &params);
         
     private:
 
