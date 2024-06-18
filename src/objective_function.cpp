@@ -36,7 +36,7 @@ double ObjectiveFunction::objective_function(HarmonicDriveParameterMap &params)
         //get drive values
         HarmonicDriveParameterMap harmonic_drive_values = model_handler_.getHarmonicDriveValues();
         // run the bn optimizer
-        optimize(calculator_, model_handler_, bn, harmonic_drive_values, DEFAULT_MAX_BN_VALUE, model_handler_.getTempJsonPath());
+        optimize(calculator_, model_handler_, bn, harmonic_drive_values, MAX_BN_CHISQUARE, model_handler_.getTempJsonPath());
         Logger::info("= bn optimizer has finished =");
     }
 

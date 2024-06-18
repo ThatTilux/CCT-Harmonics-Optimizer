@@ -5,6 +5,8 @@ const std::string MODEL_OUTPUT_DIR = "./optimized_cct/";
 const std::string TEST_DATA_DIR = "../test_data/";
 // this will be dispslayed to the user as the default value and also used incase none is entered
 const double DEFAULT_MAX_BN_VALUE = 0.1;
+// max bn value used for the chiSquare optimizer
+const double MAX_BN_CHISQUARE = 1;
 // max datapoints before the optimizer moves on to the next harmonic
 const int OPTIMIZER_MAX_DATAPOINTS = 10;
 // weight of the chiSquare component in BO objective function
