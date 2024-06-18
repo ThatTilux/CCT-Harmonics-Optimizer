@@ -9,10 +9,9 @@ int counter_ = 0;
 // in the python script, create a proper way to address this
 void manually_set_objective(){
     boost::filesystem::path path_model = "./../data/quad_test_all_linear.json";
-    double chiSquare_weight = 0.01;
 
     ModelHandler handler(path_model);
-    ObjectiveFunction obj(handler, chiSquare_weight);
+    ObjectiveFunction obj(handler, CHISQUARE_WEIGHT);
 
     init_objective_binding(std::make_shared<ObjectiveFunction>(obj));    
 }
