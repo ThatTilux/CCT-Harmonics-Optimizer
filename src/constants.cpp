@@ -13,3 +13,5 @@ const int OPTIMIZER_MAX_DATAPOINTS = 10;
 const double CHISQUARE_WEIGHT = 0.01;
 // TODO let the user decide this
 const bool USE_BN_OPTIMIZER_IN_CHISQUARED = true;
+// when the step size in the optimizer is 0, this value is used instead
+const double OPTIMIZER_DEFAULT_STEP = 0.000001;

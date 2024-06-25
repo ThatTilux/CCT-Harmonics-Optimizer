@@ -76,7 +76,7 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
                     double step = 0.01 * current_drive_value;
                     // to get a different datapoint when the drive value was 0
                     if (step == 0)
-                        step = 0.000001; // TODO: make this a global constant
+                        step = OPTIMIZER_DEFAULT_STEP; 
                     model_handler.setHarmonicDriveValue(name, HarmonicDriveParameters(current_drive_value + step, drive_type));
                     Logger::log_timestamp("New drive value set.");
 

@@ -11,5 +11,6 @@ extern const double CHISQUARE_WEIGHT;
 extern const bool USE_BN_OPTIMIZER_IN_CHISQUARED;
 extern const double DEFAULT_MAX_BN_VALUE;
 extern const double MAX_BN_CHISQUARE;
+extern const double OPTIMIZER_DEFAULT_STEP;
 
 #endif // CONSTANTS_H
