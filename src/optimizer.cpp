@@ -10,7 +10,7 @@ double fitLinearGetRoot(const std::vector<std::pair<double, double>> &points)
 }
 
 // function to optimize all harmonic drive values (only constant/slope params) so the corresponding (absolute) bn values are all within the max_harmonic_value TODO make more modular
-void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std::vector<double> &current_bn_values, HarmonicDriveParameterMap &harmonic_drive_values, double max_harmonic_value, const boost::filesystem::path &temp_json_file_path)
+void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std::vector<double> &current_bn_values, HarmonicDriveParameterMap &harmonic_drive_values, double max_harmonic_value, const boost::filesystem::path &temp_json_file_path, const bool disable_logging)
 {
     Logger::log_timestamp("Starting optimizer");
 
@@ -18,7 +18,7 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
     // handler for handling the results of the harmonics calculation
     HarmonicsHandler harmonics_handler;
     // get the current bn values
-    calculator.reload_and_calc(temp_json_file_path, harmonics_handler);
+    calculator.reload_and_calc(temp_json_file_path, harmonics_handler, disable_logging);
     current_bn_values = harmonics_handler.get_bn();
 
     // optimize as long as not all bn values are within the margin
@@ -82,7 +82,7 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
 
                 // Compute the new bn values
                 // get the current bn values
-                calculator.reload_and_calc(temp_json_file_path, harmonics_handler);
+                calculator.reload_and_calc(temp_json_file_path, harmonics_handler, disable_logging);
                 Logger::log_timestamp("Harmonics recalculated.");
                 std::vector<double> new_bn_values = harmonics_handler.get_bn();
                 double new_bn = new_bn_values[component - 1];
@@ -103,7 +103,7 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
                     model_handler.setHarmonicDriveValue(name, HarmonicDriveParameters(optimized_value, drive_type));
                     Logger::log_timestamp("New drive value set once again.");
 
-                    calculator.reload_and_calc(temp_json_file_path, harmonics_handler);
+                    calculator.reload_and_calc(temp_json_file_path, harmonics_handler, disable_logging);
                     Logger::log_timestamp("Harmonics recalculated once again.");
 
                     std::vector<double> optimized_bn_values = harmonics_handler.get_bn();
