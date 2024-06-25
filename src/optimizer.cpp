@@ -9,7 +9,7 @@ double fitLinearGetRoot(const std::vector<std::pair<double, double>> &points)
     return root;
 }
 
-// function to optimize all harmonic drive values (only constant/slope params) so the corresponding (absolute) bn values are all within the max_harmonic_value
+// function to optimize all harmonic drive values (only constant/slope params) so the corresponding (absolute) bn values are all within the max_harmonic_value TODO make more modular
 void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std::vector<double> &current_bn_values, HarmonicDriveParameterMap &harmonic_drive_values, double max_harmonic_value, const boost::filesystem::path &temp_json_file_path)
 {
     Logger::log_timestamp("Starting optimizer");
@@ -68,29 +68,33 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
                 std::vector<std::pair<double, double>> data_points;
                 data_points.emplace_back(current_drive_value, current_bn);
 
-                // while the harmonic is not optimized yet
+                // change a small step to get the second data point for the linear regression
+
+                Logger::log_timestamp("Starting next iteration of optimizing one harmonic.");
+                // Take a small step in the scaling/slope value
+                double step = 0.01 * current_drive_value;
+                // to get a different datapoint when the drive value was 0
+                if (step == 0)
+                    step = OPTIMIZER_DEFAULT_STEP; 
+                double new_drive_value = current_drive_value + step;
+                model_handler.setHarmonicDriveValue(name, HarmonicDriveParameters(new_drive_value, drive_type));
+                Logger::log_timestamp("New drive value set.");
+
+                // Compute the new bn values
+                // get the current bn values
+                calculator.reload_and_calc(temp_json_file_path, harmonics_handler);
+                Logger::log_timestamp("Harmonics recalculated.");
+                std::vector<double> new_bn_values = harmonics_handler.get_bn();
+                double new_bn = new_bn_values[component - 1];
+                Logger::info("Initial step yielded new bn value: " + std::to_string(new_bn) + " for new drive value: " + std::to_string(new_drive_value));
+                Logger::log_timestamp("New bn values retrieved.");
+
+                 // Add the new data point
+                data_points.emplace_back(new_drive_value, new_bn);
+
+                // do linear regression until the harmonics is optimized
                 while (true)
                 {
-                    Logger::log_timestamp("Starting next iteration of optimizing one harmonic.");
-                    // Take a small step in the scaling/slope value
-                    double step = 0.01 * current_drive_value;
-                    // to get a different datapoint when the drive value was 0
-                    if (step == 0)
-                        step = OPTIMIZER_DEFAULT_STEP; 
-                    model_handler.setHarmonicDriveValue(name, HarmonicDriveParameters(current_drive_value + step, drive_type));
-                    Logger::log_timestamp("New drive value set.");
-
-                    // Compute the new bn values
-                    // get the current bn values
-                    calculator.reload_and_calc(temp_json_file_path, harmonics_handler);
-                    Logger::log_timestamp("Harmonics recalculated.");
-                    std::vector<double> new_bn_values = harmonics_handler.get_bn();
-                    double new_bn = new_bn_values[component - 1];
-                    Logger::log_timestamp("New bn values retrieved.");
-
-                    // Add the new data point
-                    data_points.emplace_back(current_drive_value + step, new_bn);
-
                     // Perform linear regression to find the root
                     double optimized_value = fitLinearGetRoot(data_points);
                     Logger::log_timestamp("Linear regression done.");
@@ -98,13 +102,21 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
                     // Set the optimized value and recompute bn
                     model_handler.setHarmonicDriveValue(name, HarmonicDriveParameters(optimized_value, drive_type));
                     Logger::log_timestamp("New drive value set once again.");
+
                     calculator.reload_and_calc(temp_json_file_path, harmonics_handler);
                     Logger::log_timestamp("Harmonics recalculated once again.");
+
                     std::vector<double> optimized_bn_values = harmonics_handler.get_bn();
                     Logger::log_timestamp("New bn values retrieved once again.");
 
                     // get the bn value for the component currently being optimized
                     double optimized_bn = optimized_bn_values[component - 1];
+                    Logger::info("New bn value: " + std::to_string(optimized_bn) + " for new drive value: " + std::to_string(optimized_value));
+
+                    // Add the new data point
+                    data_points.emplace_back(optimized_value, optimized_bn);
+
+                    Logger::debug("Size of datapoints: " + std::to_string(data_points.size()) + " with max datapoints: " + std::to_string(OPTIMIZER_MAX_DATAPOINTS));
 
                     // check if the optimization was successful or if it has to be aborted
                     if (std::abs(optimized_bn) <= max_harmonic_value || data_points.size() >= OPTIMIZER_MAX_DATAPOINTS)
