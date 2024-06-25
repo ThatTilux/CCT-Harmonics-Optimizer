@@ -6,21 +6,72 @@ This software is designed to automatically optimize custom CCT (canted-cosine-th
 
 This software utilizes the open-source RAT Library. For more information about the RAT Library, visit the [RAT Library website](https://rat-gui.com/library.html).
 
+To avoid using "Installation" twice as a header, you can merge the "Requirements" section into the "Installation" section or rename one of the sections to make it more specific. Here's a revised version of your README:
+
 ## Installation
 
 **Note: This software only works on Linux.**
 
-TODO: 
-- add libgtest-dev requirement (apt)
-- and python3-dev, scikit-optimize, pybind11 requirement (with pip)
-- add sudo apt-get install pybind11-dev requirement
-- add spdlog requirement (with vcpkg or clone + install)
-- add logging explanation
-- add: when using WSL & CUDA, it is advised to increase allocated memory to WSL.  
+### Prerequisites
 
-1. Follow the [RAT documentation](https://gitlab.com/Project-Rat/rat-documentation) to install the RAT library. This may take some time.
+Please follow the instructions below to install all necessary dependencies.
 
-2. Clone this repository and build the software:
+#### System Packages
+
+1. **Google Test (gtest) Library**:
+   - Google Test is a framework for C++ tests.
+   ```sh
+   sudo apt-get install libgtest-dev
+   ```
+
+2. **Python Development Headers**:
+   - These are required for the Python scripts of this software.
+   ```sh
+   sudo apt-get install python3-dev
+   ```
+
+3. **pybind11**:
+   - pybind11 enables C++ code in Python and vice-versa.
+   ```sh
+   sudo apt-get install pybind11-dev
+   ```
+
+4. **spdlog**:
+   - spdlog is a very fast C++ logging library.
+   You can install `spdlog` using by cloning the repository and installing it manually:
+   ```sh
+   git clone https://github.com/gabime/spdlog.git
+   cd spdlog
+   mkdir build && cd build
+   cmake ..
+   make -j
+   sudo make install
+   ```
+
+#### Python Packages
+
+1. **scikit-optimize**:
+   - Scikit-Optimize is used for machine learning functions.
+   ```sh
+   pip install scikit-optimize
+   ```
+
+2. **pybind11**:
+   - The python-component of the pybind11 package.
+   ```sh
+   pip install pybind11
+   ```
+
+#### RAT-Library
+Follow the [RAT documentation](https://gitlab.com/Project-Rat/rat-documentation) to install the RAT library. This may take a while.
+- When a CUDA compatible GPU is available, make sure to follow the steps for installing CUDA.
+- When using CUDA with WSL, it is advised to increase the allocated memory for WSL, see [here](https://geronimo-bergk.medium.com/optimizing-wsl2-performance-setting-memory-and-cpu-allocation-on-windows-513eba7b6086).
+
+
+
+### Building and Running the Software
+
+1. Clone this repository and build the software:
     ```sh
     git clone <repository_url>
     cd <repository_directory>
@@ -30,19 +81,19 @@ TODO:
     make
     ```
 
-3. Run all tests:
+2. Run all tests:
     ```sh
     ./bin/runTests
     ```
 
-4. To run the program:
+3. To run the program:
     ```sh
     ./bin/main
     ```
 
 ## Usage
 
-**TODO**: only linear custom ccts allowed, otherwise change? Also: update naming convention of custom harmonics
+**TODO**: only linear custom ccts allowed, otherwise change? Also: update naming convention of custom harmonics; Also: include second optimizer in this
 
 The optimizer requires a JSON file of a CCT magnet, created by the [RAT-GUI software](https://rat-gui.com/index.html). Ensure that the JSON file meets the following criteria:
 
@@ -56,6 +107,8 @@ The optimizer requires a JSON file of a CCT magnet, created by the [RAT-GUI soft
 
 Place the JSON file in the `data` directory. Run the program using the command specified above (`./bin/main`). You will be prompted to enter the maximum absolute bn value. For example, entering `0.1` will optimize the harmonics to achieve bn values within the range of -0.1 to 0.1.
 Caution is advised for values below 0.1 as runtime will explode.
+
+Detailed logs are saved in the `logs` directory.
 
 ### Example
 
