@@ -3,11 +3,12 @@
 // counts the number of objective function evaluations
 int counter_ = 0;
 
-// TODO TEMP REMOVE
-//  in the python script, create a proper way to address this
-void manually_set_objective()
+// Function to initialize the objective function
+void init_objective()
 {
-    boost::filesystem::path path_model = "./../data/quad_test_all_linear.json";
+    boost::filesystem::path path_model = selectJsonFile();
+
+    Logger::info("Selected model: " + path_model.string());
 
     ModelHandler handler(path_model);
     ObjectiveFunction obj(handler, CHISQUARE_WEIGHT);
@@ -41,7 +42,8 @@ void cast_params_to_map(const std::vector<double> &params, HarmonicDriveParamete
         param_map["B1"] = HarmonicDriveParameters(params[0], HarmonicDriveParameterType::Offset);
         for (int i = 1; i < params.size(); i++)
         {
-            std::string component = std::to_string(i + 1);
+            // TODO for simplicity, we assume that B2 is omitted -> params[0] is B1, params[1] is B3, etc.
+            std::string component = std::to_string(i + 2);
             param_map["B" + component] = HarmonicDriveParameters(params[i], HarmonicDriveParameterType::Offset);
         }
     }
@@ -58,8 +60,8 @@ double objective_binding(const std::vector<double> &params)
     // Get the objective
     if (ObjectiveManager::getInstance().getObjective() == nullptr)
     {
-        manually_set_objective();
-        Logger::debug("Manually set objective");
+        init_objective();
+        Logger::debug("Initialized objective");
     }
 
     std::shared_ptr<ObjectiveFunction> objective = ObjectiveManager::getInstance().getObjective();
