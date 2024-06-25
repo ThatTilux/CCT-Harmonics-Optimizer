@@ -26,7 +26,9 @@ double ObjectiveFunction::objective_function(HarmonicDriveParameterMap &params)
     int main_component = 2; // B2
 
     // apply all parameters
+    Logger::log_timestamp("Applying parameters");
     model_handler_.apply_params(params);
+    Logger::log_timestamp("Parameters applied");
 
     // if the bn optimizer should be used, apply it
     if(USE_BN_OPTIMIZER_IN_CHISQUARED){

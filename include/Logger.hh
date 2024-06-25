@@ -40,6 +40,25 @@ public:
         getInstance().logger_->log(level, message);
     }
 
+    static void log_timestamp(std::string label) {
+        auto now = std::chrono::system_clock::now();
+        auto now_time_t = std::chrono::system_clock::to_time_t(now);
+        auto now_ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+
+        std::stringstream ss;
+        ss << std::put_time(std::localtime(&now_time_t), "%Y-%m-%d %H:%M:%S");
+        ss << '.' << std::setfill('0') << std::setw(3) << now_ms.count();
+
+        std::string timestamp = ss.str();
+        getInstance().logger_->trace("{}: {}", label, timestamp);
+    }
+
+    // function to enable trace logging. this will also log various timestamps
+    static void enable_trace(){
+        getInstance().logger_->set_level(spdlog::level::trace);
+        getInstance().logger_->flush_on(spdlog::level::trace);
+    }
+
 private:
     Logger() {
         // Create log directory if it doesn't exist
@@ -65,8 +84,8 @@ private:
         logger_ = std::make_shared<spdlog::logger>("multi_sink", begin(sinks), end(sinks));
         spdlog::register_logger(logger_);
 
-        logger_->set_level(spdlog::level::trace); // Set to lowest level to log everything
-        logger_->flush_on(spdlog::level::trace);  // Flush on every log
+        logger_->set_level(spdlog::level::debug); // Set to debug to log everything but trace
+        logger_->flush_on(spdlog::level::debug);  // Flush on every log
     }
 
     ~Logger() {

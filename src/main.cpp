@@ -77,6 +77,7 @@ int run_bn_optimization(){
 int run_bn_chisquare_optimization(){
     // TODO figure out a good value for chiSquared
 
+    Logger::log_timestamp("Starting python script");
     Py_Initialize(); // Manually initialize the Python interpreter
 
     try {
@@ -94,6 +95,7 @@ int run_bn_chisquare_optimization(){
     }
 
     Py_Finalize(); // Manually finalize the Python interpreter
+    Logger::log_timestamp("Python script finished");
 
 
     // results are logged in the Logger, no need to export them
