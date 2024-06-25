@@ -12,7 +12,6 @@
 #include <string>
 #include <vector>
 #include "harmonics_handler.h"
-#include <SilentLog.hh>
 
 
 class HarmonicsCalculator

@@ -89,7 +89,7 @@ void HarmonicsCalculator::calc(HarmonicsHandler& harmonics_handler, bool disable
 
         // do the harmonics calculation
         const rat::fltp output_time = RAT_CONST(0.0);
-        const rat::cmn::ShLogPr lg = disable_logging ? rat::cmn::SilentLog::create() : rat::cmn::Log::create(rat::cmn::Log::LogoType::RAT);
+        const rat::cmn::ShLogPr lg = disable_logging ? rat::cmn::NullLog::create() : rat::cmn::Log::create(rat::cmn::Log::LogoType::RAT);
         const rat::mdl::ShSolverCachePr cache = rat::mdl::SolverCache::create();
 
         // Use GPU for calculation if available
