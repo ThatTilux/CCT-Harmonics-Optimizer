@@ -5,6 +5,7 @@
 ModelHandler::ModelHandler(const boost::filesystem::path &json_file_path)
 {
     createTemporaryFolder(json_file_path);
+
 }
 
 // Creates a tempoary folder with a copy of the model. All operations are done on that model
