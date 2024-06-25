@@ -16,6 +16,7 @@ TODO:
 - add sudo apt-get install pybind11-dev requirement
 - add spdlog requirement (with vcpkg or clone + install)
 - add logging explanation
+- add: when using WSL & CUDA, it is advised to increase allocated memory to WSL.  
 
 1. Follow the [RAT documentation](https://gitlab.com/Project-Rat/rat-documentation) to install the RAT library. This may take some time.
 
