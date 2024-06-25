@@ -8,6 +8,28 @@ HarmonicsCalculator::HarmonicsCalculator(const boost::filesystem::path &json_fil
     }
 }
 
+// Function to log the GPU information
+void HarmonicsCalculator::log_gpu_info()
+{
+    Logger::debug("Logging GPU information:");
+
+    const rat::fmm::ShSettingsPr settings = harmonics_calc_->get_settings();
+    std::set<int> gpus_available_for_calc = settings->get_gpu_devices();
+
+    const int num_devices = rat::fmm::GpuKernels::get_num_devices();
+    Logger::debug("Number of GPU devices: " + std::to_string(num_devices));
+
+
+    for (const auto& gpu : gpus_available_for_calc)
+    {
+        Logger::debug("GPU available for calculation: " + std::to_string(gpu));
+    }
+    Logger::debug("Showing device info for device 0:");
+    rat::fmm::GpuKernels::show_device_info(0, rat::cmn::Log::create());
+    Logger::debug("");
+
+}
+
 bool HarmonicsCalculator::load_model(const boost::filesystem::path &json_file_path)
 {
     auto [model, root, model_tree, calc_tree] = load_model_from_json(json_file_path);
@@ -34,16 +56,37 @@ bool HarmonicsCalculator::load_model(const boost::filesystem::path &json_file_pa
     return true;
 }
 
+// Function to set the GPU settings for the harmonics calculation. Will do nothing when no GPU is available.
+void HarmonicsCalculator::enable_gpu(){
+    rat::fmm::ShSettingsPr settings = harmonics_calc_->get_settings();
+    // get the number of CUDA compatible GPU devices
+    const int num_gpu_devices = rat::fmm::GpuKernels::get_num_devices();
+    if (num_gpu_devices > 0){
+        // use the first GPU 
+        settings->set_enable_gpu(true);
+        settings->add_gpu_device(0);
+
+        Logger::info("GPU enabled for Harmonics Calculation.");
+    } else {
+        Logger::info("No GPU available for Harmonics Calculation.");
+    }
+}
+
 
 // function for doing the harmonics calculation. Will update create a new HarmonicsHandler object that provides access to the results.
 void HarmonicsCalculator::calc(HarmonicsHandler& harmonics_handler, bool disable_logging)
 {
     if (harmonics_calc_)
     {
+
         // do the harmonics calculation
         const rat::fltp output_time = RAT_CONST(0.0);
         const rat::cmn::ShLogPr lg = disable_logging ? rat::cmn::SilentLog::create() : rat::cmn::Log::create(rat::cmn::Log::LogoType::RAT);
         const rat::mdl::ShSolverCachePr cache = rat::mdl::SolverCache::create();
+
+        // Use GPU for calculation if available
+        enable_gpu();
+
 
         rat::mdl::ShHarmonicsDataPr harmonics_data = harmonics_calc_->calculate_harmonics(output_time, lg, cache);
 

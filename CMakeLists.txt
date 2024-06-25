@@ -30,6 +30,13 @@ find_package(Boost REQUIRED COMPONENTS filesystem)
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 find_package(pybind11 REQUIRED)
 
+# find ZLIB
+if(POLICY CMP0074)
+  cmake_policy(SET CMP0074 NEW)
+endif()
+
+find_package(ZLIB REQUIRED)
+
 # Get all source files in src directory
 file(GLOB SOURCES "src/*.cpp")
 list(REMOVE_ITEM SOURCES "${CMAKE_SOURCE_DIR}/src/main.cpp")

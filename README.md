@@ -11,8 +11,8 @@ This software utilizes the open-source RAT Library. For more information about t
 **Note: This software only works on Linux.**
 
 TODO: 
-- add libgtest-dev requirement
-- and python, scikit-optimize, pybind11 requirement (with pip)
+- add libgtest-dev requirement (apt)
+- and python3-dev, scikit-optimize, pybind11 requirement (with pip)
 - add sudo apt-get install pybind11-dev requirement
 - add spdlog requirement (with vcpkg or clone + install)
 - add logging explanation
