@@ -10,31 +10,32 @@ import optimizer_module # type: ignore (IDE does not find the package, but it's 
 
 
 # Param Ranges
-OFFSET_MAX = 0.05 # 5 mm
-OFFSET_MIN = -OFFSET_MAX 
+B1_OFFSET_MAX = 0.05 # 5 mm
+B4_OFFSET_MAX = 0.015 # 1.5 mm
+B5_OFFSET_MAX = 0.01 # 1 mm
 SLOPE_MAX = 0.0001 # 1e-04 m/coil
 SLOPE_MIN = -SLOPE_MAX
 
 # Define the parameter space
 # TODO REMOVE MANUAL B2 OMITTANCE
 # TODO LET USER DECIDE IF ONLY OFFSETS
-space = [Real(OFFSET_MIN, OFFSET_MAX, name='B1; offset'),
+space = [Real(-B1_OFFSET_MAX, B1_OFFSET_MAX, name='B1; offset'),
          #Real(SLOPE_MIN, SLOPE_MAX, name='B1; slope'),
-         Real(OFFSET_MIN, OFFSET_MAX, name='B3; offset'),
+         Real(-B1_OFFSET_MAX, B1_OFFSET_MAX, name='B3; offset'),
          #Real(SLOPE_MIN, SLOPE_MAX, name='B3; slope'),
-         Real(OFFSET_MIN, OFFSET_MAX, name='B4; offset'),
+         Real(-B4_OFFSET_MAX, B4_OFFSET_MAX, name='B4; offset'),
          #Real(SLOPE_MIN, SLOPE_MAX, name='B4; slope'),
-         Real(OFFSET_MIN, OFFSET_MAX, name='B5; offset'),
+         Real(-B5_OFFSET_MAX, B5_OFFSET_MAX, name='B5; offset'),
          #Real(SLOPE_MIN, SLOPE_MAX, name='B5; slope'),
-         Real(OFFSET_MIN, OFFSET_MAX, name='B6; offset'),
+         Real(-B5_OFFSET_MAX, B5_OFFSET_MAX, name='B6; offset'),
          #Real(SLOPE_MIN, SLOPE_MAX, name='B6; slope'),
-         Real(OFFSET_MIN, OFFSET_MAX, name='B7; offset'),
+         Real(-B5_OFFSET_MAX, B5_OFFSET_MAX, name='B7; offset'),
          #Real(SLOPE_MIN, SLOPE_MAX, name='B7; slope'),
-         Real(OFFSET_MIN, OFFSET_MAX, name='B8; offset'),
+         Real(-B5_OFFSET_MAX, B5_OFFSET_MAX, name='B8; offset'),
          #Real(SLOPE_MIN, SLOPE_MAX, name='B8; slope'),
-         Real(OFFSET_MIN, OFFSET_MAX, name='B9; offset'),
+         Real(-B5_OFFSET_MAX, B5_OFFSET_MAX, name='B9; offset'),
          #Real(SLOPE_MIN, SLOPE_MAX, name='B9; slope'),
-         Real(OFFSET_MIN, OFFSET_MAX, name='B10; offset'),
+         Real(-B5_OFFSET_MAX, B5_OFFSET_MAX, name='B10; offset'),
          #Real(SLOPE_MIN, SLOPE_MAX, name='B10; slope'),
         ]
 

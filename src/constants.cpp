@@ -8,7 +8,7 @@ const double DEFAULT_MAX_BN_VALUE = 0.1;
 // max bn value used for the chiSquare optimizer
 const double MAX_BN_CHISQUARE = 1;
 // max datapoints before the optimizer moves on to the next harmonic
-const int OPTIMIZER_MAX_DATAPOINTS = 5;
+const int OPTIMIZER_MAX_DATAPOINTS = 7;
 // weight of the chiSquare component in BO objective function
 const double CHISQUARE_WEIGHT = 0.01;
 // TODO let the user decide this
