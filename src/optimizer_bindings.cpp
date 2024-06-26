@@ -6,12 +6,7 @@ int counter_ = 0;
 // Function to initialize the objective function
 void init_objective()
 {
-    //TODO TEMPORARY MEASURE
-    Logger::enable_trace();
-
     boost::filesystem::path path_model = selectJsonFile();
-
-    Logger::info("Selected model: " + path_model.string());
 
     ModelHandler handler(path_model);
     ObjectiveFunction obj(handler, CHISQUARE_WEIGHT);

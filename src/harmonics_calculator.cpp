@@ -55,7 +55,12 @@ bool HarmonicsCalculator::load_model(const boost::filesystem::path &json_file_pa
         return false;
     }
 
-    Logger::info("Found Harmonics Calculation with the name: " + harmonics_calc_name_);
+    // log calculation name (only once)
+    static bool logged_calc_name = false;
+    if(!logged_calc_name){
+        Logger::info("Found Harmonics Calculation with the name: " + harmonics_calc_name_);
+        logged_calc_name = true;
+    }
     return true;
 }
 
@@ -74,9 +79,19 @@ void HarmonicsCalculator::enable_gpu(){
         settings->set_enable_gpu(true);
         settings->add_gpu_device(0);
 
-        Logger::info("GPU enabled for Harmonics Calculation.");
+        // log GPU activation (only once)
+        static bool logged_gpu = false;
+        if(!logged_gpu){
+            Logger::info("GPU enabled for Harmonics Calculation.");
+            logged_gpu = true;
+        }
     } else {
-        Logger::info("No GPU available for Harmonics Calculation.");
+        // log no GPU available (only once)
+        static bool logged_no_gpu = false;
+        if(!logged_no_gpu){
+            Logger::info("No GPU available for Harmonics Calculation. Running on CPU.");
+            logged_no_gpu = true;
+        }
     }
 }
 
@@ -86,6 +101,8 @@ void HarmonicsCalculator::calc(HarmonicsHandler& harmonics_handler, bool disable
 {
     if (harmonics_calc_)
     {
+
+        Logger::info("Running harmonics calculation...");
 
         // do the harmonics calculation
         const rat::fltp output_time = RAT_CONST(0.0);
@@ -114,7 +131,6 @@ void HarmonicsCalculator::calc(HarmonicsHandler& harmonics_handler, bool disable
 void HarmonicsCalculator::reload_and_calc(const boost::filesystem::path &json_file_path, HarmonicsHandler& harmonics_handler, bool disable_logging){
     Logger::log_timestamp("Reloading model.");
     load_model(json_file_path);
-    Logger::info("Model reloaded.");
     Logger::log_timestamp("Model reloaded. Now calcing");
     calc(harmonics_handler, disable_logging);
     Logger::log_timestamp("Calculation done.");

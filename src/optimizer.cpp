@@ -116,8 +116,6 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
                     // Add the new data point
                     data_points.emplace_back(optimized_value, optimized_bn);
 
-                    Logger::debug("Size of datapoints: " + std::to_string(data_points.size()) + " with max datapoints: " + std::to_string(OPTIMIZER_MAX_DATAPOINTS));
-
                     // check if the optimization was successful or if it has to be aborted
                     if (std::abs(optimized_bn) <= max_harmonic_value || data_points.size() >= OPTIMIZER_MAX_DATAPOINTS)
                     {
