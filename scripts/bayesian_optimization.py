@@ -43,9 +43,9 @@ space = [Real(-B1_OFFSET_MAX, B1_OFFSET_MAX, name='B1; offset'),
 # Objective function
 def objective(params):
     value = optimizer_module.objective_binding(params)
-    # error code
+    # error code, most likely due to invalid parameters (e.g. coil overlap)
     if value == -1.0:
-        raise RuntimeError('objective binding returned error code')
+        return float('inf')
     return value
 
 # Run Bayesian Optimization (tries to minimize the objective function)

@@ -77,9 +77,19 @@ double objective_binding(const std::vector<double> &params)
         Logger::info(param.first + ": " + to_string(param.second));
     }
 
+    //evaluate the obective function
+    Logger::debug("before");
     ObjectiveFunction obj = *objective;
+    Logger::debug("after");
     Logger::log_timestamp("Calling objective function");
-    double result = obj.objective_function(param_map);
+    double result;
+    try{
+        result = obj.objective_function(param_map);
+    } catch (const std::runtime_error &e){
+        Logger::error("Error in objective function: " + std::string(e.what()) + ". Returning inf to BO.");
+        return -1.0; // error code, BO will interpret as infinity
+    }
+    
     Logger::log_timestamp("Objective function finished");
 
     Logger::info("=== end of run " + std::to_string(counter_) + " ===");
