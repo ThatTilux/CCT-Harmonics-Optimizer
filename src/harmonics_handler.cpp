@@ -36,7 +36,7 @@ std::vector<std::pair<double, double>> HarmonicsHandler::get_Bn(int component)
         throw std::logic_error("Ell and Bn data must have the same length.");
     }
 
-    // TODO TEMP REMOVE THIS!!
+    // TODO TEMP check if this applies to all models. If yes: move to appropiate location
     if(component % 2 == 1){
         for (double& value : Bn_data)
         {
@@ -45,19 +45,6 @@ std::vector<std::pair<double, double>> HarmonicsHandler::get_Bn(int component)
     }
 
     std::vector<std::pair<double, double>> data = combinePoints(ell, Bn_data);
-
-    // remove all the pairs where the ell value is not inside the set bounds
-    data.erase(std::remove_if(data.begin(), data.end(), [](const std::pair<double, double> &pair)
-                              { return pair.first < MAG_START_POS || pair.first > MAG_END_POS; }),
-               data.end());
-
-
-    // shift the ell data point so that the first point is at 0
-    double shift = data[0].first;
-    for (std::pair<double, double> &pair : data)
-    {
-        pair.first -= shift;
-    }
 
     return data;
 }

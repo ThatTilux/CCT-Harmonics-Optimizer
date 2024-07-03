@@ -179,11 +179,32 @@ double computeChiSquared(const std::vector<std::pair<double, double>> &points, d
     return chi_squared;
 }
 
+
+// Funtion to apply transformations to the ell,Bn data for the chisquared computation
+void apply_chisquared_transformation(std::vector<std::pair<double, double>> &Bn_data){
+    // remove all the pairs where the ell value is not inside the set bounds
+    Bn_data.erase(std::remove_if(Bn_data.begin(), Bn_data.end(), [](const std::pair<double, double> &pair)
+                              { return pair.first < MAG_START_POS || pair.first > MAG_END_POS; }),
+               Bn_data.end());
+
+
+    // shift the ell Bn_data point so that the first point is at 0
+    double shift = Bn_data[0].first;
+    for (std::pair<double, double> &pair : Bn_data)
+    {
+        pair.first -= shift;
+    }
+}
+
+
 // Function to compute the chi square for a Bn component. A linear function will be fitted to the data and chi square will be computed between that and the data. If fitted is set to a pair, the fitted offset and slope will be stored there
 double chiSquared(HarmonicsHandler &harmonics_handler, int component, std::pair<double, double> *fitted)
 {
     // get the Bn and ell
     std::vector<std::pair<double, double>> points = harmonics_handler.get_Bn(component);
+
+    // apply transformations to the data
+    apply_chisquared_transformation(points);
 
     // export the points
     export_data_to_csv(points, "./Bn/Bn_component_" + std::to_string(component) + ".csv");
