@@ -91,12 +91,17 @@ double ObjectiveFunction::objective_function(HarmonicDriveParameterMap &params)
     return objective_value;
 }
 
+// Function to transform the drive values to be applicable for the RAT model
+void transform_drive_values(double &offset, double &slope){
+    // linear regression gives values in m, RAT needs mm
+    offset = offset / 1000;
+    slope = slope / 1000;
+}
+
 // TODO this is a temp function for testing: compute chi squared for one component and set offset, slope based on those. Returns error code
 int ObjectiveFunction::chiSquaredOptimizer(int component, double scaling_factor, bool temp_do_bn_optimizer)
 {
     // run harmonics calculation
-
-    // run calculation
     HarmonicsHandler harmonics_handler;
     calculator_.reload_and_calc(json_file_path_, harmonics_handler);
     std::vector<double> current_bn_values = harmonics_handler.get_bn();
@@ -113,10 +118,12 @@ int ObjectiveFunction::chiSquaredOptimizer(int component, double scaling_factor,
     Logger::debug("Chi squared value for B" + std::to_string(component) + ": " + std::to_string(value));
 
     // const std::vector<double> SCALING_FACTORS = {0.1, 0.01, 0.001};
+    
+    // transform values to be applicable for drives
+    transform_drive_values(fitted.first, fitted.second);
 
-    // apply with scaling factor
-    Logger::info("Now applying the fitted values for B" + std::to_string(component));
-    // set values, offset value has unit mm, but values are stored as m -> scaling factor of 0.001
+    // apply values
+    Logger::info("Now applying the fitted values for B" + std::to_string(component) + ": offset = " + std::to_string(fitted.first) + ", slope = " + std::to_string(fitted.second));
     model_handler_.setHarmonicDriveValue("B" + std::to_string(component), HarmonicDriveParameters(fitted.first / 1000, fitted.second));
 
     // TODO TEMP REMOVE
@@ -187,12 +194,19 @@ void apply_chisquared_transformation(std::vector<std::pair<double, double>> &Bn_
                               { return pair.first < MAG_START_POS || pair.first > MAG_END_POS; }),
                Bn_data.end());
 
-
-    // shift the ell Bn_data point so that the first point is at 0
-    double shift = Bn_data[0].first;
-    for (std::pair<double, double> &pair : Bn_data)
+    //make sure there are at least 2 points
+    if (Bn_data.size() < 2)
     {
-        pair.first -= shift;
+        throw std::runtime_error("Not enough points for chisquared computation.");
+    }
+
+    // scale the ell values so that the first one is -0.5 and last one 0.5
+    double ell_min = Bn_data.front().first;
+    double ell_max = Bn_data.back().first;
+    double ell_range = ell_max - ell_min;
+    for (auto &pair : Bn_data)
+    {
+        pair.first = (pair.first - ell_min) / ell_range - 0.5;
     }
 }
 
