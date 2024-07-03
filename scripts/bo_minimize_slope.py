@@ -15,7 +15,7 @@ import optimizer_module # type: ignore (IDE does not find the package, but it's 
 
 # Handcrafted Param Ranges - only specific to _nob6_alllinear.json
 B1_OFFSET_MAX = 0.0025 # [m]
-B1_SLOPE_MAX = 0.000025; # [m/coil]
+B1_SLOPE_MAX = 0.000025 # [m/coil]
 
 # Define the parameter space
 space = [Real(-B1_OFFSET_MAX, B1_OFFSET_MAX, name='B1_offset'),

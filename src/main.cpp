@@ -162,6 +162,7 @@ int run_chiSquare_optimization(){
     return 0;
 }
 
+// TODO REMOVE THIS WITH FILE
 int run_slope_minimizer(){
     Py_Initialize(); // Manually initialize the Python interpreter
 
@@ -184,6 +185,81 @@ int run_slope_minimizer(){
     // results are logged in the Logger, no need to export them
     return 0;
 }
+
+int run_grid_search(){
+    // TODO code duplication here, avoid by refactoring to func
+    // Get the JSON file path from user selection
+    boost::filesystem::path json_file_path;
+    try
+    {
+        json_file_path = selectJsonFile();
+    }
+    catch (const std::exception &e)
+    {
+        Logger::error(e.what());
+        return 1;
+    }
+
+    // Handles manipulations of the JSON file
+    ModelHandler model_handler(json_file_path);
+
+    // Get all the scaling values for the custom CCT harmonics
+    HarmonicDriveParameterMap harmonic_drive_values = model_handler.getHarmonicDriveValues();
+
+    // Check that there are harmonic drives
+    if (harmonic_drive_values.empty()) {
+        Logger::error("The program could not find any custom CCT harmonics (rat::mdl::cctharmonicdrive) whose name starts with the letter 'B'. Aborting...");
+        return 1;
+    }
+
+    // Print them
+    print_harmonic_drive_values(harmonic_drive_values);
+
+    // Ask the user if they want to proceed
+    if (!askUserToProceed()) {
+        Logger::info("Optimization aborted by user.");
+        return 0;
+    }
+
+    // create Objective Function
+    std::shared_ptr<ObjectiveFunction> pObjective = std::make_shared<ObjectiveFunction>(model_handler, CHISQUARE_WEIGHT);
+
+    // grid search params
+    const double B1_OFFSET_MAX = 0.0025;
+    const double B1_SLOPE_MAX = 0.000025;
+
+    const double granularity_offset = 0.00001;
+    const double granularity_slope = 0.000001;
+
+    // assumed time used for 1 evaluation
+    const int time_per_evaluation_s = 1.7;
+
+    // compute how many evaluations we will do
+    double evaluations = (2*B1_OFFSET_MAX/granularity_offset) * (2*B1_SLOPE_MAX/granularity_slope);
+    
+    // estimated time usage
+    double time_h = evaluations * time_per_evaluation_s / 60 / 60;
+
+    Logger::info("=== Running grid search for B1 with " + std::to_string(evaluations) + " evaluations ===");
+    Logger::info("Estimated time usage assuming " + std::to_string(time_per_evaluation_s) + "s for 1 eval: " + std::to_string(time_h) + " hours");
+
+    int counter = 1;
+
+    // run the grid search
+    for (double offset = -B1_OFFSET_MAX; offset <= B1_OFFSET_MAX; offset += granularity_offset) {
+        for (double slope = -B1_SLOPE_MAX; slope <= B1_SLOPE_MAX; slope += granularity_slope) {
+            Logger::info("== Running grid search iteration " + std::to_string(counter) + " ==");
+            Logger::info("Offset: " + std::to_string(offset) + ", Slope: " + std::to_string(slope));
+            HarmonicDriveParameterMap params;
+            params["B1"] = HarmonicDriveParameters(offset, slope);
+            pObjective->objective_function_slope(params);
+
+            counter++;
+        }
+    }
+
+    return 0;
+}
     
 
 
@@ -191,7 +267,7 @@ int main()
 {   
 
     // check which optimization the user wants to do
-    std::vector<std::string> optimization_options = {"bn optimization", "bn and chiSquare optimization", "(WIP) chiSquare optimization", "(WIP) slope minimizer B1"};
+    std::vector<std::string> optimization_options = {"bn optimization", "bn and chiSquare optimization", "(WIP) chiSquare optimization", "(WIP) grid search slope minimizer B1"};
     int selected_optimization = selectFromList(optimization_options, "Please select the desired optimization:");
 
     if(selected_optimization == 0){
@@ -205,7 +281,7 @@ int main()
         return run_chiSquare_optimization();
     } else if (selected_optimization == 3){
         // chiSquare optimization
-        return run_slope_minimizer();
+        return run_grid_search();
     }
 
     
