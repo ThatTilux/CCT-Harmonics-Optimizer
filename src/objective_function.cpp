@@ -42,7 +42,6 @@ double ObjectiveFunction::objective_function(HarmonicDriveParameterMap &params)
 
     // do the computation
     HarmonicsHandler harmonics_handler;
-    Logger::info("Running harmonics calculation...");
     calculator_.reload_and_calc(json_file_path_, harmonics_handler);
     std::vector<double> current_bn_values = harmonics_handler.get_bn();
 
@@ -173,6 +172,30 @@ int ObjectiveFunction::chiSquaredOptimizer(int component, double scaling_factor,
     return 0;
 }
 
+// TODO clean this up - e.g., put into other obj func class
+// Function that fits a linear function to a Bn function and returns the absolute slope
+double ObjectiveFunction::objective_function_slope(HarmonicDriveParameterMap &params){
+    // apply all parameters
+    model_handler_.apply_params(params);
+
+    // do the computation
+    HarmonicsHandler harmonics_handler;
+    calculator_.reload_and_calc(json_file_path_, harmonics_handler);
+
+    // pair that the chisquared will store the offset and slope in
+    std::pair<double, double> fitted;
+
+    // run chi square computation to get fit
+    double value = chiSquared(harmonics_handler, 1, &fitted); //TODO hardcoded B1 here
+
+    double slope = std::abs(fitted.second);
+
+    Logger::info("Objective function value: " + std::to_string(slope));
+
+    //return slope
+    return slope;
+}
+
 // Function to compute chi-squared distance between (1) a function described by the points vector and (2) a linear function described by slope, intercept
 double computeChiSquared(const std::vector<std::pair<double, double>> &points, double slope, double intercept, double variance_y)
 {
@@ -221,7 +244,7 @@ double chiSquared(HarmonicsHandler &harmonics_handler, int component, std::pair<
     apply_chisquared_transformation(points);
 
     // export the points
-    export_data_to_csv(points, "./Bn/Bn_component_" + std::to_string(component) + ".csv");
+    //export_data_to_csv(points, "./Bn/Bn_component_" + std::to_string(component) + ".csv");
 
     // extract the Bn values
     std::vector<double> Bn;

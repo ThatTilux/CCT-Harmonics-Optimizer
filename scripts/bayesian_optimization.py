@@ -10,7 +10,7 @@ import optimizer_module # type: ignore (IDE does not find the package, but it's 
 
 
 # Param Ranges
-B1_OFFSET_MAX = 0.05 # 5 mm
+B1_OFFSET_MAX = 0.05 # 5 mm TODO this is 5cm, not mm, right?
 B4_OFFSET_MAX = 0.015 # 1.5 mm
 B5_OFFSET_MAX = 0.01 # 1 mm
 SLOPE_MAX = 0.0001 # 1e-04 m/coil

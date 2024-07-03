@@ -142,7 +142,7 @@ int run_chiSquare_optimization(){
 
 
     const int ITERATIONS = 1;
-    const int MAX_COMPONENT = 10;
+    const int MAX_COMPONENT = 1;
     const bool ACTIVATE_BN_OPTIMIZER = false;
 
     // run the optimizer
@@ -161,6 +161,29 @@ int run_chiSquare_optimization(){
 
     return 0;
 }
+
+int run_slope_minimizer(){
+    Py_Initialize(); // Manually initialize the Python interpreter
+
+    try {
+        py::exec(R"(
+            import sys
+            sys.path.append('../scripts')
+            sys.path.append('../build/lib')
+        )");
+
+        py::exec(R"(
+            import bo_minimize_slope # this will run the file
+        )");
+    } catch (const py::error_already_set &e) {
+        Logger::error("Error: " + std::string(e.what()));
+    }
+
+    Py_Finalize(); // Manually finalize the Python interpreter
+
+    // results are logged in the Logger, no need to export them
+    return 0;
+}
     
 
 
@@ -168,7 +191,7 @@ int main()
 {   
 
     // check which optimization the user wants to do
-    std::vector<std::string> optimization_options = {"bn optimization", "bn and chiSquare optimization", "(WIP) chiSquare optimization"};
+    std::vector<std::string> optimization_options = {"bn optimization", "bn and chiSquare optimization", "(WIP) chiSquare optimization", "(WIP) slope minimizer B1"};
     int selected_optimization = selectFromList(optimization_options, "Please select the desired optimization:");
 
     if(selected_optimization == 0){
@@ -180,6 +203,9 @@ int main()
     } else if (selected_optimization == 2){
         // chiSquare optimization
         return run_chiSquare_optimization();
+    } else if (selected_optimization == 3){
+        // chiSquare optimization
+        return run_slope_minimizer();
     }
 
     

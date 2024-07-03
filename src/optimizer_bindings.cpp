@@ -99,7 +99,47 @@ double objective_binding(const std::vector<double> &params)
     return result;
 }
 
+// Objective function that accepts offset and slope parameters for a harmonic drive scaling function. Fits a linear function to the resultung Bn function and returns its slope
+double objective_binding_minimize_slope(const std::vector<double> &params){
+    // check that there are exactly 2 values - offset and slope
+    if (params.size() != 2){
+        throw std::runtime_error("Objective function requires exactly 2 parameters: offset and slope.");
+    }
+
+    counter_++;
+    Logger::info("=== Bayesian Optimization run " + std::to_string(counter_) + " ===");
+
+    // Get the objective
+    if (ObjectiveManager::getInstance().getObjective() == nullptr)
+    {
+        init_objective();
+        Logger::debug("Initialized objective");
+    }
+
+    std::shared_ptr<ObjectiveFunction> objective = ObjectiveManager::getInstance().getObjective();
+
+    // cast parameters to map
+    HarmonicDriveParameterMap param_map;
+    param_map["B1"] = HarmonicDriveParameters(params[0], params[1]);
+
+    // print
+    Logger::info("New parameters:");
+    for (auto &param : param_map)
+    {
+        Logger::info(param.first + ": " + to_string(param.second));
+    }
+
+    //evaluate the obective function
+    ObjectiveFunction obj = *objective;
+
+    // get the slope
+    double result = obj.objective_function_slope(param_map);
+
+    return result;
+}
+
 PYBIND11_MODULE(optimizer_module, m)
 {
     m.def("objective_binding", &objective_binding, "Objective function to optimize");
+    m.def("objective_binding_minimize_slope", &objective_binding_minimize_slope, "Objective function to minimize the slope of a fitted linear func");
 }

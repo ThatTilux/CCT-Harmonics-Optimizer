@@ -18,6 +18,8 @@ class ObjectiveFunction{
 
         double objective_function(HarmonicDriveParameterMap &params);
         int chiSquaredOptimizer(int component, double scaling_factor, bool temp_do_bn_optimizer);
+        double objective_function_slope(HarmonicDriveParameterMap &params);
+
         
     private:
 
