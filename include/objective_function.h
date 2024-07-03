@@ -5,6 +5,7 @@
 #include "harmonics_calculator.h"
 #include "harmonics_handler.h"
 #include "model_handler.h"
+#include "harmonic_drive_parameter.h"
 #include "constants.h"
 #include "optimizer.h"
 #include <iostream>
@@ -16,6 +17,7 @@ class ObjectiveFunction{
         ObjectiveFunction(const ModelHandler &model_handler, double weight_chisquared);
 
         double objective_function(HarmonicDriveParameterMap &params);
+        int chiSquaredOptimizer(int component, double scaling_factor, bool temp_do_bn_optimizer);
         
     private:
 
@@ -26,7 +28,7 @@ class ObjectiveFunction{
 };
 
 
-double chiSquared(HarmonicsHandler &harmonics_handler, int component);
+double chiSquared(HarmonicsHandler &harmonics_handler, int component, std::pair<double, double>* fitted = nullptr);
 double computeVariance(const std::vector<double> &y);
 std::pair<double, double> linearRegression(const std::vector<std::pair<double, double>> &points);
 

@@ -12,5 +12,8 @@ extern const bool USE_BN_OPTIMIZER_IN_CHISQUARED;
 extern const double DEFAULT_MAX_BN_VALUE;
 extern const double MAX_BN_CHISQUARE;
 extern const double OPTIMIZER_DEFAULT_STEP;
+extern const double MAG_START_POS;
+extern const double MAG_END_POS;
+extern const int MAIN_COMPONENT;
 
 #endif // CONSTANTS_H

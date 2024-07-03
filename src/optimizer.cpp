@@ -12,6 +12,7 @@ double fitLinearGetRoot(const std::vector<std::pair<double, double>> &points)
 // function to optimize all harmonic drive values (only constant/slope params) so the corresponding (absolute) bn values are all within the max_harmonic_value TODO make more modular
 void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std::vector<double> &current_bn_values, HarmonicDriveParameterMap &harmonic_drive_values, double max_harmonic_value, const boost::filesystem::path &temp_json_file_path, const bool disable_logging)
 {
+    Logger::info("== Starting bn optimizer ==");
     Logger::log_timestamp("Starting optimizer");
 
     bool all_within_margin;
@@ -76,7 +77,15 @@ void optimize(HarmonicsCalculator &calculator, ModelHandler &model_handler, std:
                 // to get a different datapoint when the drive value was 0
                 if (step == 0)
                     step = OPTIMIZER_DEFAULT_STEP; 
+
                 double new_drive_value = current_drive_value + step;
+                
+                // this can happen sometimes
+                if (std::isnan(new_drive_value)){
+                    new_drive_value = OPTIMIZER_DEFAULT_STEP;
+                    // TODO handle properly, data points still contains a point with nan, so linreg will always return nan
+                }
+                
                 model_handler.setHarmonicDriveValue(name, HarmonicDriveParameters(new_drive_value, drive_type));
                 Logger::log_timestamp("New drive value set.");
 

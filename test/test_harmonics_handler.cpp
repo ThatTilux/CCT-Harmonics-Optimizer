@@ -23,24 +23,16 @@ protected:
 boost::filesystem::path HarmonicsHandlerTest::test_file;
 HarmonicsHandler HarmonicsHandlerTest::handler;
 
-TEST_F(HarmonicsHandlerTest, CorrectSizesEllBn) {
-    std::vector<double> ell = handler.get_ell();
-    std::vector<std::vector<double>> Bn_components;
-    
-    for (int i = 1; i <= 10; ++i) {
-        EXPECT_EQ(ell.size(), handler.get_Bn(i).size());
-    }
-}
 
 TEST_F(HarmonicsHandlerTest, GetBnCorrectSizes) {
     // there should be Bn values for B1 - B10. 
     for (int i = 1; i <= 10; ++i) {
-        std::vector<double> Bn = handler.get_Bn(i);
+        std::vector<std::pair<double, double>> Bn = handler.get_Bn(i);
         EXPECT_FALSE(Bn.empty());
     }
 
-    EXPECT_TRUE(handler.get_Bn(0).empty());
-    EXPECT_TRUE(handler.get_Bn(11).empty());
+    EXPECT_THROW(handler.get_Bn(0), std::logic_error);
+    EXPECT_THROW(handler.get_Bn(11), std::logic_error);
 }
 
 TEST_F(HarmonicsHandlerTest, GetbnCorrectSizes) {
@@ -54,7 +46,6 @@ TEST_F(HarmonicsHandlerTest, GetbnCorrectSizes) {
 TEST_F(HarmonicsHandlerTest, ConstructorHandlesNullData) {
     ASSERT_NO_THROW({
         HarmonicsHandler handler(nullptr);
-        EXPECT_TRUE(handler.get_ell().empty());
-        EXPECT_TRUE(handler.get_bn().empty());
+        EXPECT_TRUE(handler.get_Bn(1).empty());
     });
 }

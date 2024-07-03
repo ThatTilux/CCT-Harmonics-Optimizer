@@ -2,6 +2,8 @@
 
 This software is designed to automatically optimize custom CCT (canted-cosine-theta) harmonic drive parameters for CCT magnets. The optimizer adjusts the scaling function parameters of the custom harmonics to create a magnetic field where only the main B component has a bn value of 10,000, while the other components have bn values of 0 (within a user-specified margin). This project is part of the FCC-ee HTS4 research project at CERN.
 
+**TODO**: Introduction: bn, Bn, ...
+
 ## Overview
 
 This software utilizes the open-source RAT Library. For more information about the RAT Library, visit the [RAT Library website](https://rat-gui.com/library.html).

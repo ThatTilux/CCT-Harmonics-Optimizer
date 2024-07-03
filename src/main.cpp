@@ -103,12 +103,72 @@ int run_bn_chisquare_optimization(){
     return 0;
 }
 
+int run_chiSquare_optimization(){
+    // Get the JSON file path from user selection
+    boost::filesystem::path json_file_path;
+    try
+    {
+        json_file_path = selectJsonFile();
+    }
+    catch (const std::exception &e)
+    {
+        Logger::error(e.what());
+        return 1;
+    }
+
+    // Handles manipulations of the JSON file
+    ModelHandler model_handler(json_file_path);
+
+    // Get all the scaling values for the custom CCT harmonics
+    HarmonicDriveParameterMap harmonic_drive_values = model_handler.getHarmonicDriveValues();
+
+    // Check that there are harmonic drives
+    if (harmonic_drive_values.empty()) {
+        Logger::error("The program could not find any custom CCT harmonics (rat::mdl::cctharmonicdrive) whose name starts with the letter 'B'. Aborting...");
+        return 1;
+    }
+
+    // Print them
+    print_harmonic_drive_values(harmonic_drive_values);
+
+    // Ask the user if they want to proceed
+    if (!askUserToProceed()) {
+        Logger::info("Optimization aborted by user.");
+        return 0;
+    }
+
+    // create Objective Function
+    std::shared_ptr<ObjectiveFunction> pObjective = std::make_shared<ObjectiveFunction>(model_handler, CHISQUARE_WEIGHT);
+
+
+    const int ITERATIONS = 1;
+    const int MAX_COMPONENT = 10;
+    const bool ACTIVATE_BN_OPTIMIZER = false;
+
+    // run the optimizer
+    for(int j = 1; j <= ITERATIONS; j++){
+        Logger::info("Starting iteration " + std::to_string(j) + " of " + std::to_string(ITERATIONS) + " iterations.");
+        for (int i = 1; i <= MAX_COMPONENT; i++){
+            if (i != MAIN_COMPONENT){
+                Logger::info("=== Running chiSquare optimizer for component B" + std::to_string(i) + " ===");
+                pObjective->chiSquaredOptimizer(i, 1, i==MAX_COMPONENT && j == ITERATIONS && ACTIVATE_BN_OPTIMIZER);
+            }
+        }
+        // export the model
+        copyModelWithTimestamp(model_handler.getTempJsonPath());
+    }
+    
+
+    return 0;
+}
+    
+
 
 int main()
 {   
 
     // check which optimization the user wants to do
-    std::vector<std::string> optimization_options = {"bn optimization", "bn and chiSquare optimization"};
+    std::vector<std::string> optimization_options = {"bn optimization", "bn and chiSquare optimization", "(WIP) chiSquare optimization"};
     int selected_optimization = selectFromList(optimization_options, "Please select the desired optimization:");
 
     if(selected_optimization == 0){
@@ -117,6 +177,9 @@ int main()
     } else if (selected_optimization == 1){
         // bn and chiSquare optimization
         return run_bn_chisquare_optimization();
+    } else if (selected_optimization == 2){
+        // chiSquare optimization
+        return run_chiSquare_optimization();
     }
 
     

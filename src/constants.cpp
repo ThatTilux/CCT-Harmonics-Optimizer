@@ -27,3 +27,8 @@ const double OPTIMIZER_DEFAULT_STEP = 0.000001;
 const double MAX_OFFSET = 0.05; // 5mm
 // max slope value allowed to be set in the model handler
 const double MAX_SLOPE = 0.0001; // 1e-04 m/coil
+
+// temp constants - TODO infer this from the model 
+const double MAG_START_POS = 167; //167mm
+const double MAG_END_POS = 909; //909m
+const int MAIN_COMPONENT = 2; //B2
