@@ -182,6 +182,11 @@ double ObjectiveFunction::objective_function_slope(HarmonicDriveParameterMap &pa
     HarmonicsHandler harmonics_handler;
     calculator_.reload_and_calc(json_file_path_, harmonics_handler);
 
+    // get bn values
+    std::vector<double> current_bn_values = harmonics_handler.get_bn();
+
+    Logger::info("B1 bn value: " + std::to_string(current_bn_values[0]));
+
     // pair that the chisquared will store the offset and slope in
     std::pair<double, double> fitted;
 

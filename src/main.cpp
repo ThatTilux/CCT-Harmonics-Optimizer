@@ -221,9 +221,11 @@ int run_grid_search(){
         return 0;
     }
 
+    // TODO log what the objective funciton is
     // create Objective Function
     std::shared_ptr<ObjectiveFunction> pObjective = std::make_shared<ObjectiveFunction>(model_handler, CHISQUARE_WEIGHT);
 
+    // TODO log params
     // grid search params
     const double B1_OFFSET_MAX = 0.0025;
     const double B1_SLOPE_MAX = 0.000025;
