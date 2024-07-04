@@ -30,6 +30,7 @@ using HarmonicDriveParameterMap = std::unordered_map<std::string, HarmonicDriveP
 class ModelHandler {
 public:
     ModelHandler(const boost::filesystem::path& json_file_path);
+    ModelHandler(); // dummy - do not use
 
     HarmonicDriveParameterMap getHarmonicDriveValues(const std::string& prefix = "B");
     void setHarmonicDriveValue(const std::string &name, const HarmonicDriveParameters &params);

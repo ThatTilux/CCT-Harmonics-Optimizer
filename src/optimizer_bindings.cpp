@@ -50,8 +50,6 @@ void cast_params_to_map(const std::vector<double> &params, HarmonicDriveParamete
 // Binding to Python that exposes the ObjectiveFunction::objective_function
 double objective_binding(const std::vector<double> &params)
 {
-    Logger::log_timestamp("Objective binding called from Python");
-
     counter_++;
     Logger::info("=== Bayesian Optimization run " + std::to_string(counter_) + " ===");
 
@@ -81,7 +79,6 @@ double objective_binding(const std::vector<double> &params)
     Logger::debug("before");
     ObjectiveFunction obj = *objective;
     Logger::debug("after");
-    Logger::log_timestamp("Calling objective function");
     double result;
     try{
         result = obj.objective_function(param_map);
@@ -90,11 +87,9 @@ double objective_binding(const std::vector<double> &params)
         return -1.0; // error code, BO will interpret as infinity
     }
     
-    Logger::log_timestamp("Objective function finished");
 
     Logger::info("=== end of run " + std::to_string(counter_) + " ===");
 
-    Logger::log_timestamp("Objective binding finished");
 
     return result;
 }

@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "optimizer.h"
+#include "bn_optimizer.h"
 #include <boost/filesystem.hpp>
 #include <constants.h>
 
@@ -17,21 +17,22 @@ protected:
 TEST_F(BnOptimizerTest, BnOptimizer) {
     // initialize variables
     ModelHandler model_handler(test_file);
-    const boost::filesystem::path temp_json_file_path = model_handler.getTempJsonPath();
     double max_harmonic_value = 0.1;
-    HarmonicsCalculator calculator(temp_json_file_path);
-    HarmonicDriveParameterMap harmonic_drive_values = model_handler.getHarmonicDriveValues();
 
-    // optimizer will store results here
-    std::vector<double> current_bn_values;
-
-    // call optimizer
+    // create optimizer object and call optimization
+    BnOptimizer optimizer(model_handler, max_harmonic_value, true);
     ASSERT_NO_THROW({
-        optimize(calculator, model_handler, current_bn_values, harmonic_drive_values, max_harmonic_value, temp_json_file_path, true);
+        optimizer.optimize();
     });
 
+
+    // get results
+    std::vector<double> bn_values = optimizer.getResults();
+
+    
+
     // make sure all variables are optimized
-    for (auto &bn : current_bn_values) {
+    for (auto &bn : bn_values) {
         if (bn != 10000){
             ASSERT_LE(std::abs(bn), max_harmonic_value);
         }

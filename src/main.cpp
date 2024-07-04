@@ -2,8 +2,8 @@
 #include "optimizer_bindings.h"
 #include "model_handler.h"
 #include "input_output.h"
-#include "optimizer.h"
 #include "constants.h"
+#include "bn_optimizer.h"
 
 #include <pybind11/embed.h>
 #include <iostream>
@@ -14,70 +14,9 @@
 namespace py = pybind11;
 
 
-int run_bn_optimization(){
-    // Get the JSON file path from user selection
-    boost::filesystem::path json_file_path;
-    try
-    {
-        json_file_path = selectJsonFile();
-    }
-    catch (const std::exception &e)
-    {
-        Logger::error(e.what());
-        return 1;
-    }
-
-    // Handles manipulations of the JSON file
-    ModelHandler model_handler(json_file_path);
-    // get path of the temp model
-    const boost::filesystem::path temp_json_file_path = model_handler.getTempJsonPath();
-
-    // Get user input for maximum harmonic value
-    double max_harmonic_value = getUserInput("Enter the maximum absolute value for harmonic values", DEFAULT_MAX_BN_VALUE);
-
-    // Handles calculations for the model
-    HarmonicsCalculator calculator(temp_json_file_path);
-
-    // Get all the scaling values for the custom CCT harmonics
-    HarmonicDriveParameterMap harmonic_drive_values = model_handler.getHarmonicDriveValues();
-
-    // Check that there are harmonic drives
-    if (harmonic_drive_values.empty()) {
-        Logger::error("The program could not find any custom CCT harmonics (rat::mdl::cctharmonicdrive) whose name starts with the letter 'B'. Aborting...");
-        return 1;
-    }
-
-    // Print them
-    print_harmonic_drive_values(harmonic_drive_values);
-
-    // Ask the user if they want to proceed
-    if (!askUserToProceed()) {
-        Logger::info("Optimization aborted by user.");
-        return 0;
-    }
-
-    // optimizer will put resulting bn values in here
-    std::vector<double> current_bn_values;
-
-    // optimize the harmonic drive values
-    optimize(calculator, model_handler, current_bn_values, harmonic_drive_values, max_harmonic_value, temp_json_file_path);
-
-    // optimization was successful, print results
-    Logger::info("=== All harmonics have been optimized ===");
-    Logger::info("User-specified margin was: " + std::to_string(max_harmonic_value));
-    print_harmonic_drive_values(harmonic_drive_values);
-    print_vector(current_bn_values, "bn");
-
-    // export the model
-    copyModelWithTimestamp(temp_json_file_path);
-
-    return 0;
-}
-
 int run_bn_chisquare_optimization(){
     // TODO figure out a good value for chiSquared
 
-    Logger::log_timestamp("Starting python script");
     Py_Initialize(); // Manually initialize the Python interpreter
 
     try {
@@ -95,7 +34,6 @@ int run_bn_chisquare_optimization(){
     }
 
     Py_Finalize(); // Manually finalize the Python interpreter
-    Logger::log_timestamp("Python script finished");
 
 
     // results are logged in the Logger, no need to export them
@@ -225,7 +163,6 @@ int run_grid_search(){
     // create Objective Function
     std::shared_ptr<ObjectiveFunction> pObjective = std::make_shared<ObjectiveFunction>(model_handler, CHISQUARE_WEIGHT);
 
-    // TODO log params
     // grid search params
     const double B1_OFFSET_MAX = 0.0025;
     const double B1_SLOPE_MAX = 0.000025;
@@ -233,8 +170,15 @@ int run_grid_search(){
     const double granularity_offset = 0.00001;
     const double granularity_slope = 0.000001;
 
+    // log all params
+    Logger::info("Grid search params:");
+    Logger::info("B1_OFFSET_MAX: " + std::to_string(B1_OFFSET_MAX));
+    Logger::info("B1_SLOPE_MAX: " + std::to_string(B1_SLOPE_MAX));
+    Logger::info("granularity_offset: " + std::to_string(granularity_offset));
+    Logger::info("granularity_slope: " + std::to_string(granularity_slope));
+
     // assumed time used for 1 evaluation
-    const int time_per_evaluation_s = 1.7;
+    const double time_per_evaluation_s = 1.7;
 
     // compute how many evaluations we will do
     double evaluations = (2*B1_OFFSET_MAX/granularity_offset) * (2*B1_SLOPE_MAX/granularity_slope);
@@ -262,6 +206,96 @@ int run_grid_search(){
 
     return 0;
 }
+
+int run_CSV_configs(const std::string& csv_file_path){
+    boost::filesystem::path json_file_path;
+    try
+    {
+        json_file_path = selectJsonFile();
+    }
+    catch (const std::exception &e)
+    {
+        Logger::error(e.what());
+        return 1;
+    }
+
+    // Handles manipulations of the JSON file
+    ModelHandler model_handler(json_file_path);
+
+    // Get all the scaling values for the custom CCT harmonics
+    HarmonicDriveParameterMap harmonic_drive_values = model_handler.getHarmonicDriveValues();
+
+    // Check that there are harmonic drives
+    if (harmonic_drive_values.empty()) {
+        Logger::error("The program could not find any custom CCT harmonics (rat::mdl::cctharmonicdrive) whose name starts with the letter 'B'. Aborting...");
+        return 1;
+    }
+
+    // Print them
+    print_harmonic_drive_values(harmonic_drive_values);
+
+    // Ask the user if they want to proceed
+    if (!askUserToProceed()) {
+        Logger::info("Optimization aborted by user.");
+        return 0;
+    }
+
+    // TODO log what the objective funciton is
+    // create Objective Function
+    std::shared_ptr<ObjectiveFunction> pObjective = std::make_shared<ObjectiveFunction>(model_handler, CHISQUARE_WEIGHT);
+
+
+    // read CSV file
+    Logger::info("Reading configs from CSV file " + csv_file_path + "...");
+
+    std::ifstream file(csv_file_path);
+    if (!file.is_open()){
+        Logger::error("Could not open file " + csv_file_path);
+        return 1;
+    }
+
+    // read the offset and slope column to create the configs
+    std::vector<HarmonicDriveParameterMap> configs;
+
+    // read every line
+    std::string line;
+    // skip header line
+    std::getline(file, line);
+
+    while (std::getline(file, line)){
+        std::stringstream ss(line);
+        std::string index;
+        std::string offset_str;
+        std::string slope_str;
+        std::getline(ss, index, ','); // we don't need this
+        std::getline(ss, offset_str, ',');
+        std::getline(ss, slope_str, ',');
+
+        // convert to double
+        double offset = std::stod(offset_str);
+        double slope = std::stod(slope_str);
+
+        // create the config
+        HarmonicDriveParameterMap config;
+        config["B1"] = HarmonicDriveParameters(offset, slope);
+
+        configs.push_back(config);
+    }
+
+    Logger::info("Read " + std::to_string(configs.size()) + " configs from CSV file.");
+
+    // Run objective function for all configs
+    Logger::info("Running objective function for all configs...");
+
+    for (int i = 0; i < configs.size(); i++){
+        Logger::info("== Running config " + std::to_string(i+1) + " of " + std::to_string(configs.size()) + " ==");
+        HarmonicDriveParameterMap params = configs[i];
+        Logger::info("Offset: " + std::to_string(params["B1"].getOffset()) + ", Slope: " + std::to_string(params["B1"].getSlope()));
+        pObjective->objective_function_slope(configs[i]);
+    }
+
+    return 0;
+}
     
 
 
@@ -269,12 +303,16 @@ int main()
 {   
 
     // check which optimization the user wants to do
-    std::vector<std::string> optimization_options = {"bn optimization", "bn and chiSquare optimization", "(WIP) chiSquare optimization", "(WIP) grid search slope minimizer B1"};
+    std::vector<std::string> optimization_options = {"bn optimization", "bn and chiSquare optimization", "(WIP) chiSquare optimization", "(WIP) grid search slope minimizer B1", "run CSV configs"};
     int selected_optimization = selectFromList(optimization_options, "Please select the desired optimization:");
 
     if(selected_optimization == 0){
         // only bn optimization
-        return run_bn_optimization();
+        BnOptimizer optimizer = BnOptimizer();
+        optimizer.optimize();
+        optimizer.logResults();
+        optimizer.exportModel();
+        return 0;
     } else if (selected_optimization == 1){
         // bn and chiSquare optimization
         return run_bn_chisquare_optimization();
@@ -282,8 +320,11 @@ int main()
         // chiSquare optimization
         return run_chiSquare_optimization();
     } else if (selected_optimization == 3){
-        // chiSquare optimization
+        // grid search
         return run_grid_search();
+    } else if (selected_optimization == 4){
+        // run CSV configs
+        return run_CSV_configs("./configs.csv");
     }
 
     

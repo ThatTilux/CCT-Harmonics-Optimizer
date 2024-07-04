@@ -23,21 +23,12 @@ double ObjectiveFunction::objective_function(HarmonicDriveParameterMap &params)
     // TODO MAKE THIS MORE MODULAR
 
     // apply all parameters
-    Logger::log_timestamp("Applying parameters");
     model_handler_.apply_params(params);
-    Logger::log_timestamp("Parameters applied");
 
     // if the bn optimizer should be used, apply it
     if (USE_BN_OPTIMIZER_IN_CHISQUARED)
     {
-        Logger::info("= Starting bn optimizer... =");
-        // dummy vector that optimize puts the results in; we don't need this here
-        std::vector<double> bn;
-        // get drive values
-        HarmonicDriveParameterMap harmonic_drive_values = model_handler_.getHarmonicDriveValues();
-        // run the bn optimizer
-        optimize(calculator_, model_handler_, bn, harmonic_drive_values, MAX_BN_CHISQUARE, model_handler_.getTempJsonPath());
-        Logger::info("= bn optimizer has finished =");
+        //TODO TAKE CARE OF THIS
     }
 
     // do the computation
@@ -125,56 +116,18 @@ int ObjectiveFunction::chiSquaredOptimizer(int component, double scaling_factor,
     Logger::info("Now applying the fitted values for B" + std::to_string(component) + ": offset = " + std::to_string(fitted.first) + ", slope = " + std::to_string(fitted.second));
     model_handler_.setHarmonicDriveValue("B" + std::to_string(component), HarmonicDriveParameters(fitted.first / 1000, fitted.second));
 
-    // TODO TEMP REMOVE
-    // calculator_.reload_and_calc(json_file_path_, harmonics_handler);
-    // value = chiSquared(harmonics_handler, component, &fitted);
-    // Logger::debug("Chi squared value for B" + std::to_string(component) + ": " + std::to_string(value));
-
-
-    if (temp_do_bn_optimizer)
-    {
-
-        // export the model
-        copyModelWithTimestamp(model_handler_.getTempJsonPath());
-
-        // get necessary values for bn optimizer
-        HarmonicDriveParameterMap harmonic_drive_values = model_handler_.getHarmonicDriveValues();
-        const double max_bn = MAX_BN_CHISQUARE;
-        boost::filesystem::path temp_json_file_path = model_handler_.getTempJsonPath();
-
-        // run bn optimizer
-        optimize(calculator_, model_handler_, current_bn_values, harmonic_drive_values, max_bn, temp_json_file_path);
-
-        // optimization was successful, print results
-        Logger::info("=== All harmonics have been optimized ===");
-        Logger::info("User-specified margin was: " + std::to_string(max_bn));
-        print_harmonic_drive_values(harmonic_drive_values);
-        print_vector(current_bn_values, "bn");
-    }
-
-    // for (double scaling_factor : SCALING_FACTORS)
-    // {
-    //     Logger::info("Optimizing with scaling factor " + std::to_string(scaling_factor));
-
-    //     // set the offset and slope for component
-    //     model_handler_.setHarmonicDriveValue("B" + std::to_string(component), HarmonicDriveParameters(fitted.first * scaling_factor, fitted.second * scaling_factor));
-
-    //     // rerun the computation and print the bn values
-    //     calculator_.reload_and_calc(json_file_path_, harmonics_handler);
-    //     current_bn_values = harmonics_handler.get_bn();
-    //     print_vector(current_bn_values, "bn");
-
-    //     // recompute chi squared
-    //     value = chiSquared(harmonics_handler, component);
-    //     Logger::debug("Chi squared value B" + std::to_string(component) + " after optimization with scaling factor " + std::to_string(scaling_factor) + ": " + std::to_string(value));
-    // }
-
     return 0;
 }
 
 // TODO clean this up - e.g., put into other obj func class
 // Function that fits a linear function to a Bn function and returns the absolute slope
 double ObjectiveFunction::objective_function_slope(HarmonicDriveParameterMap &params){
+
+    // a fitted abs slope 0.0015 is considered good
+    // a abs bn value of 10 is considered good
+    // set the weight so that these two are equally good 
+    const double SLOPE_WEIGHT = 10/0.0015;
+
     // apply all parameters
     model_handler_.apply_params(params);
 
@@ -185,7 +138,9 @@ double ObjectiveFunction::objective_function_slope(HarmonicDriveParameterMap &pa
     // get bn values
     std::vector<double> current_bn_values = harmonics_handler.get_bn();
 
-    Logger::info("B1 bn value: " + std::to_string(current_bn_values[0]));
+    double bn = current_bn_values[0];
+
+    Logger::info("B1 bn value: " + std::to_string(bn));
 
     // pair that the chisquared will store the offset and slope in
     std::pair<double, double> fitted;
@@ -194,8 +149,14 @@ double ObjectiveFunction::objective_function_slope(HarmonicDriveParameterMap &pa
     double value = chiSquared(harmonics_handler, 1, &fitted); //TODO hardcoded B1 here
 
     double slope = std::abs(fitted.second);
+    double weighted_slope = slope * SLOPE_WEIGHT;
 
-    Logger::info("Objective function value: " + std::to_string(slope));
+    Logger::info("Absolute slope value: " + std::to_string(slope));
+    Logger::info("Weighted slope value: " + std::to_string(weighted_slope));
+
+    double obj_value = weighted_slope + bn;
+
+    Logger::info("Objective function value: " + std::to_string(obj_value));
 
     //return slope
     return slope;
@@ -262,7 +223,7 @@ double chiSquared(HarmonicsHandler &harmonics_handler, int component, std::pair<
     double variance = computeVariance(Bn);
 
     // fit a linear function
-    auto [slope, intercept] = linearRegression(points);
+    auto [slope, intercept] = AbstractOptimizer::linearRegression(points);
 
     // fill fitted if needed
     if (fitted != nullptr)
@@ -279,29 +240,7 @@ double chiSquared(HarmonicsHandler &harmonics_handler, int component, std::pair<
     return chi_squared;
 }
 
-// Function to perform linear regression and return the slope and intercept
-std::pair<double, double> linearRegression(const std::vector<std::pair<double, double>> &points)
-{
-    size_t n = points.size();
-    if (n < 2)
-    {
-        throw std::runtime_error("Not enough points for linear regression.");
-    }
 
-    double sum_x = 0, sum_y = 0, sum_xx = 0, sum_xy = 0;
-    for (const auto &point : points)
-    {
-        sum_x += point.first;
-        sum_y += point.second;
-        sum_xx += point.first * point.first;
-        sum_xy += point.first * point.second;
-    }
-
-    double slope = (n * sum_xy - sum_x * sum_y) / (n * sum_xx - sum_x * sum_x);
-    double intercept = (sum_y - slope * sum_x) / n;
-
-    return {slope, intercept};
-}
 
 // Function to compute the variance of y values with Bessel's correction
 double computeVariance(const std::vector<double> &y)

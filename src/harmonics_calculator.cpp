@@ -8,6 +8,11 @@ HarmonicsCalculator::HarmonicsCalculator(const boost::filesystem::path &json_fil
     }
 }
 
+// dummy constructor - do not use
+HarmonicsCalculator::HarmonicsCalculator()
+{
+}
+
 // Function to log the GPU information
 void HarmonicsCalculator::log_gpu_info()
 {
@@ -129,11 +134,8 @@ void HarmonicsCalculator::calc(HarmonicsHandler& harmonics_handler, bool disable
 
 // reloads the model from the json and computes the bn values
 void HarmonicsCalculator::reload_and_calc(const boost::filesystem::path &json_file_path, HarmonicsHandler& harmonics_handler, bool disable_logging){
-    Logger::log_timestamp("Reloading model.");
     load_model(json_file_path);
-    Logger::log_timestamp("Model reloaded. Now calcing");
     calc(harmonics_handler, disable_logging);
-    Logger::log_timestamp("Calculation done.");
 }
 
 std::tuple<rat::mdl::ShModelPr, rat::mdl::ShModelRootPr, rat::mdl::ShModelGroupPr, rat::mdl::ShCalcGroupPr>

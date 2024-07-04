@@ -3,11 +3,11 @@
 
 #include <vector>
 #include "harmonics_calculator.h"
+#include "abstract_optimizer.h"
 #include "harmonics_handler.h"
 #include "model_handler.h"
 #include "harmonic_drive_parameter.h"
 #include "constants.h"
-#include "optimizer.h"
 #include <iostream>
 #include <cmath>
 
@@ -33,6 +33,7 @@ class ObjectiveFunction{
 double chiSquared(HarmonicsHandler &harmonics_handler, int component, std::pair<double, double>* fitted = nullptr);
 double computeVariance(const std::vector<double> &y);
 std::pair<double, double> linearRegression(const std::vector<std::pair<double, double>> &points);
+void transform_drive_values(double &offset, double &slope);
 
 
 #endif // OBJECTIVE_FUNCTION_H
