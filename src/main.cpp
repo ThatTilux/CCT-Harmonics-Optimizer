@@ -100,29 +100,6 @@ int run_chiSquare_optimization(){
     return 0;
 }
 
-// TODO REMOVE THIS WITH FILE
-int run_slope_minimizer(){
-    Py_Initialize(); // Manually initialize the Python interpreter
-
-    try {
-        py::exec(R"(
-            import sys
-            sys.path.append('../scripts')
-            sys.path.append('../build/lib')
-        )");
-
-        py::exec(R"(
-            import bo_minimize_slope # this will run the file
-        )");
-    } catch (const py::error_already_set &e) {
-        Logger::error("Error: " + std::string(e.what()));
-    }
-
-    Py_Finalize(); // Manually finalize the Python interpreter
-
-    // results are logged in the Logger, no need to export them
-    return 0;
-}
 
 int run_grid_search(){
     // TODO code duplication here, avoid by refactoring to func
