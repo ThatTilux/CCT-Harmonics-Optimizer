@@ -155,7 +155,7 @@ int run_grid_search(){
     Logger::info("granularity_slope: " + std::to_string(granularity_slope));
 
     // assumed time used for 1 evaluation
-    const double time_per_evaluation_s = 1.7;
+    const double time_per_evaluation_s = 1.5;
 
     // compute how many evaluations we will do
     double evaluations = (2*B1_OFFSET_MAX/granularity_offset) * (2*B1_SLOPE_MAX/granularity_slope);
@@ -280,7 +280,7 @@ int main()
 {   
 
     // check which optimization the user wants to do
-    std::vector<std::string> optimization_options = {"bn optimization", "bn and chiSquare optimization", "(WIP) chiSquare optimization", "(WIP) grid search slope minimizer B1", "run CSV configs"};
+    std::vector<std::string> optimization_options = {"bn optimization", "bn and chiSquare optimization", "(WIP) chiSquare optimization", "grid search slope minimizer B1", "run CSV configs"};
     int selected_optimization = selectFromList(optimization_options, "Please select the desired optimization:");
 
     if(selected_optimization == 0){

@@ -154,7 +154,7 @@ double ObjectiveFunction::objective_function_slope(HarmonicDriveParameterMap &pa
     Logger::info("Absolute slope value: " + std::to_string(slope));
     Logger::info("Weighted slope value: " + std::to_string(weighted_slope));
 
-    double obj_value = weighted_slope + bn;
+    double obj_value = weighted_slope + std::abs(bn);
 
     Logger::info("Objective function value: " + std::to_string(obj_value));
 
