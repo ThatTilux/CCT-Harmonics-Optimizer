@@ -6,12 +6,13 @@
 #include <boost/filesystem.hpp>
 #include "input_output.h"
 #include "harmonics_calculator.h"
+#include "statistical_analysis.h"
 
 class AbstractOptimizer {
 public:
     AbstractOptimizer(bool disable_user_interaction = false);
 
-    static std::pair<double, double> linearRegression(const std::vector<std::pair<double, double>> &points);
+    void exportModel();
 
     virtual void optimize() = 0;
     virtual void logResults() = 0;
@@ -23,6 +24,9 @@ protected:
 
     double getMaxHarmonicValue();
     HarmonicDriveParameterMap initHarmonicDrives();
+    void assertOnlyLinearDrives();
+    void assertAllHarmonicsPresent();
+    bool areAllHarmonicsBelowThreshold(double threshold);
 
     boost::filesystem::path json_file_path_; 
     ModelHandler model_handler_;

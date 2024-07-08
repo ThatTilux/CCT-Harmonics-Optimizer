@@ -33,10 +33,9 @@ void AbstractOptimizer::initCalcultor()
 // Function to let the user select the desired model
 void AbstractOptimizer::getModelSelection()
 {
-    boost::filesystem::path json_file_path;
     try
     {
-        json_file_path = selectJsonFile();
+        json_file_path_ = selectJsonFile();
     }
     catch (const std::exception &e)
     {
@@ -78,26 +77,48 @@ HarmonicDriveParameterMap AbstractOptimizer::initHarmonicDrives()
     return harmonic_drive_values;
 }
 
-// Function to perform linear regression and return the slope and intercept
-std::pair<double, double> AbstractOptimizer::linearRegression(const std::vector<std::pair<double, double>> &points)
-{
-    size_t n = points.size();
-    if (n < 2)
+// Function to assert that there are only custom harmonics with an 'amplitude' of linear. Throws std::runtime_error if not
+void AbstractOptimizer::assertOnlyLinearDrives(){
+    HarmonicDriveParameterMap params = model_handler_.getHarmonicDriveValues();
+    for (auto &param : params)
     {
-        throw std::runtime_error("Not enough points for linear regression.");
+        if (!param.second.isOffsetAndSlope())
+            throw std::runtime_error("The selected model has one or more custom harmonics with an 'amplitude' value other than 'linear'. This is not supported for this optimizer.");
+    }
+}
+
+// Function to assert that there are custom harmonics for all harmonics from 1 to 10 (except for the main one). Throws std::runtime_error if not
+void AbstractOptimizer::assertAllHarmonicsPresent(){
+    HarmonicDriveParameterMap params = model_handler_.getHarmonicDriveValues();
+    for (int i = 1; i <= 10; i++)
+    {
+        if (i != MAIN_COMPONENT && params.find("B" + std::to_string(i)) == params.end())
+            throw std::runtime_error("The selected model does not have a custom harmonic for harmonic " + std::to_string(i) + ". This is not supported for this optimizer.");
+    }
+}
+
+
+// Function to check if all abs bn values are below a certain threshold
+bool AbstractOptimizer::areAllHarmonicsBelowThreshold(double threshold){
+    Logger::info("Checking if all bn values are below threshold " + std::to_string(threshold) + "...");
+    HarmonicsHandler harmonics_handler;
+    calculator_.reload_and_calc(model_handler_.getTempJsonPath(), harmonics_handler);
+
+    std::vector<double> bn_values = harmonics_handler.get_bn();
+    for (double bn : bn_values)
+    {
+        if (std::abs(bn) > threshold)
+        {
+            Logger::info("Found bn value " + std::to_string(bn) + " above threshold " + std::to_string(threshold) + ".");
+            return false;
+        }
     }
 
-    double sum_x = 0, sum_y = 0, sum_xx = 0, sum_xy = 0;
-    for (const auto &point : points)
-    {
-        sum_x += point.first;
-        sum_y += point.second;
-        sum_xx += point.first * point.first;
-        sum_xy += point.first * point.second;
-    }
+    Logger::info("All bn values are below threshold " + std::to_string(threshold) + ".");
+    return true;
+}
 
-    double slope = (n * sum_xy - sum_x * sum_y) / (n * sum_xx - sum_x * sum_x);
-    double intercept = (sum_y - slope * sum_x) / n;
-
-    return {slope, intercept};
+// Function to export the optimized model
+void AbstractOptimizer::exportModel(){
+    copyModelWithTimestamp(model_handler_.getTempJsonPath());
 }

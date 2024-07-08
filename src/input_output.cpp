@@ -1,5 +1,5 @@
 #include "input_output.h"
-
+// Declaration here to avoid circular imports
 
 // Function to print harmonic drive values
 void print_harmonic_drive_values(HarmonicDriveParameterMap &harmonic_drive_values)
@@ -244,4 +244,41 @@ void print_vector(const std::vector<double>& data, std::string label)
     {
         Logger::info(label + "[" + std::to_string(i + 1) + "] = " + std::to_string(data[i]));
     }
+}
+
+// Function to export a vector of GridSearchResults to a CSV file
+void export_grid_search_results_to_csv(const std::vector<GridSearchResult>& results, const std::string& csv_path)
+{
+    std::ofstream csv_file(csv_path);
+    if (!csv_file)
+    {
+        Logger::error("Failed to open CSV file: " + csv_path);
+        return;
+    }
+
+    // Get the number of criteria
+    size_t num_criteria = results[0].criteria_values.size();
+
+    // Get the labels of the criteria TODO infer this from the criteria
+    std::vector<std::string> criteria_labels = {"bn", "fitted_slope"};	
+
+    // Write the header with the criteria labels
+    csv_file << "Index,Offset,Slope";
+    for (size_t i = 0; i < num_criteria; ++i)
+    {
+        csv_file << "," << criteria_labels[i];
+    }
+
+    for (size_t i = 0; i < results.size(); ++i)
+    {
+        // append the next line, considering the criteria values
+        csv_file << "\n" << i << "," << results[i].offset << "," << results[i].slope;
+        for (size_t j = 0; j < num_criteria; ++j)
+        {
+            csv_file << "," << results[i].criteria_values[j];
+        }
+    }
+    csv_file.close();
+
+    Logger::info("Grid search results exported to CSV file: " + csv_path);
 }

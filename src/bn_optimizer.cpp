@@ -26,10 +26,7 @@ void BnOptimizer::logResults()
     print_vector(current_bn_values_, "bn");
 }
 
-// Function to export the optimized model
-void BnOptimizer::exportModel(){
-    copyModelWithTimestamp(model_handler_.getTempJsonPath());
-}
+
 
 // Function to get the bn values after optimization
 std::vector<double>& BnOptimizer::getResults(){
@@ -39,7 +36,7 @@ std::vector<double>& BnOptimizer::getResults(){
 // Function to fit a linear function to data and extract the root
 double BnOptimizer::fitLinearGetRoot(const std::vector<std::pair<double, double>> &points)
 {
-    auto [slope, intercept] = linearRegression(points);
+    auto [slope, intercept] = StatisticalAnalysis::linearRegression(points);
     double root = -intercept / slope;
 
     return root;

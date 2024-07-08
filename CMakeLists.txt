@@ -86,14 +86,3 @@ set(CMAKE_SUPPRESS_REGENERATION true)
 
 # Disable CDash
 set(CTEST_USE_LAUNCHERS OFF)
-
-# Add the shared library for optimizer_bindings.cpp
-add_library(optimizer_module SHARED ${SOURCES} src/optimizer_bindings.cpp)
-target_include_directories(optimizer_module PRIVATE ${Python3_INCLUDE_DIRS} ${pybind11_INCLUDE_DIRS})
-target_link_libraries(optimizer_module PRIVATE Rat::Models armadillo Boost::filesystem ${Python3_LIBRARIES} pybind11::module)
-
-# ensure optimizer_module is built before main
-add_dependencies(main optimizer_module)
-
-# Ensure the shared library name matches the Python import name
-set_target_properties(optimizer_module PROPERTIES PREFIX "" SUFFIX ".so")

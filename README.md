@@ -8,8 +8,6 @@ This software is designed to automatically optimize custom CCT (canted-cosine-th
 
 This software utilizes the open-source RAT Library. For more information about the RAT Library, visit the [RAT Library website](https://rat-gui.com/library.html).
 
-To avoid using "Installation" twice as a header, you can merge the "Requirements" section into the "Installation" section or rename one of the sections to make it more specific. Here's a revised version of your README:
-
 ## Installation
 
 **Note: This software only works on Linux.**
@@ -26,19 +24,7 @@ Please follow the instructions below to install all necessary dependencies.
    sudo apt-get install libgtest-dev
    ```
 
-2. **Python Development Headers**:
-   - These are required for the Python scripts of this software.
-   ```sh
-   sudo apt-get install python3-dev
-   ```
-
-3. **pybind11**:
-   - pybind11 enables C++ code in Python and vice-versa.
-   ```sh
-   sudo apt-get install pybind11-dev
-   ```
-
-4. **spdlog**:
+2. **spdlog**:
    - spdlog is a very fast C++ logging library.
    You can install `spdlog` using by cloning the repository and installing it manually:
    ```sh
@@ -48,20 +34,6 @@ Please follow the instructions below to install all necessary dependencies.
    cmake ..
    make -j
    sudo make install
-   ```
-
-#### Python Packages
-
-1. **scikit-optimize**:
-   - Scikit-Optimize is used for machine learning functions.
-   ```sh
-   pip install scikit-optimize
-   ```
-
-2. **pybind11**:
-   - The python-component of the pybind11 package.
-   ```sh
-   pip install pybind11
    ```
 
 #### RAT-Library

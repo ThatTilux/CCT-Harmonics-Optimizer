@@ -8,7 +8,6 @@ public:
     BnOptimizer(ModelHandler &model_handler, double max_harmonic_value, bool disable_logging = false);
     BnOptimizer(bool disable_logging = false);
 
-    void exportModel();
     std::vector<double>& getResults();
 
     void optimize() override;
@@ -18,12 +17,13 @@ public:
 
 
 protected:
+
+private:
     double max_harmonic_value_;
     HarmonicDriveParameterMap harmonic_drive_values_;
     std::vector<double> current_bn_values_;
     bool disable_logging_ = false;
-
-private:
+    
     double fitLinearGetRoot(const std::vector<std::pair<double, double>> &points);
 };
 
