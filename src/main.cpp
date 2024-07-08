@@ -141,24 +141,29 @@ int run_grid_search(){
     std::shared_ptr<ObjectiveFunction> pObjective = std::make_shared<ObjectiveFunction>(model_handler, CHISQUARE_WEIGHT);
 
     // grid search params
-    const double B1_OFFSET_MAX = 0.0025;
-    const double B1_SLOPE_MAX = 0.000025;
+    const double B1_OFFSET_MAX = -0.00011387 + 0.00001;
+    const double B1_OFFSET_MIN = -0.00011387 - 0.00001;
 
-    const double granularity_offset = 0.00001;
-    const double granularity_slope = 0.000001;
+    const double B1_SLOPE_MAX = -0.000038981 + 0.000003;
+    const double B1_SLOPE_MIN = -0.000038981 - 0.000003;
+
+    const double granularity_offset = 0.000001;
+    const double granularity_slope = 0.0000001;
 
     // log all params
     Logger::info("Grid search params:");
     Logger::info("B1_OFFSET_MAX: " + std::to_string(B1_OFFSET_MAX));
+    Logger::info("B1_OFFSET_MIN: " + std::to_string(B1_OFFSET_MIN));
     Logger::info("B1_SLOPE_MAX: " + std::to_string(B1_SLOPE_MAX));
+    Logger::info("B1_SLOPE_MIN: " + std::to_string(B1_SLOPE_MIN));
     Logger::info("granularity_offset: " + std::to_string(granularity_offset));
     Logger::info("granularity_slope: " + std::to_string(granularity_slope));
 
     // assumed time used for 1 evaluation
-    const double time_per_evaluation_s = 1.5;
+    const double time_per_evaluation_s = 0.7;
 
     // compute how many evaluations we will do
-    double evaluations = (2*B1_OFFSET_MAX/granularity_offset) * (2*B1_SLOPE_MAX/granularity_slope);
+    double evaluations = ((B1_OFFSET_MAX - B1_OFFSET_MIN)/granularity_offset) * ((B1_SLOPE_MAX - B1_SLOPE_MIN)/granularity_slope);
     
     // estimated time usage
     double time_h = evaluations * time_per_evaluation_s / 60 / 60;
@@ -169,8 +174,8 @@ int run_grid_search(){
     int counter = 1;
 
     // run the grid search
-    for (double offset = -B1_OFFSET_MAX; offset <= B1_OFFSET_MAX; offset += granularity_offset) {
-        for (double slope = -B1_SLOPE_MAX; slope <= B1_SLOPE_MAX; slope += granularity_slope) {
+    for (double offset = B1_OFFSET_MIN; offset <= B1_OFFSET_MAX; offset += granularity_offset) {
+        for (double slope = B1_SLOPE_MIN; slope <= B1_SLOPE_MAX; slope += granularity_slope) {
             Logger::info("== Running grid search iteration " + std::to_string(counter) + " ==");
             Logger::info("Offset: " + std::to_string(offset) + ", Slope: " + std::to_string(slope));
             HarmonicDriveParameterMap params;

@@ -123,7 +123,7 @@ int ObjectiveFunction::chiSquaredOptimizer(int component, double scaling_factor,
 // Function that fits a linear function to a Bn function and returns the absolute slope
 double ObjectiveFunction::objective_function_slope(HarmonicDriveParameterMap &params){
 
-    // a fitted abs slope 0.0015 is considered good
+    // a fitted abs slope 0.01 is considered okay, 0.0015 is great
     // a abs bn value of 10 is considered good
     // set the weight so that these two are equally good 
     const double SLOPE_WEIGHT = 10/0.0015;
@@ -148,13 +148,13 @@ double ObjectiveFunction::objective_function_slope(HarmonicDriveParameterMap &pa
     // run chi square computation to get fit
     double value = chiSquared(harmonics_handler, 1, &fitted); //TODO hardcoded B1 here
 
-    double slope = std::abs(fitted.second);
+    double slope = fitted.second;
     double weighted_slope = slope * SLOPE_WEIGHT;
 
-    Logger::info("Absolute slope value: " + std::to_string(slope));
+    Logger::info("Slope value: " + std::to_string(slope));
     Logger::info("Weighted slope value: " + std::to_string(weighted_slope));
 
-    double obj_value = weighted_slope + std::abs(bn);
+    double obj_value = std::abs(weighted_slope) + std::abs(bn);
 
     Logger::info("Objective function value: " + std::to_string(obj_value));
 
