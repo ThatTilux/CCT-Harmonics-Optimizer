@@ -27,8 +27,8 @@ link_directories(${Python3_LIBRARY_DIRS})
 find_package(RatModels 2.017.7 REQUIRED)
 find_package(Armadillo REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem)
-find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
-find_package(pybind11 REQUIRED)
+find_package(Eigen3 REQUIRED)
+
 
 # find ZLIB
 if(POLICY CMP0074)
@@ -44,8 +44,8 @@ list(REMOVE_ITEM SOURCES "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
 # Create the main executable
 add_executable(main ${CMAKE_SOURCE_DIR}/src/main.cpp ${SOURCES})
-target_include_directories(main PRIVATE ${Python3_INCLUDE_DIRS} ${pybind11_INCLUDE_DIRS})
-target_link_libraries(main PRIVATE Rat::Models armadillo Boost::filesystem ${Python3_LIBRARIES} pybind11::embed)
+target_include_directories(main PRIVATE ${EIGEN3_INCLUDE_DIR})
+target_link_libraries(main PRIVATE Rat::Models armadillo Boost::filesystem)
 
 # Google Test integration
 # Download and unpack googletest at configure time
@@ -75,8 +75,8 @@ enable_testing()
 
 # Create the test executable
 add_executable(runTests ${SOURCES} ${TEST_SOURCES})
-target_include_directories(runTests PRIVATE ${Python3_INCLUDE_DIRS} ${pybind11_INCLUDE_DIRS})
-target_link_libraries(runTests PRIVATE gtest_main Rat::Models armadillo Boost::filesystem ${Python3_LIBRARIES} pybind11::embed)
+target_include_directories(runTests PRIVATE ${EIGEN3_INCLUDE_DIR})
+target_link_libraries(runTests PRIVATE gtest_main Rat::Models armadillo Boost::filesystem)
 
 # Add tests
 add_test(NAME runTests COMMAND runTests)

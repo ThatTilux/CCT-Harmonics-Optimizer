@@ -36,6 +36,12 @@ Please follow the instructions below to install all necessary dependencies.
    sudo make install
    ```
 
+3. **Eigen3**
+    - Eigen3 is a library used for linear algebra computations
+    ```sh
+    sudo apt-get install libeigen3-dev
+    ```
+
 #### RAT-Library
 Follow the [RAT documentation](https://gitlab.com/Project-Rat/rat-documentation) to install the RAT library. This may take a while.
 - When a CUDA compatible GPU is available, make sure to follow the steps for installing CUDA.

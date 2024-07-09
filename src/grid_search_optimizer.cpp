@@ -148,11 +148,13 @@ void GridSearchOptimizer::optimize()
     Logger::info("=== Starting grid search optimizer ===");
 
     // flag that all bn values are below a certain threshold
-    bool allHarmonicsBelowThreshold = false;
+    bool allHarmonicsBelowThreshold;
 
     // run grid searches until all harmonics are below a threshold
-    while (!allHarmonicsBelowThreshold)
+    do
     {
+        allHarmonicsBelowThreshold = true;
+
         // run grid searches
         // TODO do for all components
         for (int i = 1; i <= 1; i++)
@@ -163,22 +165,36 @@ void GridSearchOptimizer::optimize()
                 Logger::info("== Harmonic B" + std::to_string(i) + " is already below the threshold. Skipping. ==");
                 continue;
             }
+            else
+            {
+                // there is at least one harmonic not below the threshold
+                allHarmonicsBelowThreshold = false;
+            }
 
             // run the grid search
             std::vector<GridSearchResult> results;
             runGridSearch(i, results);
 
-            // Extrapolate the optimal configuration
-            // TODO; for now, export the results to csv
+            // export the results to csv
             export_grid_search_results_to_csv(results, "./grid_search/grid_search_results_B" + std::to_string(i) + ".csv");
-        }
 
-        // check if all are below a threshold
-        allHarmonicsBelowThreshold = areAllHarmonicsBelowThreshold(GRID_BN_THRESHOLD);
+            // Extrapolate the optimal configuration
+            auto [new_offset, new_slope] = extrapolateOptimalConfiguration(results);
+
+            // Update the model with the new configuration
+            HarmonicDriveParameterMap new_config;
+            new_config["B" + std::to_string(i)] = HarmonicDriveParameters(new_offset, new_slope);
+            model_handler_.apply_params(new_config);
+
+            // Recompute bn 
+            HarmonicsHandler handler;
+            calculator_.reload_and_calc(model_handler_.getTempJsonPath(), handler);
+            current_bn_values_ = handler.get_bn();
+        }
 
         // TODO remove once extraploation has happened
         allHarmonicsBelowThreshold = true;
-    }
+    } while (!allHarmonicsBelowThreshold);
 
     // Start next phase: Do fine-granular grid searches for all harmonics
     // TODO
@@ -193,4 +209,21 @@ void GridSearchOptimizer::runGridSearch(int component, std::vector<GridSearchRes
     std::pair<double, double> granularities = granularities_[component - 1];
     int steps = getNumberOfSteps(offset_range, slope_range, granularities.first, granularities.second);
     GridSearch grid_search(model_handler_, calculator_, component, offset_range, slope_range, granularities.first, granularities.second, results, criteria_, time_per_calc_, steps);
+}
+
+// Function to extrapolate the optimal configuration from the grid search results. The optimal offset, slope configuration is the one that minimizes all objectives (criteria).
+std::pair<double, double> GridSearchOptimizer::extrapolateOptimalConfiguration(std::vector<GridSearchResult> &results){
+    for (int i = 0; i < criteria_.size(); i++){
+        // Model each data as a 2-d plane in the [offset, slope, criteria] space. Plane: z=ax+by+c
+        auto [a, b, c] = StatisticalAnalysis::fitPlaneToData(results, i);
+        Logger::info("Plane coefficients for criterion " + std::to_string(i) + ": a=" + std::to_string(a) + ", b=" + std::to_string(b) + ", c=" + std::to_string(c));
+
+        // From each plane, extract the linear function where the plane has the z value 0
+        
+    }
+
+    // Check if they intersect
+
+
+    return {0, 0};
 }

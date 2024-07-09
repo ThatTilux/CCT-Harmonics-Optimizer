@@ -22,6 +22,7 @@ public:
 protected:
 private:
     void runGridSearch(int component, std::vector<GridSearchResult> &results);
+    std::pair<double, double> extrapolateOptimalConfiguration(std::vector<GridSearchResult> &results);
     void initParamRanges();
     void initCriteria();
     void initGranularities();

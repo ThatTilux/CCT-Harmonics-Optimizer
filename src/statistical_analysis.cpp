@@ -37,3 +37,37 @@ std::pair<double, double> StatisticalAnalysis::linearRegression(const std::vecto
 
     return {slope, intercept};
 }
+
+// Function to fit a 2D plane in the offset,slope,criterion space and return the coefficients of the plane
+std::tuple<double, double, double> StatisticalAnalysis::fitPlaneToData(const std::vector<GridSearchResult> &results, size_t criterion_index)
+    {
+        if (results.empty())
+        {
+            throw std::runtime_error("No data points provided.");
+        }
+
+        size_t n = results.size();
+        Eigen::MatrixXd A(n, 3);
+        Eigen::VectorXd b(n);
+
+        for (size_t i = 0; i < n; ++i)
+        {
+            A(i, 0) = results[i].offset;
+            A(i, 1) = results[i].slope;
+            A(i, 2) = 1.0; // for the intercept
+            if (results[i].criteria_values.size() <= criterion_index)
+            {
+                throw std::runtime_error("Criterion index out of range.");
+            }
+            b(i) = results[i].criteria_values[criterion_index];
+        }
+
+        // Solve for the coefficients using least squares
+        Eigen::VectorXd coeffs = A.colPivHouseholderQr().solve(b);
+
+        double a = coeffs(0);
+        double b_coef = coeffs(1);
+        double c = coeffs(2);
+
+        return std::make_tuple(a, b_coef, c);
+    }
