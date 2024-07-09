@@ -79,7 +79,7 @@ void GridSearchOptimizer::initGranularities()
     }
 }
 
-// Function to compute granilarities given a time budget. Granularity of offset is granularity of slope * 10. Format: {offset_granularity, slope_granularity}
+// Function to compute granularities given a time budget. Granularity of offset is granularity of slope * 10. Format: {offset_granularity, slope_granularity}
 std::pair<double, double> GridSearchOptimizer::computeGranularities(std::pair<double, double> offset_range,
                                                                     std::pair<double, double> slope_range,
                                                                     double time_budget_minutes,
@@ -132,9 +132,9 @@ void GridSearchOptimizer::estimateTimePerComputation()
 
 int GridSearchOptimizer::getNumberOfSteps(std::pair<double, double> offset_range, std::pair<double, double> slope_range, double offset_granularity, double slope_granularity)
 {
-    double offset_steps = (offset_range.second - offset_range.first) / offset_granularity;
-    double slope_steps = (slope_range.second - slope_range.first) / slope_granularity;
-    return int(offset_steps * slope_steps);
+    int offset_steps = static_cast<int>((offset_range.second - offset_range.first) / offset_granularity) + 1;
+    int slope_steps = static_cast<int>((slope_range.second - slope_range.first) / slope_granularity) + 1;
+    return offset_steps * slope_steps;
 }
 
 void GridSearchOptimizer::logResults()
