@@ -15,12 +15,13 @@ GridSearchOptimizer::GridSearchOptimizer() : AbstractOptimizer()
     initParamRanges();
     initCriteria();
     estimateTimePerComputation();
+    initGranularities();
 }
 
 // Constructor to be used for no user interaction.
 GridSearchOptimizer::GridSearchOptimizer(ModelHandler &model_handler) : AbstractOptimizer()
 {
-    //TODO
+    // TODO
 }
 
 // Function to initialize the parameter ranges for the grid search
@@ -44,7 +45,6 @@ void GridSearchOptimizer::initParamRanges()
     param_ranges_[7] = {{0, 1}, {0, 1}};
     param_ranges_[8] = {{0, 1}, {0, 1}};
     param_ranges_[9] = {{0, 1}, {0, 1}};
-    param_ranges_[10] = {{0, 1}, {0, 1}};
 }
 
 // Function to get the parameter ranges for a specific component. The component is 1-indexed. Format: {{offset_min, offset_max}, {slope_min, slope_max}}
@@ -62,10 +62,8 @@ std::pair<std::pair<double, double>, std::pair<double, double>> GridSearchOptimi
 // Function to initialize the criteria for the grid search
 void GridSearchOptimizer::initCriteria()
 {
-    BnObjective bn_obj;
-    FittedSlopeObjective fitted_slope_obj;
-    criteria_.push_back(&bn_obj);
-    criteria_.push_back(&fitted_slope_obj);
+    criteria_.push_back(std::make_shared<BnObjective>());
+    criteria_.push_back(std::make_shared<FittedSlopeObjective>());
 }
 
 // Function to initialize the granularities for the grid search, based on Constants::TIME_BUDGET_GRID_SEARCH. Granularity of offset is granularity of slope * 10.
@@ -83,9 +81,9 @@ void GridSearchOptimizer::initGranularities()
 
 // Function to compute granilarities given a time budget. Granularity of offset is granularity of slope * 10. Format: {offset_granularity, slope_granularity}
 std::pair<double, double> GridSearchOptimizer::computeGranularities(std::pair<double, double> offset_range,
-                                               std::pair<double, double> slope_range,
-                                               double time_budget_minutes,
-                                               double time_per_step_seconds)
+                                                                    std::pair<double, double> slope_range,
+                                                                    double time_budget_minutes,
+                                                                    double time_per_step_seconds)
 {
     double time_budget_seconds = time_budget_minutes * 60.0;
     double slope_range_size = slope_range.second - slope_range.first;
@@ -186,7 +184,8 @@ void GridSearchOptimizer::optimize()
     // TODO
 }
 
-void GridSearchOptimizer::runGridSearch(int component, std::vector<GridSearchResult> &results){
+void GridSearchOptimizer::runGridSearch(int component, std::vector<GridSearchResult> &results)
+{
     // get the parameter range for the current harmonic
     auto [offset_range, slope_range] = getParamRange(component);
 

@@ -1,6 +1,6 @@
 #include "grid_search.h"
 
-GridSearch::GridSearch(ModelHandler &model_handler, HarmonicsCalculator calculator, int component, std::pair<double, double> offset_range, std::pair<double, double> slope_range, double offset_granularity, double slope_granularity, std::vector<GridSearchResult> &results, std::vector<AbstractObjective*> &criteria, double estimated_time_per_calc, int total_steps)
+GridSearch::GridSearch(ModelHandler &model_handler, HarmonicsCalculator calculator, int component, std::pair<double, double> offset_range, std::pair<double, double> slope_range, double offset_granularity, double slope_granularity, std::vector<GridSearchResult> &results, std::vector<std::shared_ptr<AbstractObjective>> &criteria, double estimated_time_per_calc, int total_steps)
     : model_handler_(model_handler), calculator_(calculator), component_(component), offset_range_(offset_range), slope_range_(slope_range), offset_granularity_(offset_granularity), slope_granularity_(slope_granularity), results_(results), criteria_(criteria), estimated_time_per_step_(estimated_time_per_calc), total_steps_(total_steps)
 {
     logParams();
@@ -36,9 +36,9 @@ void GridSearch::run()
             std::vector<double> criteria_values;
             for (auto &criterion : criteria_)
             {
-                double value = (*criterion).evaluate(harmonics_handler, component_);
+                double value = criterion->evaluate(harmonics_handler, component_);
                 criteria_values.push_back(value);
-                Logger::info((*criterion).getLabel() + ": " + std::to_string(value));
+                Logger::info(criterion->getLabel() + ": " + std::to_string(value));
             }
 
             // Store the results

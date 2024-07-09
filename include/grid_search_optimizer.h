@@ -41,7 +41,7 @@ private:
     std::vector<std::pair<double, double>> granularities_;
 
     // Criteria to be used for the grid search
-    std::vector<AbstractObjective*> criteria_;
+    std::vector<std::shared_ptr<AbstractObjective>> criteria_;
 
     // TODO implement this
     std::vector<double> current_bn_values_;
