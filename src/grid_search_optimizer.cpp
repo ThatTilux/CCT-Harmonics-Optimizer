@@ -140,7 +140,6 @@ int GridSearchOptimizer::getNumberOfSteps(std::pair<double, double> offset_range
 void GridSearchOptimizer::logResults()
 {
     Logger::info("=== Grid Search Optimizer has finished ===");
-    Logger::info("Final bn values:");
     print_vector(current_bn_values_, "bn");
 }
 
@@ -236,6 +235,7 @@ std::pair<double, double> GridSearchOptimizer::extrapolateOptimalConfiguration(s
 
         // From each plane, extract the linear function where the plane has the z value 0
         auto [offset, slope] = StatisticalAnalysis::planeToLinearFunction(a, b, c);
+        Logger::info("Linear function for criterion " + std::to_string(i) + ": Offset=" + std::to_string(offset) + ", Slope=" + std::to_string(slope));
 
         linear_functions.push_back({offset, slope});
     }
@@ -251,6 +251,8 @@ std::pair<double, double> GridSearchOptimizer::extrapolateOptimalConfiguration(s
     if(!intersection){
         throw std::runtime_error("No intersection found for the linear functions.");
     }
+
+    Logger::info("Intersection of the linear functions: Offset=" + std::to_string(intersection->first) + ", Slope=" + std::to_string(intersection->second));
 
     // Return the new values
     return *intersection;

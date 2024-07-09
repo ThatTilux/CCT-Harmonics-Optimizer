@@ -23,7 +23,7 @@ const double OPTIMIZER_DEFAULT_STEP = 0.000001;
 // threshold for all bn values to start the final phase of the grid search optimizer
 const double GRID_BN_THRESHOLD = 10;
 // Time budget in minutes for one grid search in the grid search optimizer
-const double TIME_BUDGET_GRID_SEARCH = 1;
+const double TIME_BUDGET_GRID_SEARCH = 5;
 
 // MODEL CONSTANTS
 
