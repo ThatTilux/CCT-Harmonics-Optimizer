@@ -218,6 +218,8 @@ int main()
         // run grid search optimizer
         GridSearchOptimizer optimizer = GridSearchOptimizer();
         optimizer.optimize();
+        optimizer.logResults();
+        optimizer.exportModel();
         return 0;
     }
 

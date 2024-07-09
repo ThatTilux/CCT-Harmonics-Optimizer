@@ -139,13 +139,20 @@ int GridSearchOptimizer::getNumberOfSteps(std::pair<double, double> offset_range
 
 void GridSearchOptimizer::logResults()
 {
-    // TODO
+    Logger::info("=== Grid Search Optimizer has finished ===");
+    Logger::info("Final bn values:");
+    print_vector(current_bn_values_, "bn");
 }
 
 // Function to start the optimizer
 void GridSearchOptimizer::optimize()
 {
     Logger::info("=== Starting grid search optimizer ===");
+    Logger::info("Using the following criteria:");
+    for (int i = 0; i < criteria_.size(); i++)
+    {
+        Logger::info("Criterion " + std::to_string(i) + ": " + criteria_[i]->getLabel());
+    }
 
     // flag that all bn values are below a certain threshold
     bool allHarmonicsBelowThreshold;
