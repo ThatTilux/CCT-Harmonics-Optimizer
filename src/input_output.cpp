@@ -111,7 +111,7 @@ boost::filesystem::path selectJsonFile()
 
     // let the user select a file
     std::string prompt = "Select the JSON file for the model you wish to optimize. If your model is not in the list, make sure it is placed in the " + DATA_DIR_PATH + " directory.";
-    int selected_index = 3; //TODO REMOVE THIS selectFromList(json_file_names, prompt);
+    int selected_index = selectFromList(json_file_names, prompt);
 
     Logger::info("Selected model: " + json_files[selected_index].string());
 

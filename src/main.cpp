@@ -197,7 +197,7 @@ int main()
 
     // check which optimization the user wants to do
     std::vector<std::string> optimization_options = {"bn optimization", "Grid search slope minimizer B1", "run CSV configs", "Run grid search optimizer"};
-    int selected_optimization = 3; //TODO REMOVE selectFromList(optimization_options, "Please select the desired optimization:");
+    int selected_optimization = selectFromList(optimization_options, "Please select the desired optimization:");
 
 
 
