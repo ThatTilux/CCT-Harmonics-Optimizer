@@ -32,19 +32,17 @@ void GridSearchOptimizer::initParamRanges()
     // initialize param_ranges_ with the correct size
     param_ranges_.resize(10);
 
-    // B1 for the quad_double_nob6_alllinear
-    param_ranges_[0] = {{-0.0025, 0.0025}, {-0.000025, 0.000025}};
-
-    // TODO add other harmonics
-    param_ranges_[1] = {{0, 1}, {0, 1}};
-    param_ranges_[2] = {{0, 1}, {0, 1}};
-    param_ranges_[3] = {{0, 1}, {0, 1}};
-    param_ranges_[4] = {{0, 1}, {0, 1}};
-    param_ranges_[5] = {{0, 1}, {0, 1}};
-    param_ranges_[6] = {{0, 1}, {0, 1}};
-    param_ranges_[7] = {{0, 1}, {0, 1}};
-    param_ranges_[8] = {{0, 1}, {0, 1}};
-    param_ranges_[9] = {{0, 1}, {0, 1}};
+    // for the quad_double_nob6_alllinear
+    param_ranges_[0] = {{-0.0025, 0.0025}, {-0.000025, 0.000025}}; // B1
+    param_ranges_[1] = {{1, 1.0001}, {1, 1.0001}}; // some dummy values here since B2 is main
+    param_ranges_[2] = {{-0.0025, 0.0025}, {-0.000025, 0.000025}}; //B3
+    param_ranges_[3] = {{-0.0025, 0.0025}, {-0.000025, 0.000025}}; //B4
+    param_ranges_[4] = {{-0.0005, 0.0005}, {-1e-06, 1e-06}}; //B5
+    param_ranges_[5] = {{-0.0005, 0.0005}, {-1e-06, 1e-06}}; //B6
+    param_ranges_[6] = {{-0.0005, 0.0005}, {-1e-06, 1e-06}}; //B7
+    param_ranges_[7] = {{-0.0005, 0.0005}, {-1e-06, 1e-06}}; //B8
+    param_ranges_[8] = {{-0.0005, 0.0005}, {-1e-06, 1e-06}}; //B9
+    param_ranges_[9] = {{0, 1}, {0, 1}}; //B10
 }
 
 // Function to get the parameter ranges for a specific component. The component is 1-indexed. Format: {{offset_min, offset_max}, {slope_min, slope_max}}
@@ -75,7 +73,8 @@ void GridSearchOptimizer::initGranularities()
         auto [offset_range, slope_range] = getParamRange(i);
         std::pair<double, double> granularities = computeGranularities(offset_range, slope_range, TIME_BUDGET_GRID_SEARCH, time_per_calc_);
         granularities_.push_back(granularities);
-        Logger::info("Granularities for harmonic B" + std::to_string(i) + ": Offset: " + std::to_string(granularities.first) + ", Slope: " + std::to_string(granularities.second));
+        if (i != MAIN_COMPONENT)
+            Logger::info("Granularities for harmonic B" + std::to_string(i) + ": Offset: " + std::to_string(granularities.first) + ", Slope: " + std::to_string(granularities.second));
     }
 }
 
