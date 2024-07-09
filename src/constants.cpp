@@ -21,9 +21,9 @@ const bool USE_BN_OPTIMIZER_IN_CHISQUARED = true;
 // when the step size in the optimizer is 0, this value is used instead
 const double OPTIMIZER_DEFAULT_STEP = 0.000001;
 // threshold for all bn values to start the final phase of the grid search optimizer
-const double GRID_BN_THRESHOLD = 10;
+const double GRID_BN_THRESHOLD = 30;
 // Time budget in minutes for one grid search in the grid search optimizer
-const double TIME_BUDGET_GRID_SEARCH = 5;
+const double TIME_BUDGET_GRID_SEARCH = 1;
 
 // MODEL CONSTANTS
 

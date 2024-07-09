@@ -156,7 +156,7 @@ void GridSearchOptimizer::optimize()
     // flag that all bn values are below a certain threshold
     bool allHarmonicsBelowThreshold;
 
-    // run grid searches until all harmonics are below a threshold
+    // run grid searches until allHarmonicsBelowThreshold is true
     do
     {
         allHarmonicsBelowThreshold = true;
@@ -166,7 +166,8 @@ void GridSearchOptimizer::optimize()
         for (int i = 1; i <= 1; i++)
         {
             // check if the bn value is good enough already
-            if (current_bn_values_.size() >= i && std::abs(current_bn_values_[i - 1]) < GRID_BN_THRESHOLD)
+            double bn = current_bn_values_.size() >= i ? current_bn_values_[i - 1] : std::numeric_limits<double>::infinity();
+            if (std::abs(bn) < GRID_BN_THRESHOLD)
             {
                 Logger::info("== Harmonic B" + std::to_string(i) + " is already below the threshold. Skipping. ==");
                 continue;
@@ -197,6 +198,18 @@ void GridSearchOptimizer::optimize()
             HarmonicsHandler handler;
             calculator_.reload_and_calc(model_handler_.getTempJsonPath(), handler);
             current_bn_values_ = handler.get_bn();
+
+            // Check if the bn value actually got better
+            double new_bn = current_bn_values_[i - 1];
+            if (std::abs(new_bn) < std::abs(bn))
+            {
+                Logger::info("New bn value for harmonic B" + std::to_string(i) + ": " + std::to_string(new_bn) + ". The value improved.");
+            }
+            else
+            {
+                Logger::error("New bn value for harmonic B" + std::to_string(i) + ": " + std::to_string(new_bn) + ". The value did not improve. Aborting...");
+                return;
+            }
         }
 
         // TODO remove once extraploation has happened
