@@ -96,7 +96,7 @@ std::pair<double, double> GridSearchOptimizer::computeGranularities(std::pair<do
     double slope_steps = std::sqrt(total_steps / 10.0);
 
     // Calculate the granularities
-    double slope_granularity = slope_range_size / slope_steps;
+    double slope_granularity = slope_range_size / std::max(slope_steps, 1.0); // Ensure slope_steps is at least 1
     double offset_granularity = slope_granularity * 10.0;
 
     return std::make_pair(offset_granularity, slope_granularity);
