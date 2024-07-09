@@ -180,6 +180,7 @@ void GridSearchOptimizer::optimize()
 
             // Extrapolate the optimal configuration
             auto [new_offset, new_slope] = extrapolateOptimalConfiguration(results);
+            Logger::info("Extrapolated optimal configuration for harmonic B" + std::to_string(i) + ": Offset: " + std::to_string(new_offset) + ", Slope: " + std::to_string(new_slope) + ".");
 
             // Update the model with the new configuration
             HarmonicDriveParameterMap new_config;
@@ -213,17 +214,37 @@ void GridSearchOptimizer::runGridSearch(int component, std::vector<GridSearchRes
 
 // Function to extrapolate the optimal configuration from the grid search results. The optimal offset, slope configuration is the one that minimizes all objectives (criteria).
 std::pair<double, double> GridSearchOptimizer::extrapolateOptimalConfiguration(std::vector<GridSearchResult> &results){
+    // make sure there are at least 2 criteria
+    if (criteria_.size() < 2){
+        throw std::runtime_error("At least 2 criteria are needed for extrapolation.");
+    }
+    
+    // linear functions for all criteria
+    std::vector<std::pair<double, double>> linear_functions;
+    
     for (int i = 0; i < criteria_.size(); i++){
         // Model each data as a 2-d plane in the [offset, slope, criteria] space. Plane: z=ax+by+c
         auto [a, b, c] = StatisticalAnalysis::fitPlaneToData(results, i);
         Logger::info("Plane coefficients for criterion " + std::to_string(i) + ": a=" + std::to_string(a) + ", b=" + std::to_string(b) + ", c=" + std::to_string(c));
 
         // From each plane, extract the linear function where the plane has the z value 0
-        
+        auto [offset, slope] = StatisticalAnalysis::planeToLinearFunction(a, b, c);
+
+        linear_functions.push_back({offset, slope});
     }
 
+    if (criteria_.size() > 3){
+        throw std::runtime_error("Extrapolation for more than 3 criteria is not implemented.");
+    }
+
+    // Calculate the intersection of the linear functions
+    auto intersection = StatisticalAnalysis::findIntersection(linear_functions[0], linear_functions[1]);
+    
     // Check if they intersect
+    if(!intersection){
+        throw std::runtime_error("No intersection found for the linear functions.");
+    }
 
-
-    return {0, 0};
+    // Return the new values
+    return *intersection;
 }

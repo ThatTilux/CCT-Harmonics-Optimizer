@@ -13,7 +13,6 @@ double StatisticalAnalysis::computeVariance(const std::vector<double> &y)
     return variance;
 }
 
-
 // Function to perform linear regression and return the slope and intercept
 std::pair<double, double> StatisticalAnalysis::linearRegression(const std::vector<std::pair<double, double>> &points)
 {
@@ -40,34 +39,61 @@ std::pair<double, double> StatisticalAnalysis::linearRegression(const std::vecto
 
 // Function to fit a 2D plane in the offset,slope,criterion space and return the coefficients of the plane
 std::tuple<double, double, double> StatisticalAnalysis::fitPlaneToData(const std::vector<GridSearchResult> &results, size_t criterion_index)
+{
+    if (results.empty())
     {
-        if (results.empty())
-        {
-            throw std::runtime_error("No data points provided.");
-        }
-
-        size_t n = results.size();
-        Eigen::MatrixXd A(n, 3);
-        Eigen::VectorXd b(n);
-
-        for (size_t i = 0; i < n; ++i)
-        {
-            A(i, 0) = results[i].offset;
-            A(i, 1) = results[i].slope;
-            A(i, 2) = 1.0; // for the intercept
-            if (results[i].criteria_values.size() <= criterion_index)
-            {
-                throw std::runtime_error("Criterion index out of range.");
-            }
-            b(i) = results[i].criteria_values[criterion_index];
-        }
-
-        // Solve for the coefficients using least squares
-        Eigen::VectorXd coeffs = A.colPivHouseholderQr().solve(b);
-
-        double a = coeffs(0);
-        double b_coef = coeffs(1);
-        double c = coeffs(2);
-
-        return std::make_tuple(a, b_coef, c);
+        throw std::runtime_error("No data points provided.");
     }
+
+    size_t n = results.size();
+    Eigen::MatrixXd A(n, 3);
+    Eigen::VectorXd b(n);
+
+    for (size_t i = 0; i < n; ++i)
+    {
+        A(i, 0) = results[i].offset;
+        A(i, 1) = results[i].slope;
+        A(i, 2) = 1.0; // for the intercept
+        if (results[i].criteria_values.size() <= criterion_index)
+        {
+            throw std::runtime_error("Criterion index out of range.");
+        }
+        b(i) = results[i].criteria_values[criterion_index];
+    }
+
+    // Solve for the coefficients using least squares
+    Eigen::VectorXd coeffs = A.colPivHouseholderQr().solve(b);
+
+    double a = coeffs(0);
+    double b_coef = coeffs(1);
+    double c = coeffs(2);
+
+    return std::make_tuple(a, b_coef, c);
+}
+
+// Function that converts a plane equation (ax + by + c = z) to a linear function (y = mx + d) at the intersection with the z = 0 plane. Format: (offset, slope)
+std::tuple<double, double> StatisticalAnalysis::planeToLinearFunction(double a, double b, double c)
+{
+    if (b == 0)
+    {
+        throw std::runtime_error("Plane is parallel to the y-axis. No linear function representation exists.");
+    }
+
+    double m = -a / b;
+    double d = -c / b;
+    return std::make_tuple(d, m);
+}
+
+// Function to check if two lines intersect and find the intersection point. Input format: (offset, slope). Output format: (x, y). Returns std::nullopt if lines are parallel.
+std::optional<std::pair<double, double>> StatisticalAnalysis::findIntersection(const std::pair<double, double> &line1, const std::pair<double, double> &line2)
+{
+    if (line1.second == line2.second)
+    {
+        return std::nullopt; // Lines are parallel and do not intersect
+    }
+
+    double x = (line2.first - line1.first) / (line1.second - line2.second);
+    double y = line1.second * x + line1.first;
+
+    return std::make_pair(x, y);
+}
