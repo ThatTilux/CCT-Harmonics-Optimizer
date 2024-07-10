@@ -15,7 +15,7 @@ GridSearchOptimizer::GridSearchOptimizer() : AbstractOptimizer()
     initParamRanges();
     initCriteria();
     estimateTimePerComputation();
-    initGranularities();
+    computeGranularities();
 }
 
 // Constructor to be used for no user interaction.
@@ -65,60 +65,60 @@ void GridSearchOptimizer::initCriteria()
 }
 
 // Function to initialize the granularities for the grid search, based on Constants::TIME_BUDGET_GRID_SEARCH. Granularity of offset is granularity of slope * 10.
-void GridSearchOptimizer::initGranularities()
+void GridSearchOptimizer::computeGranularities()
 {
+    granularities_.resize(10);
+
     // for each harmonic, initialize granularities
     for (int i = 1; i <= 10; i++)
     {
         if (i == MAIN_COMPONENT)
         {
-            granularities_.push_back({0, 0}); // dummy values for main component
+            granularities_[i - 1] = {0, 0}; // dummy values for main component
             continue;
         }
 
         auto [offset_range, slope_range] = getParamRange(i);
         std::pair<double, double> granularities = computeGranularities(offset_range, slope_range, TIME_BUDGET_GRID_SEARCH, time_per_calc_);
-        granularities_.push_back(granularities);
+        granularities_[i - 1] = granularities;
         Logger::info("Granularities for harmonic B" + std::to_string(i) + ": Offset: " + std::to_string(granularities.first) + ", Slope: " + std::to_string(granularities.second));
     }
 }
 
-// Function to compute granularities given a time budget. Granularity of offset is granularity of slope * 10. Format: {offset_granularity, slope_granularity}
+// Function to compute granularities given a time budget. Format: {offset_granularity, slope_granularity}
+// Granularities are set so that the spanned grid in the parameter space is equidistant in both dimensions.
 std::pair<double, double> GridSearchOptimizer::computeGranularities(std::pair<double, double> offset_range,
                                                                     std::pair<double, double> slope_range,
                                                                     double time_budget_minutes,
                                                                     double time_per_step_seconds)
 {
-    const double ratio = 10.0;
+    double offset_min = offset_range.first;
+    double offset_max = offset_range.second;
+    double slope_min = slope_range.first;
+    double slope_max = slope_range.second;
 
     double time_budget_seconds = time_budget_minutes * 60.0;
-    double slope_range_size = slope_range.second - slope_range.first;
-    double offset_range_size = offset_range.second - offset_range.first;
+    int num_steps = static_cast<int>(time_budget_seconds / time_per_step_seconds);
 
-    // Calculate total steps allowed within the time budget
-    double total_steps = time_budget_seconds / time_per_step_seconds;
+    double offset_span = offset_max - offset_min;
+    double slope_span = slope_max - slope_min;
 
-    // Initial guess for the number of slope steps
-    double slope_steps = std::sqrt(total_steps / ratio);
+    double max_span = std::max(offset_span, slope_span);
 
-    // Adjust granularities iteratively
-    double slope_granularity;
-    double offset_granularity;
-    double estimated_total_steps;
+    int num_steps_per_dim = static_cast<int>(std::sqrt(num_steps));
 
-    do {
-        slope_granularity = slope_range_size / std::max(slope_steps, 1.0); // ensure at least 1 slope step
-        offset_granularity = slope_granularity * ratio;
+    double offset_granularity = offset_span / num_steps_per_dim;
+    double slope_granularity = slope_span / num_steps_per_dim;
 
-        double offset_steps = offset_range_size / offset_granularity;
-        estimated_total_steps = slope_steps * offset_steps;
-
-        if (estimated_total_steps < total_steps) {
-            slope_steps *= 1.1; // Increase the number of slope steps
-        } else if (estimated_total_steps > total_steps) {
-            slope_steps *= 0.9; // Decrease the number of slope steps
-        }
-    } while (std::abs(estimated_total_steps - total_steps) > 1 && slope_steps > 1);
+    // Check that both parameters have at least 2 steps
+    if (offset_range.second - offset_range.first < 2 * offset_granularity)
+    {
+        throw std::runtime_error("Offset range is too small for the time budget.");
+    }
+    if (slope_range.second - slope_range.first < 2 * slope_granularity)
+    {
+        throw std::runtime_error("Slope range is too small for the time budget.");
+    }
 
     return std::make_pair(offset_granularity, slope_granularity);
 }
@@ -158,6 +158,42 @@ int GridSearchOptimizer::getNumberOfSteps(std::pair<double, double> offset_range
     return offset_steps * slope_steps;
 }
 
+// Function to update the parameter ranges to be around the curret cofigurations by the provided factor. New range will be [offset - factor*offset, offset + factor*offset], same for slope.
+void GridSearchOptimizer::updateParamRanges(double factor)
+{
+    // make sure that the param_ranges_ is initialized
+    if (param_ranges_.empty())
+    {
+        throw std::runtime_error("Parameter ranges are not initialized.");
+    }
+
+    // get the current drive values
+    HarmonicDriveParameterMap harmonic_drive_values = model_handler_.getHarmonicDriveValues();
+
+    // update the param_ranges_ with the new values
+    for (int i = 1; i <= 10; i++)
+    {
+        if (i == MAIN_COMPONENT)
+            continue;
+
+        // get the current offset and slope
+        double current_offset = harmonic_drive_values["B" + std::to_string(i)].getOffset();
+        double current_slope = harmonic_drive_values["B" + std::to_string(i)].getSlope();
+
+        // get new values by multipl
+        double new_offset_min = current_offset - std::abs(current_offset) * factor;
+        double new_offset_max = current_offset + std::abs(current_offset) * factor;
+
+        double new_slope_min = current_slope - std::abs(current_slope) * factor;
+        double new_slope_max = current_slope + std::abs(current_slope) * factor;
+
+        // update the param_ranges_
+        param_ranges_[i - 1] = {{new_offset_min, new_offset_max}, {new_slope_min, new_slope_max}};
+
+        Logger::info("New parameter ranges for harmonic B" + std::to_string(i) + ": Offset: [" + std::to_string(new_offset_min) + ", " + std::to_string(new_offset_max) + "], Slope: [" + std::to_string(new_slope_min) + ", " + std::to_string(new_slope_max) + "].");
+    }
+}
+
 void GridSearchOptimizer::logResults()
 {
     Logger::info("=== Grid Search Optimizer has finished ===");
@@ -167,12 +203,53 @@ void GridSearchOptimizer::logResults()
 // Function to start the optimizer
 void GridSearchOptimizer::optimize()
 {
-    Logger::info("=== Starting grid search optimizer ===");
+    Logger::info("==== Starting grid search optimizer ====");
     Logger::info("Using the following criteria:");
     for (int i = 0; i < criteria_.size(); i++)
     {
         Logger::info("Criterion " + std::to_string(i) + ": " + criteria_[i]->getLabel());
     }
+
+    // Granularities and param ranges are initialized in the constructor
+
+    // Run the optimizer with the standard threshold
+    optimize(GRID_BN_THRESHOLD); 
+
+
+    // Run the optimizer a few more times with decreasing parameters: //
+
+
+    // Thresholds and search factors
+    std::vector<double> thresholds = {1, 0.1, 0.005};
+    std::vector<double> search_factors = {GRID_SEARCH_FACTOR, GRID_SEARCH_FACTOR / 10, GRID_SEARCH_FACTOR / 100};
+
+    // assert that they have the same length
+    if (thresholds.size() != search_factors.size())
+    {
+        throw std::runtime_error("Thresholds and search factors must have the same length.");
+    }
+
+    // Run the optimizer with the new thresholds and search factors
+    for (int i = 0; i < thresholds.size(); i++)
+    {
+        // export the model of the previous run
+        exportModel();
+
+        // Adjust parameter ranges to be around the extrapolated optimal configuration
+        updateParamRanges(search_factors[i]);
+
+        // Recompute Granularities based on new param ranges
+        computeGranularities();
+
+        // Redo the optimization with the new parameter ranges and lower threshold
+        optimize(thresholds[i]);
+    }
+}
+
+// Function to optimize all harmonics for the class-wide criteria in interations until all harmonics' bn values are below the provided threshold
+void GridSearchOptimizer::optimize(double bn_threshold)
+{
+    Logger::info("=== Optimizing all harmonics with bn threshold " + std::to_string(bn_threshold) + " ===");
 
     // flag that all bn values are below a certain threshold
     bool allHarmonicsBelowThreshold;
@@ -193,7 +270,7 @@ void GridSearchOptimizer::optimize()
 
             // check if the bn value is good enough already. In the first iteration, optimize all
             double prev_bn = !firstIteration && current_bn_values_.size() >= i ? current_bn_values_[i - 1] : std::numeric_limits<double>::infinity();
-            if (std::abs(prev_bn) < GRID_BN_THRESHOLD)
+            if (std::abs(prev_bn) < bn_threshold)
             {
                 Logger::info("== Harmonic B" + std::to_string(i) + " is already below the threshold. Skipping. ==");
                 continue;
@@ -241,14 +318,10 @@ void GridSearchOptimizer::optimize()
             print_vector(current_bn_values_, "bn");
         }
 
-        // TODO remove once extraploation has happened
-        allHarmonicsBelowThreshold = true;
-
         firstIteration = false;
     } while (!allHarmonicsBelowThreshold);
 
-    // Start next phase: Do fine-granular grid searches for all harmonics
-    // TODO
+    Logger::info("================================");
 }
 
 void GridSearchOptimizer::runGridSearch(int component, std::vector<GridSearchResult> &results)

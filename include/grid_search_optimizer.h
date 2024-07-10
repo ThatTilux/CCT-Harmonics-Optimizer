@@ -21,11 +21,13 @@ public:
 
 protected:
 private:
+    void optimize(double bn_threshold);
     void runGridSearch(int component, std::vector<GridSearchResult> &results);
     std::pair<double, double> extrapolateOptimalConfiguration(std::vector<GridSearchResult> &results);
     void initParamRanges();
+    void updateParamRanges(double factor);
     void initCriteria();
-    void initGranularities();
+    void computeGranularities();
     std::pair<double, double> computeGranularities(std::pair<double, double> offset_range,
                                                    std::pair<double, double> slope_range,
                                                    double time_budget_minutes,

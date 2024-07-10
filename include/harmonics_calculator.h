@@ -21,8 +21,8 @@ public:
     // dummy - do not use
     HarmonicsCalculator();
 
-    void calc(HarmonicsHandler &harmonics_handler, bool disable_logging = false);
-    void reload_and_calc(const boost::filesystem::path &json_file_path, HarmonicsHandler &harmonics_handler, bool disable_logging = false);
+    void calc(HarmonicsHandler &harmonics_handler, bool disable_logging = true);
+    void reload_and_calc(const boost::filesystem::path &json_file_path, HarmonicsHandler &harmonics_handler, bool disable_logging = true);
 
     bool has_harmonics_calc();
 
