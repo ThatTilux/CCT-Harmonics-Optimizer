@@ -69,16 +69,15 @@ std::tuple<double, double, double> StatisticalAnalysis::fitPlaneToData(const std
     double c = coeffs(2);
 
     // Check the fit quality
-    if (!checkFitQuality(A, b, coeffs))
-    {
-        throw std::runtime_error("Poor fit quality. The data does not resemble a plane.");
-    }
+    double fit_quality = checkFitQuality(A, b, coeffs);
+    
+    Logger::debug("Quality of plane fit: R^2 = " + std::to_string(fit_quality) + ".");
 
     return std::make_tuple(a, b_coef, c);
 }
 
-// Function to assess the quality of a 2D plane fit to 3D data using the R^2 metric. Returns false if the fit is poor, suggesting that the data may not be well-represented by a plane.
-bool StatisticalAnalysis::checkFitQuality(const Eigen::MatrixXd &A, const Eigen::VectorXd &b, const Eigen::VectorXd &coeffs, double threshold)
+// Function to assess the quality of a 2D plane fit to 3D data using the R^2 metric. Returns the R^2 value, which should be close to 1 for a good fit.
+double StatisticalAnalysis::checkFitQuality(const Eigen::MatrixXd &A, const Eigen::VectorXd &b, const Eigen::VectorXd &coeffs)
     {
         Eigen::VectorXd residuals = b - A * coeffs;
         double rss = residuals.squaredNorm();
@@ -86,7 +85,7 @@ bool StatisticalAnalysis::checkFitQuality(const Eigen::MatrixXd &A, const Eigen:
         double r2 = 1 - (rss / tss);
 
         // R^2 should be close to 1 for a good fit
-        return r2 > threshold;
+        return r2;
     }
 
 // Function that converts a plane equation (ax + by + c = z) to a linear function (y = mx + d) at the intersection with the z = 0 plane. Format: (offset, slope)

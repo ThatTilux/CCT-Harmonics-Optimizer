@@ -22,6 +22,9 @@ public:
 protected:
 private:
     void optimize(double bn_threshold);
+    void recompute_bn();
+    bool hasDriveValueChanged(HarmonicDriveParameterMap &drive_values_before_loop);
+    bool checkBnValue(int component, double prev_bn, HarmonicDriveParameterMap &prev_drive_values);
     void runGridSearch(int component, std::vector<GridSearchResult> &results);
     std::pair<double, double> extrapolateOptimalConfiguration(std::vector<GridSearchResult> &results);
     void initParamRanges();

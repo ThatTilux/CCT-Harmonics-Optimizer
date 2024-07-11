@@ -19,7 +19,7 @@ public:
     static std::optional<std::pair<double, double>> findIntersection(const std::pair<double, double>& line1, const std::pair<double, double>& line2);
 
 private:
-    static bool checkFitQuality(const Eigen::MatrixXd &A, const Eigen::VectorXd &b, const Eigen::VectorXd &coeffs, double threshold = 1e-2);
+    static double checkFitQuality(const Eigen::MatrixXd &A, const Eigen::VectorXd &b, const Eigen::VectorXd &coeffs);
 };
 
 #endif // STATISTICAL_ANALYSIS_H

@@ -213,15 +213,13 @@ void GridSearchOptimizer::optimize()
     // Granularities and param ranges are initialized in the constructor
 
     // Run the optimizer with the standard threshold
-    optimize(GRID_BN_THRESHOLD); 
-
+    // TODO RE-ENABLE optimize(GRID_BN_THRESHOLD);
 
     // Run the optimizer a few more times with decreasing parameters: //
 
-
     // Thresholds and search factors
-    std::vector<double> thresholds = {1, 0.1, 0.005};
-    std::vector<double> search_factors = {GRID_SEARCH_FACTOR, GRID_SEARCH_FACTOR / 10, GRID_SEARCH_FACTOR / 100};
+    std::vector<double> thresholds = {0.01};                        // TODO RE-ENABLE {1, 0.1, 0.005};
+    std::vector<double> search_factors = {GRID_SEARCH_FACTOR / 100}; // TODO RE-ENABLE {GRID_SEARCH_FACTOR, GRID_SEARCH_FACTOR / 10, GRID_SEARCH_FACTOR / 100};
 
     // assert that they have the same length
     if (thresholds.size() != search_factors.size())
@@ -261,6 +259,9 @@ void GridSearchOptimizer::optimize(double bn_threshold)
     {
         allHarmonicsBelowThreshold = true;
 
+        // save the harmonic drive values. If they do not change in one iteration, the optimization may be stuck
+        HarmonicDriveParameterMap drive_values_before_loop = model_handler_.getHarmonicDriveValues();
+
         // run grid searches
         for (int i = 1; i <= 10; i++)
         {
@@ -281,6 +282,9 @@ void GridSearchOptimizer::optimize(double bn_threshold)
                 allHarmonicsBelowThreshold = false;
             }
 
+            // save the current drive values. If the new bn value is worse, revert to these values
+            HarmonicDriveParameterMap prev_drive_values = model_handler_.getHarmonicDriveValues();
+
             // run the grid search
             std::vector<GridSearchResult> results;
             runGridSearch(i, results);
@@ -298,30 +302,71 @@ void GridSearchOptimizer::optimize(double bn_threshold)
             model_handler_.apply_params(new_config);
 
             // Recompute bn
-            HarmonicsHandler handler;
-            calculator_.reload_and_calc(model_handler_.getTempJsonPath(), handler);
-            current_bn_values_ = handler.get_bn();
+            recompute_bn();
 
             // Check if the bn value actually got better
-            double new_bn = current_bn_values_[i - 1];
-            if (std::abs(new_bn) < std::abs(prev_bn))
-            {
-                Logger::info("New bn value for harmonic B" + std::to_string(i) + ": " + std::to_string(new_bn) + ". The value improved.");
-            }
-            else
-            {
-                Logger::error("New bn value for harmonic B" + std::to_string(i) + ": " + std::to_string(new_bn) + ". The value did not improve. Aborting...");
-                return;
-            }
+            bool improve = checkBnValue(i, prev_bn, prev_drive_values);
 
-            // print the bn values
+            // print the bn values.
             print_vector(current_bn_values_, "bn");
+        }
+
+        // assert that at least one drive value has changed. If not, the optimization may be stuck
+        if (!hasDriveValueChanged(drive_values_before_loop))
+        {
+            Logger::error("No harmonic drive values have changed in one iteration. The optimization may be stuck. Exiting.");
+            return;
         }
 
         firstIteration = false;
     } while (!allHarmonicsBelowThreshold);
 
     Logger::info("================================");
+}
+
+void GridSearchOptimizer::recompute_bn()
+{
+    HarmonicsHandler handler;
+    calculator_.reload_and_calc(model_handler_.getTempJsonPath(), handler);
+    current_bn_values_ = handler.get_bn();
+}
+
+bool GridSearchOptimizer::hasDriveValueChanged(HarmonicDriveParameterMap &drive_values_before_loop)
+{
+    // get the current drive values after the loop
+    HarmonicDriveParameterMap drive_values_after_loop = model_handler_.getHarmonicDriveValues();
+
+    // check if at least one value has changed
+    if (drive_values_before_loop == drive_values_after_loop)
+    {
+        return false;
+    }
+    return true;
+}
+
+// Function to check if the new configuration improved the bn value. If not, revert to the previous configuration
+bool GridSearchOptimizer::checkBnValue(int component, double prev_bn, HarmonicDriveParameterMap &prev_drive_values)
+{
+    double new_bn = current_bn_values_[component - 1];
+    if (std::abs(new_bn) < std::abs(prev_bn))
+    {
+        Logger::info("New bn value for harmonic B" + std::to_string(component) + ": " + std::to_string(new_bn) + ". The value improved.");
+        return true;
+    }
+    else if (std::abs(new_bn) == std::abs(prev_bn))
+    {
+        Logger::info("New bn value for harmonic B" + std::to_string(component) + ": " + std::to_string(new_bn) + ". The value stayed the same.");
+        return false;
+    }
+    else
+    {
+        Logger::warn("New bn value for harmonic B" + std::to_string(component) + ": " + std::to_string(new_bn) + ". The value did not improve. Reverting...");
+        // Revert the harmonic
+        model_handler_.apply_params(prev_drive_values);
+        recompute_bn();
+        Logger::warn("Reverted to the previous configuration: Offset: " + std::to_string(prev_drive_values["B" + std::to_string(component)].getOffset()) + ", Slope: " + std::to_string(prev_drive_values["B" + std::to_string(component)].getSlope()) + ".");
+        return false;
+    }
 }
 
 void GridSearchOptimizer::runGridSearch(int component, std::vector<GridSearchResult> &results)
