@@ -20,7 +20,7 @@ TEST_F(BnOptimizerTest, BnOptimizer) {
     double max_harmonic_value = 0.1;
 
     // create optimizer object and call optimization
-    BnOptimizer optimizer(model_handler, max_harmonic_value, true);
+    BnOptimizer optimizer(model_handler, max_harmonic_value);
     ASSERT_NO_THROW({
         optimizer.optimize();
     });

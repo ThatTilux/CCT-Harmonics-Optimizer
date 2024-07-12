@@ -5,8 +5,8 @@
 
 class BnOptimizer : public AbstractOptimizer {
 public:
-    BnOptimizer(ModelHandler &model_handler, double max_harmonic_value, bool disable_logging = false);
-    BnOptimizer(bool disable_logging = false);
+    BnOptimizer(ModelHandler &model_handler, double max_harmonic_value);
+    BnOptimizer();
 
     std::vector<double>& getResults();
 
@@ -22,9 +22,8 @@ private:
     double max_harmonic_value_;
     HarmonicDriveParameterMap harmonic_drive_values_;
     std::vector<double> current_bn_values_;
-    bool disable_logging_ = false;
     
-    void setup(ModelHandler &model_handler, double max_harmonic_value, bool disable_logging);
+    void setup(ModelHandler &model_handler, double max_harmonic_value);
     double fitLinearGetRoot(const std::vector<std::pair<double, double>> &points);
 };
 
