@@ -157,7 +157,15 @@ void GridSearchOptimizer::setParamRanges(double factor)
         double current_offset = harmonic_drive_values["B" + std::to_string(i)].getOffset();
         double current_slope = harmonic_drive_values["B" + std::to_string(i)].getSlope();
 
-        // get new values by multipl
+        // if one value is 0, set that range to be around some fallback value
+        if (current_offset == 0){
+            current_offset = GRID_DRIVE_FALLBACK;
+        }
+        if (current_slope == 0){
+            current_slope = GRID_DRIVE_FALLBACK;
+        }
+
+        // get new values by multiplying by the factor
         double new_offset_min = current_offset - std::abs(current_offset) * factor;
         double new_offset_max = current_offset + std::abs(current_offset) * factor;
 

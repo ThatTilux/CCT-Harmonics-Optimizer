@@ -27,6 +27,8 @@ inline const double OPTIMIZER_DEFAULT_STEP = 0.000001;
 inline const double GRID_BN_THRESHOLD = 30;
 // Initial factor to increase the offset and slope ranges in the grid search optimizer
 inline const double GRID_SEARCH_FACTOR = 0.05;
+// Fallback value for an offset/slope range if the current one is 0 in the grid search optimizer
+inline const double GRID_DRIVE_FALLBACK = 1e-7;
 // Time budget in minutes for one grid search in the grid search optimizer
 inline const double TIME_BUDGET_GRID_SEARCH = 1;
 
