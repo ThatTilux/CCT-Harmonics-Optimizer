@@ -1,13 +1,21 @@
 #include "bn_optimizer.h"
 
 // Default constructor
-BnOptimizer::BnOptimizer(bool disable_logging) : BnOptimizer(initModel(), getMaxHarmonicValue(), disable_logging)
+BnOptimizer::BnOptimizer(bool disable_logging) : AbstractOptimizer(disable_logging)
 {
+    ModelHandler model_handler = initModel();
+    double max_harmonic_value = getMaxHarmonicValue();
+    setup(model_handler, max_harmonic_value, disable_logging);
 }
 
 // Constructor without any user interaction.
 BnOptimizer::BnOptimizer(ModelHandler &model_handler, double max_harmonic_value, bool disable_logging) : AbstractOptimizer(disable_logging)
 {
+    setup(model_handler, max_harmonic_value, disable_logging);
+}
+
+// Setup function called from the constructors
+void BnOptimizer::setup(ModelHandler &model_handler, double max_harmonic_value, bool disable_logging){
     // setup
     model_handler_ = model_handler;
     initCalcultor();

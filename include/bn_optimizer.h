@@ -24,6 +24,7 @@ private:
     std::vector<double> current_bn_values_;
     bool disable_logging_ = false;
     
+    void setup(ModelHandler &model_handler, double max_harmonic_value, bool disable_logging);
     double fitLinearGetRoot(const std::vector<std::pair<double, double>> &points);
 };
 
