@@ -29,6 +29,8 @@ inline const double GRID_BN_THRESHOLD = 30;
 inline const double GRID_SEARCH_FACTOR = 0.05;
 // Fallback value for an offset/slope range if the current one is 0 in the grid search optimizer
 inline const double GRID_DRIVE_FALLBACK = 1e-7;
+// Minimum number of steps per grid search
+inline const int GRID_MIN_STEPS = 64;
 // Time budget in minutes for one grid search in the grid search optimizer
 inline const double TIME_BUDGET_GRID_SEARCH = 1;
 

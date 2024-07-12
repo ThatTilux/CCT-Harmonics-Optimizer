@@ -56,7 +56,7 @@ void GridSearchOptimizer::computeGranularities()
         }
 
         auto [offset_range, slope_range] = getParamRange(i);
-        std::pair<double, double> granularities = computeGranularities(offset_range, slope_range, TIME_BUDGET_GRID_SEARCH, time_per_calc_);
+        std::pair<double, double> granularities = computeGranularities(offset_range, slope_range, TIME_BUDGET_GRID_SEARCH, time_per_calc_, GRID_MIN_STEPS);
         granularities_[i - 1] = granularities;
         Logger::info("Granularities for harmonic B" + std::to_string(i) + ": Offset: " + std::to_string(granularities.first) + ", Slope: " + std::to_string(granularities.second));
     }
@@ -67,7 +67,8 @@ void GridSearchOptimizer::computeGranularities()
 std::pair<double, double> GridSearchOptimizer::computeGranularities(std::pair<double, double> offset_range,
                                                                     std::pair<double, double> slope_range,
                                                                     double time_budget_minutes,
-                                                                    double time_per_step_seconds)
+                                                                    double time_per_step_seconds,
+                                                                    int minimum_steps)
 {
     double offset_min = offset_range.first;
     double offset_max = offset_range.second;
@@ -76,6 +77,9 @@ std::pair<double, double> GridSearchOptimizer::computeGranularities(std::pair<do
 
     double time_budget_seconds = time_budget_minutes * 60.0;
     int num_steps = static_cast<int>(time_budget_seconds / time_per_step_seconds);
+
+    // fulfil the minimum step requirement
+    num_steps = std::max(num_steps, minimum_steps);
 
     double offset_span = offset_max - offset_min;
     double slope_span = slope_max - slope_min;
