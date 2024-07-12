@@ -242,7 +242,7 @@ void print_vector(const std::vector<double>& data, std::string label)
     Logger::info(label + " values:");
     for (size_t i = 0; i < data.size(); ++i)
     {
-        Logger::info(label + "[" + std::to_string(i + 1) + "] = " + std::to_string(data[i]));
+        Logger::info_double(label + "[" + std::to_string(i + 1) + "]", data[i]);
     }
 }
 

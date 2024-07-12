@@ -21,7 +21,8 @@ void GridSearch::run()
         for (double slope = slope_range_.first; slope <= slope_range_.second; slope += slope_granularity_)
         {
             Logger::info("= Running iteration " + std::to_string(iteration) + " of " + std::to_string(total_steps_) + " =");
-            Logger::info("Offset: " + std::to_string(offset) + ", Slope: " + std::to_string(slope));
+            Logger::info_double("Offset", offset);
+            Logger::info_double("Slope", slope);
 
             // Apply the new parameters
             HarmonicDriveParameterMap params;
@@ -38,7 +39,7 @@ void GridSearch::run()
             {
                 double value = criterion->evaluate(harmonics_handler, component_);
                 criteria_values.push_back(value);
-                Logger::info(criterion->getLabel() + ": " + std::to_string(value));
+                Logger::info_double(criterion->getLabel(), value);
             }
 
             // Store the results
@@ -57,12 +58,12 @@ void GridSearch::logParams()
 {
     // log all params
     Logger::info("Grid search params:");
-    Logger::info("Offset Min: " + std::to_string(offset_range_.first));
-    Logger::info("Offset Max: " + std::to_string(offset_range_.second));
-    Logger::info("Slope Min: " + std::to_string(slope_range_.first));
-    Logger::info("Slope Max: " + std::to_string(slope_range_.second));
-    Logger::info("Granularity Offset: " + std::to_string(offset_granularity_));
-    Logger::info("Granularity Slope: " + std::to_string(slope_granularity_));
+    Logger::info_double("Offset Min", offset_range_.first);
+    Logger::info_double("Offset Max", offset_range_.second);
+    Logger::info_double("Slope Min", slope_range_.first);
+    Logger::info_double("Slope Max", slope_range_.second);
+    Logger::info_double("Granularity Offset", offset_granularity_);
+    Logger::info_double("Granularity Slope", slope_granularity_);
 }
 
 // Function to estimate and log the time it will take to run the grid search

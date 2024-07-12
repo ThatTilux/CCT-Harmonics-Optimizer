@@ -58,7 +58,7 @@ void GridSearchOptimizer::computeGranularities()
         auto [offset_range, slope_range] = getParamRange(i);
         std::pair<double, double> granularities = computeGranularities(offset_range, slope_range, TIME_BUDGET_GRID_SEARCH, time_per_calc_, GRID_MIN_STEPS);
         granularities_[i - 1] = granularities;
-        Logger::info("Granularities for harmonic B" + std::to_string(i) + ": Offset: " + std::to_string(granularities.first) + ", Slope: " + std::to_string(granularities.second));
+        Logger::log_granularity(i, granularities.first, granularities.second);
     }
 }
 
@@ -179,7 +179,7 @@ void GridSearchOptimizer::setParamRanges(double factor)
         // update the param_ranges_
         param_ranges_[i - 1] = {{new_offset_min, new_offset_max}, {new_slope_min, new_slope_max}};
 
-        Logger::info("New parameter ranges for harmonic B" + std::to_string(i) + ": Offset: [" + std::to_string(new_offset_min) + ", " + std::to_string(new_offset_max) + "], Slope: [" + std::to_string(new_slope_min) + ", " + std::to_string(new_slope_max) + "].");
+        Logger::log_parameter_ranges(i, new_offset_min, new_offset_max, new_slope_min, new_slope_max);
     }
 }
 
@@ -279,7 +279,7 @@ void GridSearchOptimizer::optimize(double bn_threshold)
 
             // Extrapolate the optimal configuration
             auto [new_offset, new_slope] = extrapolateOptimalConfiguration(results);
-            Logger::info("Extrapolated optimal configuration for harmonic B" + std::to_string(i) + ": Offset: " + std::to_string(new_offset) + ", Slope: " + std::to_string(new_slope) + ".");
+            Logger::log_extrapolated_values(i, new_offset, new_slope);
 
             // Update the model with the new configuration
             HarmonicDriveParameterMap new_config;
@@ -349,7 +349,7 @@ bool GridSearchOptimizer::checkBnValue(int component, double prev_bn, HarmonicDr
         // Revert the harmonic
         model_handler_.apply_params(prev_drive_values);
         recompute_bn();
-        Logger::warn("Reverted to the previous configuration: Offset: " + std::to_string(prev_drive_values["B" + std::to_string(component)].getOffset()) + ", Slope: " + std::to_string(prev_drive_values["B" + std::to_string(component)].getSlope()) + ".");
+        Logger::log_reverted_config(component, prev_drive_values["B" + std::to_string(component)].getOffset(), prev_drive_values["B" + std::to_string(component)].getSlope());
         return false;
     }
 }
