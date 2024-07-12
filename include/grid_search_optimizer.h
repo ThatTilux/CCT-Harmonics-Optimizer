@@ -27,8 +27,7 @@ private:
     bool checkBnValue(int component, double prev_bn, HarmonicDriveParameterMap &prev_drive_values);
     void runGridSearch(int component, std::vector<GridSearchResult> &results);
     std::pair<double, double> extrapolateOptimalConfiguration(std::vector<GridSearchResult> &results);
-    void initParamRanges();
-    void updateParamRanges(double factor);
+    void setParamRanges(double factor);
     void initCriteria();
     void computeGranularities();
     std::pair<double, double> computeGranularities(std::pair<double, double> offset_range,

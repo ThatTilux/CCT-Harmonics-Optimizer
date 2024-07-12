@@ -12,37 +12,14 @@ GridSearchOptimizer::GridSearchOptimizer() : AbstractOptimizer()
 
     // continue setup
     initCalcultor();
-    initParamRanges();
     initCriteria();
     estimateTimePerComputation();
-    computeGranularities();
 }
 
 // Constructor to be used for no user interaction.
 GridSearchOptimizer::GridSearchOptimizer(ModelHandler &model_handler) : AbstractOptimizer()
 {
     // TODO
-}
-
-// Function to initialize the parameter ranges for the grid search
-void GridSearchOptimizer::initParamRanges()
-{
-    // TODO infer these automatically from the model
-
-    // initialize param_ranges_ with the correct size
-    param_ranges_.resize(10);
-
-    // for the quad_double_nob6_alllinear
-    param_ranges_[0] = {{-0.0025, 0.0025}, {-0.000025, 0.000025}}; // B1
-    param_ranges_[1] = {{1, 1.0001}, {1, 1.0001}};                 // some dummy values here since B2 is main
-    param_ranges_[2] = {{-0.0025, 0.0025}, {-0.000025, 0.000025}}; // B3
-    param_ranges_[3] = {{-0.0025, 0.0025}, {-0.000025, 0.000025}}; // B4
-    param_ranges_[4] = {{-0.0005, 0.0005}, {-1e-06, 1e-06}};       // B5
-    param_ranges_[5] = {{-0.0005, 0.0005}, {-1e-06, 1e-06}};       // B6
-    param_ranges_[6] = {{-0.0005, 0.0005}, {-1e-06, 1e-06}};       // B7
-    param_ranges_[7] = {{-0.0005, 0.0005}, {-1e-06, 1e-06}};       // B8
-    param_ranges_[8] = {{-0.0005, 0.0005}, {-1e-06, 1e-06}};       // B9
-    param_ranges_[9] = {{-0.0005, 0.0005}, {-1e-06, 1e-06}};       // B10
 }
 
 // Function to get the parameter ranges for a specific component. The component is 1-indexed. Format: {{offset_min, offset_max}, {slope_min, slope_max}}
@@ -158,13 +135,13 @@ int GridSearchOptimizer::getNumberOfSteps(std::pair<double, double> offset_range
     return offset_steps * slope_steps;
 }
 
-// Function to update the parameter ranges to be around the curret cofigurations by the provided factor. New range will be [offset - factor*offset, offset + factor*offset], same for slope.
-void GridSearchOptimizer::updateParamRanges(double factor)
+// Function to set the parameter ranges to be around the curret cofigurations by the provided factor. New range will be [offset - factor*offset, offset + factor*offset], same for slope.
+void GridSearchOptimizer::setParamRanges(double factor)
 {
     // make sure that the param_ranges_ is initialized
     if (param_ranges_.empty())
     {
-        throw std::runtime_error("Parameter ranges are not initialized.");
+        param_ranges_.resize(10);
     }
 
     // get the current drive values
@@ -210,16 +187,11 @@ void GridSearchOptimizer::optimize()
         Logger::info("Criterion " + std::to_string(i) + ": " + criteria_[i]->getLabel());
     }
 
-    // Granularities and param ranges are initialized in the constructor
-
-    // Run the optimizer with the standard threshold
-    // TODO RE-ENABLE optimize(GRID_BN_THRESHOLD);
-
-    // Run the optimizer a few more times with decreasing parameters: //
+    // Run the optimizer a few times with decreasing parameters: //
 
     // Thresholds and search factors
-    std::vector<double> thresholds = {0.01};                        // TODO RE-ENABLE {1, 0.1, 0.005};
-    std::vector<double> search_factors = {GRID_SEARCH_FACTOR / 100}; // TODO RE-ENABLE {GRID_SEARCH_FACTOR, GRID_SEARCH_FACTOR / 10, GRID_SEARCH_FACTOR / 100};
+    std::vector<double> thresholds = {GRID_BN_THRESHOLD, 1, 0.1, 0.005};
+    std::vector<double> search_factors = {GRID_SEARCH_FACTOR, GRID_SEARCH_FACTOR, GRID_SEARCH_FACTOR / 10, GRID_SEARCH_FACTOR / 100};
 
     // assert that they have the same length
     if (thresholds.size() != search_factors.size())
@@ -227,19 +199,20 @@ void GridSearchOptimizer::optimize()
         throw std::runtime_error("Thresholds and search factors must have the same length.");
     }
 
-    // Run the optimizer with the new thresholds and search factors
+    // Run the optimizer with the thresholds and search factors
     for (int i = 0; i < thresholds.size(); i++)
     {
         // export the model of the previous run
-        exportModel();
+        if (i != 0)
+            exportModel();
 
-        // Adjust parameter ranges to be around the extrapolated optimal configuration
-        updateParamRanges(search_factors[i]);
+        // Adjust parameter ranges to be around current configuration
+        setParamRanges(search_factors[i]);
 
-        // Recompute Granularities based on new param ranges
+        // Recompute Granularities based on param ranges
         computeGranularities();
 
-        // Redo the optimization with the new parameter ranges and lower threshold
+        // Run the optimization
         optimize(thresholds[i]);
     }
 }
