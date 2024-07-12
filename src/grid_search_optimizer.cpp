@@ -299,7 +299,7 @@ void GridSearchOptimizer::optimize(double bn_threshold)
         // assert that at least one drive value has changed. If not, the optimization may be stuck
         if (!hasDriveValueChanged(drive_values_before_loop))
         {
-            Logger::error("No harmonic drive values have changed in one iteration. The optimization may be stuck. Exiting.");
+            Logger::info("No harmonic drive values have changed in one iteration. Exiting.");
             return;
         }
 
