@@ -32,7 +32,6 @@ private:
     void computeGranularities();
     std::pair<double, double> computeGranularities(std::pair<double, double> offset_range, std::pair<double, double> slope_range, double time_budget_minutes, double time_per_step_seconds, int minimum_steps);
     void estimateTimePerComputation();
-    int getNumberOfSteps(std::pair<double, double> offset_range, std::pair<double, double> slope_range, double offset_granularity, double slope_granularity);
 
     std::pair<std::pair<double, double>, std::pair<double, double>> getParamRange(int component);
 

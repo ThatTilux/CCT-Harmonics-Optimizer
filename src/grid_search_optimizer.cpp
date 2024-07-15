@@ -132,12 +132,7 @@ void GridSearchOptimizer::estimateTimePerComputation()
     time_per_calc_ = time_per_computation;
 }
 
-int GridSearchOptimizer::getNumberOfSteps(std::pair<double, double> offset_range, std::pair<double, double> slope_range, double offset_granularity, double slope_granularity)
-{
-    int offset_steps = static_cast<int>((offset_range.second - offset_range.first) / offset_granularity) + 1;
-    int slope_steps = static_cast<int>((slope_range.second - slope_range.first) / slope_granularity) + 1;
-    return offset_steps * slope_steps;
-}
+
 
 // Function to set the parameter ranges to be around the curret cofigurations by the provided factor. New range will be [offset - factor*offset, offset + factor*offset], same for slope.
 void GridSearchOptimizer::setParamRanges(double factor)
@@ -361,8 +356,7 @@ void GridSearchOptimizer::runGridSearch(int component, std::vector<GridSearchRes
 
     // run grid search
     std::pair<double, double> granularities = granularities_[component - 1];
-    int steps = getNumberOfSteps(offset_range, slope_range, granularities.first, granularities.second);
-    GridSearch grid_search(model_handler_, calculator_, component, offset_range, slope_range, granularities.first, granularities.second, results, criteria_, time_per_calc_, steps);
+    GridSearch grid_search(model_handler_, calculator_, component, offset_range, slope_range, granularities.first, granularities.second, results, criteria_, time_per_calc_);
 }
 
 // Function to extrapolate the optimal configuration from the grid search results. The optimal offset, slope configuration is the one that minimizes all objectives (criteria).

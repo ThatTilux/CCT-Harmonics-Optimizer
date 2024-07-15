@@ -1,7 +1,7 @@
 #include "grid_search.h"
 
-GridSearch::GridSearch(ModelHandler &model_handler, HarmonicsCalculator calculator, int component, std::pair<double, double> offset_range, std::pair<double, double> slope_range, double offset_granularity, double slope_granularity, std::vector<GridSearchResult> &results, std::vector<std::shared_ptr<AbstractObjective>> &criteria, double estimated_time_per_calc, int total_steps)
-    : model_handler_(model_handler), calculator_(calculator), component_(component), offset_range_(offset_range), slope_range_(slope_range), offset_granularity_(offset_granularity), slope_granularity_(slope_granularity), results_(results), criteria_(criteria), estimated_time_per_step_(estimated_time_per_calc), total_steps_(total_steps)
+GridSearch::GridSearch(ModelHandler &model_handler, HarmonicsCalculator calculator, int component, std::pair<double, double> &offset_range, std::pair<double, double> &slope_range, double &offset_granularity, double &slope_granularity, std::vector<GridSearchResult> &results, std::vector<std::shared_ptr<AbstractObjective>> &criteria, double estimated_time_per_calc)
+    : model_handler_(model_handler), calculator_(calculator), component_(component), offset_range_(offset_range), slope_range_(slope_range), offset_granularity_(offset_granularity), slope_granularity_(slope_granularity), results_(results), criteria_(criteria), estimated_time_per_step_(estimated_time_per_calc)
 {
     run();
 }
@@ -10,6 +10,20 @@ void GridSearch::run()
 {
     Logger::info("== Running grid search for harmonic B" + std::to_string(component_) + " ==");
     logParams();
+
+    // Get the number of steps for the grid search
+    // This has to be done inside this method to avoid floating point precision issues
+    int counter = 0;
+    for (double offset = offset_range_.first; offset <= offset_range_.second; offset += offset_granularity_)
+    {
+        for (double slope = slope_range_.first; slope <= slope_range_.second; slope += slope_granularity_)
+        {
+            counter++;
+        }
+    }
+
+    total_steps_ = counter;
+
     logEstmatedTime();
 
     // Counter for the iteration number

@@ -9,16 +9,16 @@
 class GridSearch
 {
 public:
-    GridSearch(ModelHandler &model_handler, HarmonicsCalculator calculator, int component, std::pair<double, double> offset_range, std::pair<double, double> slope_range, double offset_granularity, double slope_granularity, std::vector<GridSearchResult> &results, std::vector<std::shared_ptr<AbstractObjective>>  &criteria, double estimated_time_per_calc, int total_steps);
+    GridSearch(ModelHandler &model_handler, HarmonicsCalculator calculator, int component, std::pair<double, double> &offset_range, std::pair<double, double> &slope_range, double &offset_granularity, double &slope_granularity, std::vector<GridSearchResult> &results, std::vector<std::shared_ptr<AbstractObjective>>  &criteria, double estimated_time_per_calc);
 
 private:
     ModelHandler model_handler_;
     HarmonicsCalculator calculator_;
     int component_;
-    std::pair<double, double> offset_range_;
-    std::pair<double, double> slope_range_;
-    double offset_granularity_;
-    double slope_granularity_;
+    std::pair<double, double> &offset_range_;
+    std::pair<double, double> &slope_range_;
+    double &offset_granularity_;
+    double &slope_granularity_;
     std::vector<GridSearchResult> &results_;
     std::vector<std::shared_ptr<AbstractObjective>> &criteria_;
 
