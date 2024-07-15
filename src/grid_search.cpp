@@ -44,7 +44,7 @@ void GridSearch::run()
             model_handler_.apply_params(params);
 
             // Run harmonics calculation
-            HarmonicsHandler harmonics_handler;
+            HarmonicsDataHandler harmonics_handler;
             calculator_.reload_and_calc_harmonics(model_handler_.getTempJsonPath(), harmonics_handler);
 
             // Evaluate the criteria

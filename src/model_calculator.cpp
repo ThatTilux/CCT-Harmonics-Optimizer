@@ -116,7 +116,7 @@ void ModelCalculator::enable_gpu(rat::mdl::ShCalcLeafPr calc_leaf)
 }
 
 // function for doing the harmonics calculation. Will update a HarmonicsHandler object that provides access to the results.
-void ModelCalculator::calc_harmonics(HarmonicsHandler &harmonics_handler, bool disable_logging)
+void ModelCalculator::calc_harmonics(HarmonicsDataHandler &harmonics_handler, bool disable_logging)
 {
     if (harmonics_calc_)
     {
@@ -135,18 +135,18 @@ void ModelCalculator::calc_harmonics(HarmonicsHandler &harmonics_handler, bool d
 
         if (harmonics_data)
         {
-            harmonics_handler = HarmonicsHandler(harmonics_data);
+            harmonics_handler = HarmonicsDataHandler(harmonics_data);
         }
         else
         {
             std::cerr << "Harmonics calculation failed." << std::endl;
-            harmonics_handler = HarmonicsHandler();
+            harmonics_handler = HarmonicsDataHandler();
         }
     }
 }
 
 // reloads the model from the json and computes the bn values
-void ModelCalculator::reload_and_calc_harmonics(const boost::filesystem::path &json_file_path, HarmonicsHandler &harmonics_handler, bool disable_logging)
+void ModelCalculator::reload_and_calc_harmonics(const boost::filesystem::path &json_file_path, HarmonicsDataHandler &harmonics_handler, bool disable_logging)
 {
     load_model(json_file_path);
     calc_harmonics(harmonics_handler, disable_logging);

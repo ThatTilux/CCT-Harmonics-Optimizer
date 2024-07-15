@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "harmonics_handler.h"
+#include "harmonics_data_handler.h"
 #include "model_calculator.h"
 #include <boost/filesystem.hpp>
 #include <constants.h>
@@ -8,7 +8,7 @@ class HarmonicsHandlerTest : public ::testing::Test
 {
 protected:
     static boost::filesystem::path test_file;
-    static HarmonicsHandler handler;
+    static HarmonicsDataHandler handler;
 
     // Setup before the first test
     // the calculation
@@ -22,7 +22,7 @@ protected:
 
 // Initialize static members
 boost::filesystem::path HarmonicsHandlerTest::test_file;
-HarmonicsHandler HarmonicsHandlerTest::handler;
+HarmonicsDataHandler HarmonicsHandlerTest::handler;
 
 TEST_F(HarmonicsHandlerTest, GetBnCorrectSizes)
 {
@@ -49,7 +49,7 @@ TEST_F(HarmonicsHandlerTest, GetbnCorrectSizes)
 TEST_F(HarmonicsHandlerTest, ConstructorHandlesNullData)
 {
     ASSERT_NO_THROW({
-        HarmonicsHandler handler(nullptr);
+        HarmonicsDataHandler handler(nullptr);
         EXPECT_TRUE(handler.get_Bn(1).empty());
     });
 }

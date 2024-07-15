@@ -12,7 +12,7 @@ public:
         label_ = "fitted_slope";
     };
 
-    double evaluate(HarmonicsHandler harmonics_handler, int component) override
+    double evaluate(HarmonicsDataHandler harmonics_handler, int component) override
     {
         // get the Bn and ell
         std::vector<std::pair<double, double>> points = harmonics_handler.get_Bn(component);
@@ -27,13 +27,14 @@ public:
     }
 
     // Funtion to apply transformations to the ell & Bn data before fitting a linear function
-    void apply_transformations(std::vector<std::pair<double, double>> &Bn_data){
+    void apply_transformations(std::vector<std::pair<double, double>> &Bn_data)
+    {
         // remove all the pairs where the ell value is not inside the set bounds
         Bn_data.erase(std::remove_if(Bn_data.begin(), Bn_data.end(), [](const std::pair<double, double> &pair)
-                                { return pair.first < MAG_START_POS || pair.first > MAG_END_POS; }),
-                Bn_data.end());
+                                     { return pair.first < MAG_START_POS || pair.first > MAG_END_POS; }),
+                      Bn_data.end());
 
-        //make sure there are at least 2 points
+        // make sure there are at least 2 points
         if (Bn_data.size() < 2)
         {
             throw std::runtime_error("Not enough points for linear regression.");

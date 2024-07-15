@@ -12,9 +12,9 @@ public:
         label_ = "bn";
     };
 
-    double evaluate(HarmonicsHandler harmonics_handler, int component) override
+    double evaluate(HarmonicsDataHandler harmonics_handler, int component) override
     {
-        return harmonics_handler.get_bn()[component-1];
+        return harmonics_handler.get_bn()[component - 1];
     }
 
     virtual ~BnObjective(){};

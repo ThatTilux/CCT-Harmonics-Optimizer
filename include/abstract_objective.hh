@@ -1,21 +1,21 @@
 #ifndef ABSTRACT_OBJECTIVE_HH
 #define ABSTRACT_OBJECTIVE_HH
 
-
 #include <string>
-#include "harmonics_handler.h"
+#include "harmonics_data_handler.h"
 #include "statistical_analysis.h"
 
 // Abstract class to define an objective to be used in optimizers and objective functions
-class AbstractObjective {
+class AbstractObjective
+{
 public:
-    AbstractObjective() {};
+    AbstractObjective(){};
 
-    virtual double evaluate(HarmonicsHandler harmonics_handler, int component) = 0;
-    virtual ~AbstractObjective() {};
+    virtual double evaluate(HarmonicsDataHandler harmonics_handler, int component) = 0;
+    virtual ~AbstractObjective(){};
 
-
-    std::string getLabel() const {
+    std::string getLabel() const
+    {
         return label_;
     }
 

@@ -59,7 +59,7 @@ void BnOptimizer::optimize()
     bool all_within_margin;
 
     // handler for handling the results of the harmonics calculation
-    HarmonicsHandler harmonics_handler;
+    HarmonicsDataHandler harmonics_handler;
 
     // get the current bn values
     calculator_.reload_and_calc_harmonics(temp_json_file_path, harmonics_handler);

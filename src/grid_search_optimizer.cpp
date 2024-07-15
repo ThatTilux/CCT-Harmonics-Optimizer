@@ -116,7 +116,7 @@ void GridSearchOptimizer::estimateTimePerComputation()
     int num_computations = 10;
     for (int i = 1; i <= num_computations; i++)
     {
-        HarmonicsHandler handler;
+        HarmonicsDataHandler handler;
         calculator_.reload_and_calc_harmonics(model_handler_.getTempJsonPath(), handler);
     }
 
@@ -306,7 +306,7 @@ void GridSearchOptimizer::optimize(double bn_threshold)
 
 void GridSearchOptimizer::recompute_bn()
 {
-    HarmonicsHandler handler;
+    HarmonicsDataHandler handler;
     calculator_.reload_and_calc_harmonics(model_handler_.getTempJsonPath(), handler);
     current_bn_values_ = handler.get_bn();
 }

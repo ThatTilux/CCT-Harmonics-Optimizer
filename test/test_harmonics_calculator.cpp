@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 #include "model_calculator.h"
-#include "harmonics_handler.h"
+#include "harmonics_data_handler.h"
 #include <boost/filesystem.hpp>
 #include <constants.h>
 
@@ -35,7 +35,7 @@ TEST_F(HarmonicsCalculatorTest, LoadModelFailsWithInvalidFile)
 TEST_F(HarmonicsCalculatorTest, CalcUpdatesHarmonicsHandler)
 {
     ModelCalculator calculator(test_file);
-    HarmonicsHandler handler;
+    HarmonicsDataHandler handler;
     calculator.calc_harmonics(handler, true);
     // Check if the handler is updated
     EXPECT_FALSE(handler.get_bn().empty());
@@ -44,7 +44,7 @@ TEST_F(HarmonicsCalculatorTest, CalcUpdatesHarmonicsHandler)
 TEST_F(HarmonicsCalculatorTest, ReloadAndCalc)
 {
     ModelCalculator calculator(test_file);
-    HarmonicsHandler handler;
+    HarmonicsDataHandler handler;
     calculator.reload_and_calc_harmonics(test_file, handler, true);
     // Check if the handler is updated after reloading and calculating
     EXPECT_FALSE(handler.get_bn().empty());
