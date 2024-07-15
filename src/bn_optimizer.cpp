@@ -186,3 +186,6 @@ void BnOptimizer::optimize()
         }
     } while (!all_within_margin);
 }
+void BnOptimizer::temp_test(){
+    
+}

@@ -1,4 +1,4 @@
-#include "harmonics_calculator.h"
+#include "model_calculator.h"
 #include "model_handler.h"
 #include "input_output.h"
 #include "constants.h"
@@ -24,10 +24,9 @@ int main()
         optimizer.logResults();
         optimizer.exportModel();
         return 0;
-        
     }
     else if (selected_optimization == 1)
-    {   
+    {
         // only bn optimization
         BnOptimizer optimizer = BnOptimizer();
         optimizer.optimize();

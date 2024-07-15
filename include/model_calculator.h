@@ -1,5 +1,5 @@
-#ifndef HARMONICS_CALCULATOR_H
-#define HARMONICS_CALCULATOR_H
+#ifndef MODEL_CALCULATOR_H
+#define MODEL_CALCULATOR_H
 
 #include <armadillo>
 #include <boost/filesystem.hpp>
@@ -13,13 +13,12 @@
 #include <vector>
 #include "harmonics_handler.h"
 
-
-class HarmonicsCalculator
+class ModelCalculator
 {
 public:
-    HarmonicsCalculator(const boost::filesystem::path &json_file_path);
+    ModelCalculator(const boost::filesystem::path &json_file_path);
     // dummy - do not use
-    HarmonicsCalculator();
+    ModelCalculator();
 
     void calc(HarmonicsHandler &harmonics_handler, bool disable_logging = true);
     void reload_and_calc(const boost::filesystem::path &json_file_path, HarmonicsHandler &harmonics_handler, bool disable_logging = true);
@@ -42,4 +41,4 @@ private:
     std::string harmonics_calc_name_;
 };
 
-#endif // HARMONICS_CALCULATOR_H
+#endif // MODEL_CALCULATOR_H

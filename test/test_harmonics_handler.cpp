@@ -1,20 +1,21 @@
 #include "gtest/gtest.h"
 #include "harmonics_handler.h"
-#include "harmonics_calculator.h"
+#include "model_calculator.h"
 #include <boost/filesystem.hpp>
 #include <constants.h>
 
-class HarmonicsHandlerTest : public ::testing::Test {
+class HarmonicsHandlerTest : public ::testing::Test
+{
 protected:
-
     static boost::filesystem::path test_file;
     static HarmonicsHandler handler;
 
     // Setup before the first test
     // the calculation
-    static void SetUpTestSuite() {
+    static void SetUpTestSuite()
+    {
         test_file = TEST_DATA_DIR + "quad_test.json";
-        HarmonicsCalculator calculator(test_file);
+        ModelCalculator calculator(test_file);
         calculator.calc(handler, true);
     }
 };
@@ -23,10 +24,11 @@ protected:
 boost::filesystem::path HarmonicsHandlerTest::test_file;
 HarmonicsHandler HarmonicsHandlerTest::handler;
 
-
-TEST_F(HarmonicsHandlerTest, GetBnCorrectSizes) {
-    // there should be Bn values for B1 - B10. 
-    for (int i = 1; i <= 10; ++i) {
+TEST_F(HarmonicsHandlerTest, GetBnCorrectSizes)
+{
+    // there should be Bn values for B1 - B10.
+    for (int i = 1; i <= 10; ++i)
+    {
         std::vector<std::pair<double, double>> Bn = handler.get_Bn(i);
         EXPECT_FALSE(Bn.empty());
     }
@@ -35,7 +37,8 @@ TEST_F(HarmonicsHandlerTest, GetBnCorrectSizes) {
     EXPECT_THROW(handler.get_Bn(11), std::logic_error);
 }
 
-TEST_F(HarmonicsHandlerTest, GetbnCorrectSizes) {
+TEST_F(HarmonicsHandlerTest, GetbnCorrectSizes)
+{
     std::vector<double> bn = handler.get_bn();
 
     // should have bn values for B1 to B10
@@ -43,7 +46,8 @@ TEST_F(HarmonicsHandlerTest, GetbnCorrectSizes) {
     EXPECT_EQ(bn.size(), 10);
 }
 
-TEST_F(HarmonicsHandlerTest, ConstructorHandlesNullData) {
+TEST_F(HarmonicsHandlerTest, ConstructorHandlesNullData)
+{
     ASSERT_NO_THROW({
         HarmonicsHandler handler(nullptr);
         EXPECT_TRUE(handler.get_Bn(1).empty());

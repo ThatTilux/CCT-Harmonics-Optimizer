@@ -9,6 +9,7 @@ public:
     BnOptimizer();
 
     std::vector<double>& getResults();
+    void temp_test();
 
     void optimize() override;
     void logResults() override;

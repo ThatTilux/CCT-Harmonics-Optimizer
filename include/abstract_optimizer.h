@@ -5,10 +5,11 @@
 #include <iostream>
 #include <boost/filesystem.hpp>
 #include "input_output.h"
-#include "harmonics_calculator.h"
+#include "model_calculator.h"
 #include "statistical_analysis.h"
 
-class AbstractOptimizer {
+class AbstractOptimizer
+{
 public:
     AbstractOptimizer(bool disable_user_interaction = false);
 
@@ -16,10 +17,10 @@ public:
 
     virtual void optimize() = 0;
     virtual void logResults() = 0;
-    virtual ~AbstractOptimizer() {};
+    virtual ~AbstractOptimizer(){};
 
 protected:
-    ModelHandler& initModel();
+    ModelHandler &initModel();
     void initCalcultor();
 
     double getMaxHarmonicValue();
@@ -28,9 +29,9 @@ protected:
     void assertAllHarmonicsPresent();
     bool areAllHarmonicsBelowThreshold(double threshold);
 
-    boost::filesystem::path json_file_path_; 
+    boost::filesystem::path json_file_path_;
     ModelHandler model_handler_;
-    HarmonicsCalculator calculator_;
+    ModelCalculator calculator_;
     bool disable_user_interaction_;
 
 private:

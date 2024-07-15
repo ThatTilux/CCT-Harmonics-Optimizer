@@ -5,7 +5,7 @@ AbstractOptimizer::AbstractOptimizer(bool disable_user_interaction) : disable_us
 }
 
 // Function to initialize the model
-ModelHandler& AbstractOptimizer::initModel()
+ModelHandler &AbstractOptimizer::initModel()
 {
     // let user select model
     getModelSelection();
@@ -27,7 +27,7 @@ void AbstractOptimizer::initCalcultor()
     }
 
     // load calculator
-    calculator_ = HarmonicsCalculator(model_handler_.getTempJsonPath());
+    calculator_ = ModelCalculator(model_handler_.getTempJsonPath());
 }
 
 // Function to let the user select the desired model
@@ -66,7 +66,8 @@ HarmonicDriveParameterMap AbstractOptimizer::initHarmonicDrives()
     print_harmonic_drive_values(harmonic_drive_values);
 
     // Ask the user if they want to proceed
-    if(!disable_user_interaction_){
+    if (!disable_user_interaction_)
+    {
         if (!askUserToProceed())
         {
             Logger::info("Optimization aborted by user.");
@@ -78,7 +79,8 @@ HarmonicDriveParameterMap AbstractOptimizer::initHarmonicDrives()
 }
 
 // Function to assert that there are only custom harmonics with an 'amplitude' of linear. Throws std::runtime_error if not
-void AbstractOptimizer::assertOnlyLinearDrives(){
+void AbstractOptimizer::assertOnlyLinearDrives()
+{
     HarmonicDriveParameterMap params = model_handler_.getHarmonicDriveValues();
     for (auto &param : params)
     {
@@ -88,7 +90,8 @@ void AbstractOptimizer::assertOnlyLinearDrives(){
 }
 
 // Function to assert that there are custom harmonics for all harmonics from 1 to 10 (except for the main one). Throws std::runtime_error if not
-void AbstractOptimizer::assertAllHarmonicsPresent(){
+void AbstractOptimizer::assertAllHarmonicsPresent()
+{
     HarmonicDriveParameterMap params = model_handler_.getHarmonicDriveValues();
     for (int i = 1; i <= 10; i++)
     {
@@ -97,9 +100,9 @@ void AbstractOptimizer::assertAllHarmonicsPresent(){
     }
 }
 
-
 // Function to check if all abs bn values are below a certain threshold
-bool AbstractOptimizer::areAllHarmonicsBelowThreshold(double threshold){
+bool AbstractOptimizer::areAllHarmonicsBelowThreshold(double threshold)
+{
     Logger::info("Checking if all bn values are below threshold " + std::to_string(threshold) + "...");
     HarmonicsHandler harmonics_handler;
     calculator_.reload_and_calc(model_handler_.getTempJsonPath(), harmonics_handler);
@@ -119,6 +122,7 @@ bool AbstractOptimizer::areAllHarmonicsBelowThreshold(double threshold){
 }
 
 // Function to export the optimized model
-void AbstractOptimizer::exportModel(){
+void AbstractOptimizer::exportModel()
+{
     copyModelWithTimestamp(model_handler_.getTempJsonPath());
 }
