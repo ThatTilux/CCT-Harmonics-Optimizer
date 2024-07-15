@@ -8,6 +8,7 @@
 #include <rat/models/modelroot.hh>
 #include <rat/models/calcgroup.hh>
 #include <rat/models/calcharmonics.hh>
+#include <rat/models/calcmesh.hh>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -20,8 +21,8 @@ public:
     // dummy - do not use
     ModelCalculator();
 
-    void calc(HarmonicsHandler &harmonics_handler, bool disable_logging = true);
-    void reload_and_calc(const boost::filesystem::path &json_file_path, HarmonicsHandler &harmonics_handler, bool disable_logging = true);
+    void calc_harmonics(HarmonicsHandler &harmonics_handler, bool disable_logging = true);
+    void reload_and_calc_harmonics(const boost::filesystem::path &json_file_path, HarmonicsHandler &harmonics_handler, bool disable_logging = true);
 
     bool has_harmonics_calc();
 
@@ -29,7 +30,7 @@ private:
     bool load_model(const boost::filesystem::path &json_file_path);
     std::tuple<rat::mdl::ShModelPr, rat::mdl::ShModelRootPr, rat::mdl::ShModelGroupPr, rat::mdl::ShCalcGroupPr>
     load_model_from_json(const boost::filesystem::path &json_file_path);
-    void enable_gpu();
+    void enable_gpu(rat::mdl::ShCalcLeafPr calc_leaf);
     void log_gpu_info();
 
     // template for the find_first_calc function
@@ -41,7 +42,9 @@ private:
     rat::mdl::ShModelGroupPr model_tree_;
     rat::mdl::ShCalcGroupPr calc_tree_;
     rat::mdl::ShCalcHarmonicsPr harmonics_calc_;
+    rat::mdl::ShCalcMeshPr mesh_calc_;
     std::string harmonics_calc_name_;
+    std::string mesh_calc_name_;
 };
 
 #endif // MODEL_CALCULATOR_H

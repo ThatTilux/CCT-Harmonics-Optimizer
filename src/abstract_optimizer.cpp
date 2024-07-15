@@ -105,7 +105,7 @@ bool AbstractOptimizer::areAllHarmonicsBelowThreshold(double threshold)
 {
     Logger::info("Checking if all bn values are below threshold " + std::to_string(threshold) + "...");
     HarmonicsHandler harmonics_handler;
-    calculator_.reload_and_calc(model_handler_.getTempJsonPath(), harmonics_handler);
+    calculator_.reload_and_calc_harmonics(model_handler_.getTempJsonPath(), harmonics_handler);
 
     std::vector<double> bn_values = harmonics_handler.get_bn();
     for (double bn : bn_values)

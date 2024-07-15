@@ -117,7 +117,7 @@ void GridSearchOptimizer::estimateTimePerComputation()
     for (int i = 1; i <= num_computations; i++)
     {
         HarmonicsHandler handler;
-        calculator_.reload_and_calc(model_handler_.getTempJsonPath(), handler);
+        calculator_.reload_and_calc_harmonics(model_handler_.getTempJsonPath(), handler);
     }
 
     // End time
@@ -131,8 +131,6 @@ void GridSearchOptimizer::estimateTimePerComputation()
 
     time_per_calc_ = time_per_computation;
 }
-
-
 
 // Function to set the parameter ranges to be around the curret cofigurations by the provided factor. New range will be [offset - factor*offset, offset + factor*offset], same for slope.
 void GridSearchOptimizer::setParamRanges(double factor)
@@ -157,10 +155,12 @@ void GridSearchOptimizer::setParamRanges(double factor)
         double current_slope = harmonic_drive_values["B" + std::to_string(i)].getSlope();
 
         // if one value is 0, set that range to be around some fallback value
-        if (current_offset == 0){
+        if (current_offset == 0)
+        {
             current_offset = GRID_DRIVE_FALLBACK;
         }
-        if (current_slope == 0){
+        if (current_slope == 0)
+        {
             current_slope = GRID_DRIVE_FALLBACK;
         }
 
@@ -307,7 +307,7 @@ void GridSearchOptimizer::optimize(double bn_threshold)
 void GridSearchOptimizer::recompute_bn()
 {
     HarmonicsHandler handler;
-    calculator_.reload_and_calc(model_handler_.getTempJsonPath(), handler);
+    calculator_.reload_and_calc_harmonics(model_handler_.getTempJsonPath(), handler);
     current_bn_values_ = handler.get_bn();
 }
 

@@ -45,7 +45,7 @@ void GridSearch::run()
 
             // Run harmonics calculation
             HarmonicsHandler harmonics_handler;
-            calculator_.reload_and_calc(model_handler_.getTempJsonPath(), harmonics_handler);
+            calculator_.reload_and_calc_harmonics(model_handler_.getTempJsonPath(), harmonics_handler);
 
             // Evaluate the criteria
             std::vector<double> criteria_values;

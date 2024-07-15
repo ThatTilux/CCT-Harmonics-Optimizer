@@ -16,7 +16,7 @@ protected:
     {
         test_file = TEST_DATA_DIR + "quad_test.json";
         ModelCalculator calculator(test_file);
-        calculator.calc(handler, true);
+        calculator.calc_harmonics(handler, true);
     }
 };
 

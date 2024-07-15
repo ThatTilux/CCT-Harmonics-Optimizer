@@ -36,7 +36,7 @@ TEST_F(HarmonicsCalculatorTest, CalcUpdatesHarmonicsHandler)
 {
     ModelCalculator calculator(test_file);
     HarmonicsHandler handler;
-    calculator.calc(handler, true);
+    calculator.calc_harmonics(handler, true);
     // Check if the handler is updated
     EXPECT_FALSE(handler.get_bn().empty());
 }
@@ -45,7 +45,7 @@ TEST_F(HarmonicsCalculatorTest, ReloadAndCalc)
 {
     ModelCalculator calculator(test_file);
     HarmonicsHandler handler;
-    calculator.reload_and_calc(test_file, handler, true);
+    calculator.reload_and_calc_harmonics(test_file, handler, true);
     // Check if the handler is updated after reloading and calculating
     EXPECT_FALSE(handler.get_bn().empty());
 }

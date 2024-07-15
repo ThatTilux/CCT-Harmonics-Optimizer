@@ -15,14 +15,14 @@ BnOptimizer::BnOptimizer(ModelHandler &model_handler, double max_harmonic_value)
 }
 
 // Setup function called from the constructors
-void BnOptimizer::setup(ModelHandler &model_handler, double max_harmonic_value){
+void BnOptimizer::setup(ModelHandler &model_handler, double max_harmonic_value)
+{
     // setup
     model_handler_ = model_handler;
     initCalcultor();
     harmonic_drive_values_ = initHarmonicDrives();
     max_harmonic_value_ = max_harmonic_value;
 }
-
 
 // Function to log the results from the optimizer
 void BnOptimizer::logResults()
@@ -33,10 +33,9 @@ void BnOptimizer::logResults()
     print_vector(current_bn_values_, "bn");
 }
 
-
-
 // Function to get the bn values after optimization
-std::vector<double>& BnOptimizer::getResults(){
+std::vector<double> &BnOptimizer::getResults()
+{
     return current_bn_values_;
 }
 
@@ -63,7 +62,7 @@ void BnOptimizer::optimize()
     HarmonicsHandler harmonics_handler;
 
     // get the current bn values
-    calculator_.reload_and_calc(temp_json_file_path, harmonics_handler);
+    calculator_.reload_and_calc_harmonics(temp_json_file_path, harmonics_handler);
     current_bn_values_ = harmonics_handler.get_bn();
 
     // optimize as long as not all bn values are within the margin
@@ -132,7 +131,7 @@ void BnOptimizer::optimize()
 
                 // Compute the new bn values
                 // get the current bn values
-                calculator_.reload_and_calc(temp_json_file_path, harmonics_handler);
+                calculator_.reload_and_calc_harmonics(temp_json_file_path, harmonics_handler);
                 std::vector<double> new_bn_values = harmonics_handler.get_bn();
                 double new_bn = new_bn_values[component - 1];
                 Logger::info("Initial step yielded new bn value: " + std::to_string(new_bn) + " for new drive value: " + std::to_string(new_drive_value));
@@ -149,7 +148,7 @@ void BnOptimizer::optimize()
                     // Set the optimized value and recompute bn
                     model_handler_.setHarmonicDriveValue(name, HarmonicDriveParameters(optimized_value, drive_type));
 
-                    calculator_.reload_and_calc(temp_json_file_path, harmonics_handler);
+                    calculator_.reload_and_calc_harmonics(temp_json_file_path, harmonics_handler);
 
                     std::vector<double> optimized_bn_values = harmonics_handler.get_bn();
 
@@ -186,6 +185,6 @@ void BnOptimizer::optimize()
         }
     } while (!all_within_margin);
 }
-void BnOptimizer::temp_test(){
-    
+void BnOptimizer::temp_test()
+{
 }

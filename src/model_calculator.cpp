@@ -51,28 +51,37 @@ bool ModelCalculator::load_model(const boost::filesystem::path &json_file_path)
     calc_tree_ = calc_tree;
 
     std::tie(harmonics_calc_, harmonics_calc_name_) = find_first_calc<rat::mdl::CalcHarmonics>(calc_tree_);
-    if (!harmonics_calc_)
+    std::tie(mesh_calc_, mesh_calc_name_) = find_first_calc<rat::mdl::CalcMesh>(calc_tree_);
+
+    if (!harmonics_calc_ && !mesh_calc_)
     {
-        Logger::error("No Harmonics Calculation could be found in the calculation tree. Exiting.");
+        Logger::error("No Harmonics Calculation or Mesh Calculation could be found in the calculation tree. Exiting.");
         Logger::info("Press Enter to continue...");
         std::cin.get();
         return false;
     }
 
-    // log calculation name (only once)
-    static bool logged_calc_name = false;
-    if (!logged_calc_name)
+    // log calculation names (only once)
+    static bool logged_calc_names = false;
+    if (!logged_calc_names)
     {
-        Logger::info("Found Harmonics Calculation with the name: " + harmonics_calc_name_);
-        logged_calc_name = true;
+        if (harmonics_calc_)
+        {
+            Logger::info("Found Harmonics Calculation with the name: " + harmonics_calc_name_);
+        }
+        if (mesh_calc_)
+        {
+            Logger::info("Found Mesh Calculation with the name: " + mesh_calc_name_);
+        }
+        logged_calc_names = true;
     }
     return true;
 }
 
-// Function to set the GPU settings for the harmonics calculation. Will do nothing when no GPU is available.
-void ModelCalculator::enable_gpu()
+// Function to set the GPU settings for the calculation. Will do nothing when no GPU is available.
+void ModelCalculator::enable_gpu(rat::mdl::ShCalcLeafPr calc_leaf)
 {
-    rat::fmm::ShSettingsPr settings = harmonics_calc_->get_settings();
+    rat::fmm::ShSettingsPr settings = calc_leaf->get_settings();
     // get the number of CUDA compatible GPU devices
     int num_gpu_devices = 0;
 
@@ -86,28 +95,28 @@ void ModelCalculator::enable_gpu()
         settings->set_enable_gpu(true);
         settings->add_gpu_device(0);
 
-        // log GPU activation (only once)
-        static bool logged_gpu = false;
-        if (!logged_gpu)
+        // log GPU activation (only once per calc)
+        static std::map<std::string, bool> logged_gpu;
+        if (!logged_gpu[calc_leaf->get_name()])
         {
-            Logger::info("GPU enabled for Harmonics Calculation.");
-            logged_gpu = true;
+            Logger::info("GPU enabled for " + calc_leaf->get_name() + ".");
+            logged_gpu[calc_leaf->get_name()] = true;
         }
     }
     else
     {
-        // log no GPU available (only once)
-        static bool logged_no_gpu = false;
-        if (!logged_no_gpu)
+        // log no GPU available (only once per type)
+        static std::map<std::string, bool> logged_no_gpu;
+        if (!logged_no_gpu[calc_leaf->get_name()])
         {
-            Logger::info("No GPU available for Harmonics Calculation. Running on CPU.");
-            logged_no_gpu = true;
+            Logger::info("No GPU available for " + calc_leaf->get_name() + ". Running on CPU.");
+            logged_no_gpu[calc_leaf->get_name()] = true;
         }
     }
 }
 
 // function for doing the harmonics calculation. Will update a HarmonicsHandler object that provides access to the results.
-void ModelCalculator::calc(HarmonicsHandler &harmonics_handler, bool disable_logging)
+void ModelCalculator::calc_harmonics(HarmonicsHandler &harmonics_handler, bool disable_logging)
 {
     if (harmonics_calc_)
     {
@@ -120,7 +129,7 @@ void ModelCalculator::calc(HarmonicsHandler &harmonics_handler, bool disable_log
         const rat::mdl::ShSolverCachePr cache = rat::mdl::SolverCache::create();
 
         // Use GPU for calculation if available
-        enable_gpu();
+        enable_gpu(harmonics_calc_);
 
         rat::mdl::ShHarmonicsDataPr harmonics_data = harmonics_calc_->calculate_harmonics(output_time, lg, cache);
 
@@ -137,10 +146,10 @@ void ModelCalculator::calc(HarmonicsHandler &harmonics_handler, bool disable_log
 }
 
 // reloads the model from the json and computes the bn values
-void ModelCalculator::reload_and_calc(const boost::filesystem::path &json_file_path, HarmonicsHandler &harmonics_handler, bool disable_logging)
+void ModelCalculator::reload_and_calc_harmonics(const boost::filesystem::path &json_file_path, HarmonicsHandler &harmonics_handler, bool disable_logging)
 {
     load_model(json_file_path);
-    calc(harmonics_handler, disable_logging);
+    calc_harmonics(harmonics_handler, disable_logging);
 }
 
 std::tuple<rat::mdl::ShModelPr, rat::mdl::ShModelRootPr, rat::mdl::ShModelGroupPr, rat::mdl::ShCalcGroupPr>
@@ -216,7 +225,7 @@ std::tuple<std::shared_ptr<T>, std::string> ModelCalculator::find_first_calc(con
 
 // Explicit template instantiation - define all possible types of T here
 template std::tuple<std::shared_ptr<rat::mdl::CalcHarmonics>, std::string> ModelCalculator::find_first_calc(const rat::mdl::ShCalcGroupPr &calc_tree);
-//template std::tuple<std::shared_ptr<rat::mdl::CalcMesh>, std::string> ModelCalculator::find_first_calc(const rat::mdl::ShCalcGroupPr &calc_tree);
+template std::tuple<std::shared_ptr<rat::mdl::CalcMesh>, std::string> ModelCalculator::find_first_calc(const rat::mdl::ShCalcGroupPr &calc_tree);
 
 bool ModelCalculator::has_harmonics_calc()
 {
