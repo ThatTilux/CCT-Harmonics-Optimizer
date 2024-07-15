@@ -30,8 +30,11 @@ private:
     std::tuple<rat::mdl::ShModelPr, rat::mdl::ShModelRootPr, rat::mdl::ShModelGroupPr, rat::mdl::ShCalcGroupPr>
     load_model_from_json(const boost::filesystem::path &json_file_path);
     void enable_gpu();
-    std::tuple<rat::mdl::ShCalcHarmonicsPr, std::string> find_first_calcharmonics(const rat::mdl::ShCalcGroupPr &calc_tree);
     void log_gpu_info();
+
+    // template for the find_first_calc function
+    template <typename T>
+    std::tuple<std::shared_ptr<T>, std::string> find_first_calc(const rat::mdl::ShCalcGroupPr &calc_tree);
 
     rat::mdl::ShModelPr model_;
     rat::mdl::ShModelRootPr root_;

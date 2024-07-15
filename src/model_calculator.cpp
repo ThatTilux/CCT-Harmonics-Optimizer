@@ -50,7 +50,7 @@ bool ModelCalculator::load_model(const boost::filesystem::path &json_file_path)
     model_tree_ = model_tree;
     calc_tree_ = calc_tree;
 
-    std::tie(harmonics_calc_, harmonics_calc_name_) = find_first_calcharmonics(calc_tree_);
+    std::tie(harmonics_calc_, harmonics_calc_name_) = find_first_calc<rat::mdl::CalcHarmonics>(calc_tree_);
     if (!harmonics_calc_)
     {
         Logger::error("No Harmonics Calculation could be found in the calculation tree. Exiting.");
@@ -189,9 +189,13 @@ ModelCalculator::load_model_from_json(const boost::filesystem::path &json_file_p
     return {model, root, model_tree, calc_tree};
 }
 
-// function to saerch the calculation tree of a model for a harmonics calculation. Will return the top-most harmonics calculation of the tree
-std::tuple<rat::mdl::ShCalcHarmonicsPr, std::string> ModelCalculator::find_first_calcharmonics(const rat::mdl::ShCalcGroupPr &calc_tree)
+// function to search the calculation tree of a model for a calculation of the specified type. Will return the top-most calculation with that type of the tree
+template <typename T>
+std::tuple<std::shared_ptr<T>, std::string> ModelCalculator::find_first_calc(const rat::mdl::ShCalcGroupPr &calc_tree)
 {
+    // Ensure T is derived from rat::mdl::CalcLeaf
+    static_assert(std::is_base_of<rat::mdl::CalcLeaf, T>::value, "T must be derived from rat::mdl::CalcLeaf");
+
     if (!calc_tree)
     {
         return {nullptr, ""};
@@ -199,16 +203,20 @@ std::tuple<rat::mdl::ShCalcHarmonicsPr, std::string> ModelCalculator::find_first
 
     for (const auto &calc : calc_tree->get_calculations())
     {
-        auto harmonics_calc = std::dynamic_pointer_cast<rat::mdl::CalcHarmonics>(calc);
-        if (harmonics_calc)
+        auto specific_calc = std::dynamic_pointer_cast<T>(calc);
+        if (specific_calc)
         {
-            std::string myname = harmonics_calc->get_name();
-            return {harmonics_calc, myname};
+            std::string myname = specific_calc->get_name();
+            return {specific_calc, myname};
         }
     }
 
     return {nullptr, ""};
 }
+
+// Explicit template instantiation - define all possible types of T here
+template std::tuple<std::shared_ptr<rat::mdl::CalcHarmonics>, std::string> ModelCalculator::find_first_calc(const rat::mdl::ShCalcGroupPr &calc_tree);
+//template std::tuple<std::shared_ptr<rat::mdl::CalcMesh>, std::string> ModelCalculator::find_first_calc(const rat::mdl::ShCalcGroupPr &calc_tree);
 
 bool ModelCalculator::has_harmonics_calc()
 {
