@@ -197,7 +197,7 @@ void GridSearchOptimizer::optimize()
     // Run the optimizer a few times with decreasing parameters: //
 
     // Thresholds and search factors
-    std::vector<double> thresholds = {GRID_BN_THRESHOLD, 1, 0.1, 0.005};
+    std::vector<double> thresholds = {GRID_BN_THRESHOLD, 1, 0.1, 0.01};
     std::vector<double> search_factors = {GRID_SEARCH_FACTOR, GRID_SEARCH_FACTOR, GRID_SEARCH_FACTOR / 10, GRID_SEARCH_FACTOR / 100};
 
     // assert that they have the same length
