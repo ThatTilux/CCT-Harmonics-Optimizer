@@ -29,6 +29,7 @@ int main()
     {
         // only bn optimization
         BnOptimizer optimizer = BnOptimizer();
+        optimizer.temp_test(); //TODO TEMP REMOVe
         optimizer.optimize();
         optimizer.logResults();
         optimizer.exportModel();

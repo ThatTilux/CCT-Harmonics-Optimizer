@@ -19,12 +19,17 @@ class MeshDataHandler
 {
 public:
     MeshDataHandler();
-    MeshDataHandler(rat::mdl::ShMeshDataPr mesh_data);
+    MeshDataHandler(std::list<rat::mdl::ShMeshDataPr> &mesh_data);
+
+    std::pair<double, double> getMinMaxZValues();
 
 private:
-    rat::mdl::ShMeshDataPr mesh_data_;
-   
-};
+    rat::mdl::ShMeshDataPr getMeshData(int index);
+    int getMeshDataSize();
+    void get_z(rat::mdl::ShMeshDataPr mesh_data, arma::field<arma::dmat> &z);
 
+
+    std::list<rat::mdl::ShMeshDataPr> mesh_data_;
+};
 
 #endif // MESH_DATA_HANDLER_H

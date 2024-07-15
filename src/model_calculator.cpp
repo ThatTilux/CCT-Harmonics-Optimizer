@@ -115,6 +115,7 @@ void ModelCalculator::enable_gpu(rat::mdl::ShCalcLeafPr calc_leaf)
     }
 }
 
+// TODO remove redundancy
 // function for doing the harmonics calculation. Will update a HarmonicsHandler object that provides access to the results.
 void ModelCalculator::calc_harmonics(HarmonicsDataHandler &harmonics_handler, bool disable_logging)
 {
@@ -145,11 +146,50 @@ void ModelCalculator::calc_harmonics(HarmonicsDataHandler &harmonics_handler, bo
     }
 }
 
+// function for doing the mesh calculation. Will update a mesh handler object that provides access to the results.
+void ModelCalculator::calc_mesh(MeshDataHandler &mesh_handler, bool disable_logging)
+{
+    if (mesh_calc_)
+    {
+
+        Logger::info("Running mesh calculation...");
+
+        // do the mesh calculation
+        const rat::fltp output_time = RAT_CONST(0.0);
+        const rat::cmn::ShLogPr lg = disable_logging ? rat::cmn::NullLog::create() : rat::cmn::Log::create(rat::cmn::Log::LogoType::RAT);
+        const rat::mdl::ShSolverCachePr cache = rat::mdl::SolverCache::create();
+
+        // Use GPU for calculation if available
+        enable_gpu(mesh_calc_);
+
+        std::list<rat::mdl::ShMeshDataPr> mesh_data = mesh_calc_->calculate_mesh(output_time, lg, cache);
+
+        if (!mesh_data.empty())
+        {
+            mesh_handler = MeshDataHandler(mesh_data);
+        }
+        else
+        {
+            std::cerr << "Mesh calculation failed." << std::endl;
+            mesh_handler = MeshDataHandler();
+        }
+    }
+}
+
+// TODO make the handler a pointer and remove dummy constructor
 // reloads the model from the json and computes the bn values
 void ModelCalculator::reload_and_calc_harmonics(const boost::filesystem::path &json_file_path, HarmonicsDataHandler &harmonics_handler, bool disable_logging)
 {
     load_model(json_file_path);
     calc_harmonics(harmonics_handler, disable_logging);
+}
+
+// TODO make the handler a pointer and remove dummy constructor
+// reloads the model from the json and computes the mesh
+void ModelCalculator::reload_and_calc_mesh(const boost::filesystem::path &json_file_path, MeshDataHandler &mesh_handler, bool disable_logging)
+{
+    load_model(json_file_path);
+    calc_mesh(mesh_handler, disable_logging);
 }
 
 std::tuple<rat::mdl::ShModelPr, rat::mdl::ShModelRootPr, rat::mdl::ShModelGroupPr, rat::mdl::ShCalcGroupPr>
@@ -230,4 +270,9 @@ template std::tuple<std::shared_ptr<rat::mdl::CalcMesh>, std::string> ModelCalcu
 bool ModelCalculator::has_harmonics_calc()
 {
     return harmonics_calc_ != nullptr;
+}
+
+bool ModelCalculator::has_mesh_calc()
+{
+    return mesh_calc_ != nullptr;
 }

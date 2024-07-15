@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 #include "harmonics_data_handler.h"
+#include "mesh_data_handler.h"
 
 class ModelCalculator
 {
@@ -21,10 +22,15 @@ public:
     // dummy - do not use
     ModelCalculator();
 
+
     void calc_harmonics(HarmonicsDataHandler &harmonics_handler, bool disable_logging = true);
     void reload_and_calc_harmonics(const boost::filesystem::path &json_file_path, HarmonicsDataHandler &harmonics_handler, bool disable_logging = true);
 
+    void calc_mesh(MeshDataHandler &mesh_handler, bool disable_logging = true);
+    void reload_and_calc_mesh(const boost::filesystem::path &json_file_path, MeshDataHandler &mesh_handler, bool disable_logging = true);
+
     bool has_harmonics_calc();
+    bool has_mesh_calc();
 
 private:
     bool load_model(const boost::filesystem::path &json_file_path);

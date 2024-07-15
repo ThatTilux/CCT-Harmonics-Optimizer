@@ -187,4 +187,10 @@ void BnOptimizer::optimize()
 }
 void BnOptimizer::temp_test()
 {
+    MeshDataHandler mesh_handler;
+    calculator_.reload_and_calc_mesh(model_handler_.getTempJsonPath(), mesh_handler);
+    auto [min, max] = mesh_handler.getMinMaxZValues();
+
+    Logger::info("Min z value: " + std::to_string(min));
+    Logger::info("Max z value: " + std::to_string(max));
 }
