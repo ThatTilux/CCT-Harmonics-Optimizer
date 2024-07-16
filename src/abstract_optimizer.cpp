@@ -89,15 +89,31 @@ void AbstractOptimizer::assertOnlyLinearDrives()
     }
 }
 
-// Function to assert that there are custom harmonics for all harmonics from 1 to 10 (except for the main one). Throws std::runtime_error if not
+// Function to assert that there are custom harmonics for all harmonics from 1 to 10 (except for the main one). Throws std::runtime_error if not. Sets the main component.
 void AbstractOptimizer::assertAllHarmonicsPresent()
 {
     HarmonicDriveParameterMap params = model_handler_.getHarmonicDriveValues();
     for (int i = 1; i <= 10; i++)
     {
-        if (i != MAIN_COMPONENT && params.find("B" + std::to_string(i)) == params.end())
-            throw std::runtime_error("The selected model does not have a custom harmonic for harmonic " + std::to_string(i) + ". This is not supported for this optimizer.");
+        if (params.find("B" + std::to_string(i)) == params.end())
+        {
+            // i should be the main component
+            try
+            {
+                // this will throw an error when the main component has not been set
+                getMainComponent();
+            }
+            catch (const std::runtime_error &e)
+            {
+                // the main component has not been set, all good
+                main_component_ = i;
+                continue;
+            }
+            // if the main component has already been set, there is at least 1 component missing.
+            throw std::runtime_error("The selected model does not have a custom harmonic for the harmonics " + std::to_string(getMainComponent()) + " and " + std::to_string(i) + " namend BX for X in 1..10. All component aside from the main component need such a harmonic for this optimizer. Aborting...");
+        }
     }
+    Logger::info("Detected B" + std::to_string(main_component_) + " as the main component.");
 }
 
 // Function to check if all abs bn values are below a certain threshold
@@ -141,6 +157,16 @@ double AbstractOptimizer::getMaxMagnetEll()
     return cct_ell_bounds_.second;
 }
 
+// Function to get the main component of the magnet, e.g. 2 for a quadrupole magnet.
+int AbstractOptimizer::getMainComponent()
+{
+    if (main_component_ == -1)
+    {
+        throw std::runtime_error("The main component has not been set. Please set it before calling this function.");
+    }
+    return main_component_;
+}
+
 // Function to compute and set the ell bounds for the magnet. The ell bounds are the part along the length of the axis where the magnet actually is.
 void AbstractOptimizer::computeMagnetEllBounds()
 {
@@ -170,7 +196,7 @@ void AbstractOptimizer::computeMagnetEllBounds()
     Logger::info("Computed magnet ell bounds: " + std::to_string(cct_ell_bounds_.first) + " mm to " + std::to_string(cct_ell_bounds_.second) + " mm.");
     double length = cct_ell_bounds_.second - cct_ell_bounds_.first;
     Logger::info("Magnet length: " + std::to_string(length) + " mm.");
-} 
+}
 
 // Function to export the optimized model
 void AbstractOptimizer::exportModel()

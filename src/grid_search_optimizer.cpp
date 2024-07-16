@@ -50,7 +50,7 @@ void GridSearchOptimizer::computeGranularities()
     // for each harmonic, initialize granularities
     for (int i = 1; i <= 10; i++)
     {
-        if (i == MAIN_COMPONENT)
+        if (i == getMainComponent())
         {
             granularities_[i - 1] = {0, 0}; // dummy values for main component
             continue;
@@ -148,7 +148,7 @@ void GridSearchOptimizer::setParamRanges(double factor)
     // update the param_ranges_ with the new values
     for (int i = 1; i <= 10; i++)
     {
-        if (i == MAIN_COMPONENT)
+        if (i == getMainComponent())
             continue;
 
         // get the current offset and slope
@@ -247,7 +247,7 @@ void GridSearchOptimizer::optimize(double bn_threshold)
         for (int i = 1; i <= 10; i++)
         {
             // do not optimize main component
-            if (i == MAIN_COMPONENT)
+            if (i == getMainComponent())
                 continue;
 
             // check if the bn value is good enough already. In the first iteration, optimize all

@@ -41,7 +41,4 @@ inline const double MAX_OFFSET = 0.05; // 5mm
 // max slope value allowed to be set in the model handler
 inline const double MAX_SLOPE = 0.0001; // 1e-04 m/coil
 
-// temp constants - TODO infer this from the model 
-inline const int MAIN_COMPONENT = 2; //B2
-
 #endif // CONSTANTS_H
