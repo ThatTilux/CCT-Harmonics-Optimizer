@@ -162,7 +162,7 @@ private:
     static std::string format_message_scientific(double value)
     {
         // only do the formatting for small or big numbers
-        if (value > 1e-4 && value < 1e4)
+        if (std::abs(value) > 1e-4 && std::abs(value) < 1e4)
         {
             return std::to_string(value);
         }
