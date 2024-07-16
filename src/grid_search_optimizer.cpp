@@ -381,11 +381,11 @@ std::pair<double, double> GridSearchOptimizer::extrapolateOptimalConfiguration(s
     {
         // Model each data as a 2-d plane in the [offset, slope, criteria] space. Plane: z=ax+by+c
         auto [a, b, c] = StatisticalAnalysis::fitPlaneToData(results, i);
-        Logger::info("Plane coefficients for criterion " + std::to_string(i) + ": a=" + std::to_string(a) + ", b=" + std::to_string(b) + ", c=" + std::to_string(c));
+        Logger::debug("Plane coefficients for criterion " + std::to_string(i) + ": a=" + std::to_string(a) + ", b=" + std::to_string(b) + ", c=" + std::to_string(c));
 
         // From each plane, extract the linear function where the plane has the z value 0
         auto [offset, slope] = StatisticalAnalysis::planeToLinearFunction(a, b, c);
-        Logger::info("Linear function for criterion " + std::to_string(i) + ": Offset=" + std::to_string(offset) + ", Slope=" + std::to_string(slope));
+        Logger::debug("Linear function for criterion " + std::to_string(i) + ": Offset=" + std::to_string(offset) + ", Slope=" + std::to_string(slope));
 
         linear_functions.push_back({offset, slope});
     }
@@ -404,7 +404,7 @@ std::pair<double, double> GridSearchOptimizer::extrapolateOptimalConfiguration(s
         throw std::runtime_error("No intersection found for the linear functions.");
     }
 
-    Logger::info("Intersection of the linear functions: Offset=" + std::to_string(intersection->first) + ", Slope=" + std::to_string(intersection->second));
+    Logger::debug("Intersection of the linear functions: Offset=" + std::to_string(intersection->first) + ", Slope=" + std::to_string(intersection->second));
 
     // Return the new values
     return *intersection;
