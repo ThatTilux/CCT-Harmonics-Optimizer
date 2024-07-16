@@ -14,11 +14,17 @@ public:
 
     double evaluate(HarmonicsDataHandler harmonics_handler, int component) override
     {
+        return evaluate(harmonics_handler, component, std::numeric_limits<double>::min(), std::numeric_limits<double>::max());
+    }
+
+    // Evaluate with mag ell bounds
+    double evaluate(HarmonicsDataHandler harmonics_handler, int component, double mag_start_pos, double mag_end_pos)
+    {
         // get the Bn and ell
         std::vector<std::pair<double, double>> points = harmonics_handler.get_Bn(component);
 
         // apply transformations to the data
-        apply_transformations(points);
+        apply_transformations(points, mag_start_pos, mag_end_pos);
 
         // fit a linear function
         auto [slope, intercept] = StatisticalAnalysis::linearRegression(points);
@@ -27,11 +33,11 @@ public:
     }
 
     // Funtion to apply transformations to the ell & Bn data before fitting a linear function
-    void apply_transformations(std::vector<std::pair<double, double>> &Bn_data)
+    void apply_transformations(std::vector<std::pair<double, double>> &Bn_data, double mag_start_pos, double mag_end_pos)
     {
         // remove all the pairs where the ell value is not inside the set bounds
-        Bn_data.erase(std::remove_if(Bn_data.begin(), Bn_data.end(), [](const std::pair<double, double> &pair)
-                                     { return pair.first < MAG_START_POS || pair.first > MAG_END_POS; }),
+        Bn_data.erase(std::remove_if(Bn_data.begin(), Bn_data.end(), [this, mag_start_pos, mag_end_pos](const std::pair<double, double> &pair)
+                                     { return pair.first < mag_start_pos || pair.first > mag_end_pos; }),
                       Bn_data.end());
 
         // make sure there are at least 2 points

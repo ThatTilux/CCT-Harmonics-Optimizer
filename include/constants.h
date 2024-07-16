@@ -42,8 +42,6 @@ inline const double MAX_OFFSET = 0.05; // 5mm
 inline const double MAX_SLOPE = 0.0001; // 1e-04 m/coil
 
 // temp constants - TODO infer this from the model 
-inline const double MAG_START_POS = 167; //167mm
-inline const double MAG_END_POS = 909; //909mm
 inline const int MAIN_COMPONENT = 2; //B2
 
 #endif // CONSTANTS_H

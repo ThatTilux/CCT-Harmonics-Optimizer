@@ -12,6 +12,7 @@ GridSearchOptimizer::GridSearchOptimizer() : AbstractOptimizer()
 
     // continue setup
     initCalcultor();
+    computeMagnetEllBounds();
     initCriteria();
     estimateTimePerComputation();
 }
@@ -289,6 +290,9 @@ void GridSearchOptimizer::optimize(double bn_threshold)
 
             // print the bn values.
             print_vector(current_bn_values_, "bn");
+
+            // Recompute ell bounds
+            computeMagnetEllBounds();
         }
 
         // assert that at least one drive value has changed. If not, the optimization may be stuck
@@ -356,7 +360,9 @@ void GridSearchOptimizer::runGridSearch(int component, std::vector<GridSearchRes
 
     // run grid search
     std::pair<double, double> granularities = granularities_[component - 1];
-    GridSearch grid_search(model_handler_, calculator_, component, offset_range, slope_range, granularities.first, granularities.second, results, criteria_, time_per_calc_);
+    double mag_ell_start = getMinMagnetEll();
+    double mag_ell_end = getMaxMagnetEll();
+    GridSearch grid_search(model_handler_, calculator_, component, offset_range, slope_range, granularities.first, granularities.second, results, criteria_, mag_ell_start, mag_ell_end, time_per_calc_);
 }
 
 // Function to extrapolate the optimal configuration from the grid search results. The optimal offset, slope configuration is the one that minimizes all objectives (criteria).

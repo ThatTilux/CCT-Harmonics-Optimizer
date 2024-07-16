@@ -165,6 +165,11 @@ void AbstractOptimizer::computeMagnetEllBounds()
 
     // set the bounds [mm]
     cct_ell_bounds_ = {magnet_start_ell * 1000, magnet_end_ell * 1000};
+
+    // Log results
+    Logger::info("Computed magnet ell bounds: " + std::to_string(cct_ell_bounds_.first) + " mm to " + std::to_string(cct_ell_bounds_.second) + " mm.");
+    double length = cct_ell_bounds_.second - cct_ell_bounds_.first;
+    Logger::info("Magnet length: " + std::to_string(length) + " mm.");
 } 
 
 // Function to export the optimized model
