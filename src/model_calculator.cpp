@@ -52,16 +52,18 @@ bool ModelCalculator::load_model(const boost::filesystem::path &json_file_path)
 
     std::tie(harmonics_calc_, harmonics_calc_name_) = find_first_calc<rat::mdl::CalcHarmonics>(calc_tree_);
     std::tie(mesh_calc_, mesh_calc_name_) = find_first_calc<rat::mdl::CalcMesh>(calc_tree_);
+    std::tie(harmonics_axis_, harmonics_axis_name_) = get_axis(harmonics_calc_);
 
-    if (!harmonics_calc_ && !mesh_calc_)
+    if (!harmonics_calc_ || !mesh_calc_ || !harmonics_axis_)
     {
-        Logger::error("No Harmonics Calculation or Mesh Calculation could be found in the calculation tree. Exiting.");
+        Logger::error("No Mesh Calculation or Harmonics Calculation with Axis Path could be found in the calculation tree. Exiting.");
         Logger::info("Press Enter to continue...");
         std::cin.get();
         return false;
     }
 
-    // log calculation names (only once)
+    // log results
+
     static bool logged_calc_names = false;
     if (!logged_calc_names)
     {
@@ -73,8 +75,13 @@ bool ModelCalculator::load_model(const boost::filesystem::path &json_file_path)
         {
             Logger::info("Found Mesh Calculation with the name: " + mesh_calc_name_);
         }
+        if (harmonics_axis_)
+        {
+            Logger::info("Found Axis Path with the name: " + harmonics_axis_name_);
+        }
         logged_calc_names = true;
     }
+
     return true;
 }
 
@@ -266,6 +273,56 @@ std::tuple<std::shared_ptr<T>, std::string> ModelCalculator::find_first_calc(con
 // Explicit template instantiation - define all possible types of T here
 template std::tuple<std::shared_ptr<rat::mdl::CalcHarmonics>, std::string> ModelCalculator::find_first_calc(const rat::mdl::ShCalcGroupPr &calc_tree);
 template std::tuple<std::shared_ptr<rat::mdl::CalcMesh>, std::string> ModelCalculator::find_first_calc(const rat::mdl::ShCalcGroupPr &calc_tree);
+
+// Function to retieve the axis from a harmonics calculation
+std::tuple<rat::mdl::ShPathAxisPr, std::string> ModelCalculator::get_axis(const rat::mdl::ShCalcHarmonicsPr &harmonics_calc)
+{
+    if (!harmonics_calc)
+    {
+        return {nullptr, ""};
+    }
+
+    rat::mdl::ShPathPr path = harmonics_calc->get_input_path();
+    rat::mdl::ShPathAxisPr axis = std::dynamic_pointer_cast<rat::mdl::PathAxis>(path);
+    std::string name = axis->get_name();
+
+    return {axis, name};
+}
+
+// Function to get the z position in m of an axis with respect to all transformations
+double ModelCalculator::get_axis_z_pos()
+{
+    if (!harmonics_axis_)
+    {
+        throw std::runtime_error("Axis has not been initialized yet. Cannot retrieve z position.");
+    }
+
+    // position without transformations
+    arma::dvec3 pos = harmonics_axis_->get_position();
+
+    // get all transformations
+    std::list<rat::mdl::ShTransPr> transformations = harmonics_axis_->get_transformations();
+
+    // apply transformations to position
+    for (auto &trans : transformations)
+    {
+        trans->apply_coords(pos, 0);
+    }
+
+    // return z
+    return pos(2);
+}
+
+double ModelCalculator::get_axis_ell()
+{
+    if (!harmonics_axis_)
+    {
+        throw std::runtime_error("Axis has not been initialized yet. Cannot retrieve ell.");
+    }
+
+    return harmonics_axis_->get_ell();
+
+}
 
 bool ModelCalculator::has_harmonics_calc()
 {
