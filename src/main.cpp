@@ -12,6 +12,11 @@
 int main()
 {
 
+    // create necessary directories
+    boost::filesystem::create_directory(MODEL_OUTPUT_DIR);
+    boost::filesystem::create_directory(GRID_SEARCH_OUTPUT_DIR);
+
+
     // check which optimization the user wants to do
     std::vector<std::string> optimization_options = {"Grid Search Optimizer", "bn Optimizer"};
     int selected_optimization = selectFromList(optimization_options, "Please select the desired optimization:");
@@ -29,7 +34,6 @@ int main()
     {
         // only bn optimization
         BnOptimizer optimizer = BnOptimizer();
-        optimizer.temp_test(); //TODO TEMP REMOVe
         optimizer.optimize();
         optimizer.logResults();
         optimizer.exportModel();

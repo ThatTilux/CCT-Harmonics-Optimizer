@@ -7,6 +7,7 @@
 
 inline const std::string DATA_DIR_PATH = "../data";
 inline const std::string MODEL_OUTPUT_DIR = "./optimized_cct/";
+inline const std::string GRID_SEARCH_OUTPUT_DIR = "./grid_search/";
 inline const std::string TEST_DATA_DIR = "../test_data/";
 
 

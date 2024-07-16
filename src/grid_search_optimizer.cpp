@@ -271,7 +271,7 @@ void GridSearchOptimizer::optimize(double bn_threshold)
             runGridSearch(i, results);
 
             // export the results to csv
-            export_grid_search_results_to_csv(results, "./grid_search/grid_search_results_B" + std::to_string(i) + ".csv");
+            export_grid_search_results_to_csv(results, GRID_SEARCH_OUTPUT_DIR + "grid_search_results_B" + std::to_string(i) + ".csv");
 
             // Extrapolate the optimal configuration
             auto [new_offset, new_slope] = extrapolateOptimalConfiguration(results);
