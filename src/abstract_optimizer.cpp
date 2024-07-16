@@ -121,6 +121,52 @@ bool AbstractOptimizer::areAllHarmonicsBelowThreshold(double threshold)
     return true;
 }
 
+// Function to return the ell value in mm where the magnet begins relative to the axis.
+double AbstractOptimizer::getMinMagnetEll()
+{
+    if (cct_ell_bounds_.first == 0.0 && cct_ell_bounds_.second == 0.0)
+    {
+        throw std::runtime_error("The ell bounds have not been set. Please set them before calling this function.");
+    }
+    return cct_ell_bounds_.first;
+}
+
+// Function to return the ell value in mm where the magnet ends relative to the axis.
+double AbstractOptimizer::getMaxMagnetEll()
+{
+    if (cct_ell_bounds_.first == 0.0 && cct_ell_bounds_.second == 0.0)
+    {
+        throw std::runtime_error("The ell bounds have not been set. Please set them before calling this function.");
+    }
+    return cct_ell_bounds_.second;
+}
+
+// Function to compute and set the ell bounds for the magnet. The ell bounds are the part along the length of the axis where the magnet actually is.
+void AbstractOptimizer::computeMagnetEllBounds()
+{
+    // retrieve the z bounds of the magnet
+    MeshDataHandler mesh_handler;
+    calculator_.reload_and_calc_mesh(model_handler_.getTempJsonPath(), mesh_handler);
+    auto [z_min, z_max] = mesh_handler.getMinMaxZValues();
+
+    // retrieve the axis position
+    double axis_z = calculator_.get_axis_z_pos();
+
+    // retrieve the axis length (=ell)
+    double ell = calculator_.get_axis_ell();
+
+    // the start and end of the magnet relative to the axis center [m]
+    double magnet_start = axis_z - z_min;
+    double magnet_end = axis_z - z_max;
+
+    // the start and end of the magnet relative to the axis length [m]
+    double magnet_start_ell = ell / 2 - magnet_start;
+    double magnet_end_ell = ell / 2 - magnet_end;
+
+    // set the bounds [mm]
+    cct_ell_bounds_ = {magnet_start_ell * 1000, magnet_end_ell * 1000};
+} 
+
 // Function to export the optimized model
 void AbstractOptimizer::exportModel()
 {

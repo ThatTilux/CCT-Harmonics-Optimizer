@@ -24,6 +24,9 @@ protected:
     void initCalcultor();
 
     double getMaxHarmonicValue();
+    double getMinMagnetEll();
+    double getMaxMagnetEll();
+    void computeMagnetEllBounds();
     HarmonicDriveParameterMap initHarmonicDrives();
     void assertOnlyLinearDrives();
     void assertAllHarmonicsPresent();
@@ -36,6 +39,8 @@ protected:
 
 private:
     void getModelSelection();
+    // min and max values in mm for the axis z position relative to ell. 
+    std::pair<double, double> cct_ell_bounds_ = {0, 0};
 };
 
 #endif // ABSTRACTOPTIMIZER_H
