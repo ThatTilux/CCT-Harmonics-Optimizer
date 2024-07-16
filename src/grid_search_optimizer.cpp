@@ -286,13 +286,16 @@ void GridSearchOptimizer::optimize(double bn_threshold)
             recompute_bn();
 
             // Check if the bn value actually got better
-            bool improve = checkBnValue(i, prev_bn, prev_drive_values);
+            checkBnValue(i, prev_bn, prev_drive_values);
 
             // print the bn values.
             print_vector(current_bn_values_, "bn");
 
             // Recompute ell bounds
             computeMagnetEllBounds();
+
+            // check sanity of the model
+            checkLengthSanity(prev_drive_values);
         }
 
         // assert that at least one drive value has changed. If not, the optimization may be stuck
@@ -350,6 +353,26 @@ bool GridSearchOptimizer::checkBnValue(int component, double prev_bn, HarmonicDr
         recompute_bn();
         Logger::log_reverted_config(component, prev_drive_values["B" + std::to_string(component)].getOffset(), prev_drive_values["B" + std::to_string(component)].getSlope());
         return false;
+    }
+}
+
+// Function to check the sanity of the magnet model. Will revert to the fallback config if the length of the magnet changed considerably.
+void GridSearchOptimizer::checkLengthSanity(HarmonicDriveParameterMap &fallback_drives)
+{
+    static double previous_length = 0;
+
+    // get the current length
+    double current_length = getMagnetLength();
+
+    // compare; sane if the length has not changed by more than 30%
+    if (previous_length != 0 && std::abs(current_length - previous_length) > std::abs(0.3 * previous_length))
+    {
+        Logger::warn("The length of the magnet has changed considerably from " + std::to_string(previous_length) + " mm to " + std::to_string(current_length) + " mm. Reverting to the previous configuration.");
+        model_handler_.apply_params(fallback_drives);
+        recompute_bn();
+        computeMagnetEllBounds();
+    } else {
+        previous_length = current_length;
     }
 }
 

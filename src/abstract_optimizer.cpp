@@ -157,6 +157,13 @@ double AbstractOptimizer::getMaxMagnetEll()
     return cct_ell_bounds_.second;
 }
 
+// Function to return the inferred length of the magnet
+double AbstractOptimizer::getMagnetLength()
+{
+    return getMaxMagnetEll() - getMinMagnetEll();
+}
+
+
 // Function to get the main component of the magnet, e.g. 2 for a quadrupole magnet.
 int AbstractOptimizer::getMainComponent()
 {

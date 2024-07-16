@@ -26,6 +26,7 @@ protected:
     double getMaxHarmonicValue();
     double getMinMagnetEll();
     double getMaxMagnetEll();
+    double getMagnetLength();
     int getMainComponent();
     void computeMagnetEllBounds();
     HarmonicDriveParameterMap initHarmonicDrives();
