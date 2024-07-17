@@ -13,6 +13,7 @@
 class StatisticalAnalysis {
 public:
     static double computeVariance(const std::vector<double> &y);
+    static double computeChiSquared(const std::vector<std::pair<double, double>> &points, double slope, double intercept, double variance_y);
     static std::pair<double, double> linearRegression(const std::vector<std::pair<double, double>> &points);
     static std::tuple<double, double, double> fitPlaneToData(const std::vector<GridSearchResult> &results, size_t criterion_index);
     static std::tuple<double, double> planeToLinearFunction(double a, double b, double c);

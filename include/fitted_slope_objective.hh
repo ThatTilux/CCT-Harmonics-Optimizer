@@ -29,6 +29,28 @@ public:
         // fit a linear function
         auto [slope, intercept] = StatisticalAnalysis::linearRegression(points);
 
+        // Log
+        Logger::info("Fitted intercept: " + std::to_string(intercept));
+        Logger::info("Fitted slope: " + std::to_string(slope));
+
+        // TODO TEMP REMOVE THIS AGAIN
+        // extract the y values
+        std::vector<double> y_values;
+        for (const auto &point : points)
+        {
+            y_values.push_back(point.second);
+        }
+
+        // compute the variance
+        double variance = StatisticalAnalysis::computeVariance(y_values);
+
+        // compute the chi squared
+        double chi_squared = StatisticalAnalysis::computeChiSquared(points, slope, intercept, variance);
+
+        // Log
+        Logger::info("Chi squared: " + std::to_string(chi_squared));
+
+
         return slope;
     }
 
