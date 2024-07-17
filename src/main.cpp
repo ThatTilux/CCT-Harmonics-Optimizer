@@ -51,7 +51,7 @@ int main()
     else if (selected_optimization == 2){
         // Thresholds and search factors
         std::vector<double> thresholds = {1000};
-        std::vector<double> search_factors = {10};
+        std::vector<double> search_factors = {0.5};
 
         // Criteria
         std::vector<std::shared_ptr<AbstractObjective>> criteria;

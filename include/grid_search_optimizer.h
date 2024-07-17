@@ -21,6 +21,8 @@ public:
     void optimize() override;
     void logResults() override;
 
+    void injectParamRanges(std::vector<std::pair<std::pair<double, double>, std::pair<double, double>>> param_ranges);
+
     virtual ~GridSearchOptimizer(){};
 
 protected:
@@ -69,6 +71,10 @@ private:
 
     // Time budget in minutes for one grid search
     const double time_budget_minutes_;
+
+    // Flag to not compute parameter ranges because they were injected manually
+    bool injected_param_ranges_ = false;
+
 };
 
 #endif // GRID_SEARCH_OPTIMIZER_H

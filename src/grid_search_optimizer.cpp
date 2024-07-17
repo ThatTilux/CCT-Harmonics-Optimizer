@@ -39,6 +39,21 @@ std::pair<std::pair<double, double>, std::pair<double, double>> GridSearchOptimi
     return param_ranges_[component - 1];
 }
 
+// Function to manually inject param ranges. This will completely overwrite any current or default ranges.
+void GridSearchOptimizer::injectParamRanges(std::vector<std::pair<std::pair<double, double>, std::pair<double, double>>> param_ranges){
+    // make sure that a param range is provided for every harmonic
+    if (param_ranges.size() != 10)
+    {
+        throw std::runtime_error("A parameter range must be injected for every harmonic 1-10. Use dummy values for harmonics not to be optimized.");
+    }
+
+    param_ranges_ = param_ranges;
+    injected_param_ranges_ = true;
+
+    Logger::debug("Injected parameter ranges.");
+}
+
+
 // Function to initialize the granularities for the grid search, based on the set time limit.
 void GridSearchOptimizer::computeGranularities()
 {
@@ -133,6 +148,14 @@ void GridSearchOptimizer::estimateTimePerComputation()
 // Function to set the parameter ranges to be around the curret cofigurations by the provided factor. New range will be [offset - factor*offset, offset + factor*offset], same for slope.
 void GridSearchOptimizer::setParamRanges(double factor)
 {
+    // if ranges were manually injected, do not compute new ones
+    if (injected_param_ranges_)
+    {
+        Logger::debug("Parameter ranges were manually injected. Not computing new ones.");
+        return;
+    }
+
+
     // make sure that the param_ranges_ is initialized
     if (param_ranges_.empty())
     {
