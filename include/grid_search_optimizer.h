@@ -11,8 +11,12 @@
 class GridSearchOptimizer : public AbstractOptimizer
 {
 public:
-    GridSearchOptimizer(ModelHandler &model_handler);
-    GridSearchOptimizer();
+    //GridSearchOptimizer(ModelHandler &model_handler);
+    GridSearchOptimizer(std::vector<std::shared_ptr<AbstractObjective>> criteria,
+                        std::vector<double> thresholds, std::vector<double> search_factors,
+                        const int grid_min_steps = GRID_MIN_STEPS,
+                        const double time_budget_minutes = TIME_BUDGET_GRID_SEARCH,
+                        std::vector<int> harmonics_to_optimize={1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
 
     void optimize() override;
     void logResults() override;
@@ -27,9 +31,10 @@ private:
     bool checkBnValue(int component, double prev_bn, HarmonicDriveParameterMap &prev_drive_values);
     void checkLengthSanity(HarmonicDriveParameterMap &fallback_drives);
     void runGridSearch(int component, std::vector<GridSearchResult> &results);
-    std::pair<double, double> extrapolateOptimalConfiguration(std::vector<GridSearchResult> &results);
+    std::pair<double, double> extrapolateOptimalConfiguration(std::vector<GridSearchResult> &results, HarmonicDriveParameters &current_drive);
+    std::pair<double, double> extrapolateOptimalConfiguration(std::pair<double, double> linear_function1, std::pair<double, double> linear_function2);
+    std::pair<double, double> extrapolateOptimalConfiguration(std::pair<double, double> linear_function, HarmonicDriveParameters &current_drive);
     void setParamRanges(double factor);
-    void initCriteria();
     void computeGranularities();
     std::pair<double, double> computeGranularities(std::pair<double, double> offset_range, std::pair<double, double> slope_range, double time_budget_minutes, double time_per_step_seconds, int minimum_steps);
     void estimateTimePerComputation();
@@ -45,11 +50,25 @@ private:
     // Criteria to be used for the grid search
     std::vector<std::shared_ptr<AbstractObjective>> criteria_;
 
-    // TODO implement this
+    // Harmonics to be optimized
+    std::vector<int> harmonics_to_optimize_;
+
     std::vector<double> current_bn_values_;
 
     // Estimated time for one harmonics calculation
     double time_per_calc_;
+
+    // Thresholds for the bn values
+    std::vector<double> thresholds_;
+
+    // Search factors for parameter ranges
+    std::vector<double> search_factors_;
+
+    // Min steps in grid search
+    const int grid_min_steps_;
+
+    // Time budget in minutes for one grid search
+    const double time_budget_minutes_;
 };
 
 #endif // GRID_SEARCH_OPTIMIZER_H

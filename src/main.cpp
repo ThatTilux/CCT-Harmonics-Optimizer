@@ -18,13 +18,22 @@ int main()
 
 
     // check which optimization the user wants to do
-    std::vector<std::string> optimization_options = {"Grid Search Optimizer", "bn Optimizer"};
+    std::vector<std::string> optimization_options = {"Grid Search Optimizer", "bn Optimizer", "Temp Test"};
     int selected_optimization = selectFromList(optimization_options, "Please select the desired optimization:");
 
     if (selected_optimization == 0)
     {
+        // Thresholds and search factors
+        std::vector<double> thresholds = {30, 1, 0.1, 0.01};
+        std::vector<double> search_factors = {GRID_SEARCH_FACTOR, GRID_SEARCH_FACTOR, GRID_SEARCH_FACTOR / 10, GRID_SEARCH_FACTOR / 100};
+
+        // Criteria
+        std::vector<std::shared_ptr<AbstractObjective>> criteria;
+        criteria.push_back(std::make_shared<BnObjective>());
+        criteria.push_back(std::make_shared<FittedSlopeObjective>());
+
         // run grid search optimizer
-        GridSearchOptimizer optimizer = GridSearchOptimizer();
+        GridSearchOptimizer optimizer = GridSearchOptimizer(criteria, thresholds, search_factors);
         optimizer.optimize();
         optimizer.logResults();
         optimizer.exportModel();
@@ -34,6 +43,23 @@ int main()
     {
         // only bn optimization
         BnOptimizer optimizer = BnOptimizer();
+        optimizer.optimize();
+        optimizer.logResults();
+        optimizer.exportModel();
+        return 0;
+    } 
+    else if (selected_optimization == 2){
+        // Thresholds and search factors
+        std::vector<double> thresholds = {1000};
+        std::vector<double> search_factors = {10};
+
+        // Criteria
+        std::vector<std::shared_ptr<AbstractObjective>> criteria;
+        criteria.push_back(std::make_shared<BnObjective>());
+        criteria.push_back(std::make_shared<FittedSlopeObjective>());
+
+        // run grid search optimizer
+        GridSearchOptimizer optimizer = GridSearchOptimizer(criteria, thresholds, search_factors, 64, 10, {8,9,10});
         optimizer.optimize();
         optimizer.logResults();
         optimizer.exportModel();

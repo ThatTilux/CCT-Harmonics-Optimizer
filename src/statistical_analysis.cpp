@@ -70,7 +70,7 @@ std::tuple<double, double, double> StatisticalAnalysis::fitPlaneToData(const std
 
     // Check the fit quality
     double fit_quality = checkFitQuality(A, b, coeffs);
-    
+
     Logger::debug("Quality of plane fit: R^2 = " + std::to_string(fit_quality) + ".");
 
     return std::make_tuple(a, b_coef, c);
@@ -78,15 +78,15 @@ std::tuple<double, double, double> StatisticalAnalysis::fitPlaneToData(const std
 
 // Function to assess the quality of a 2D plane fit to 3D data using the R^2 metric. Returns the R^2 value, which should be close to 1 for a good fit.
 double StatisticalAnalysis::checkFitQuality(const Eigen::MatrixXd &A, const Eigen::VectorXd &b, const Eigen::VectorXd &coeffs)
-    {
-        Eigen::VectorXd residuals = b - A * coeffs;
-        double rss = residuals.squaredNorm();
-        double tss = (b.array() - b.mean()).matrix().squaredNorm();
-        double r2 = 1 - (rss / tss);
+{
+    Eigen::VectorXd residuals = b - A * coeffs;
+    double rss = residuals.squaredNorm();
+    double tss = (b.array() - b.mean()).matrix().squaredNorm();
+    double r2 = 1 - (rss / tss);
 
-        // R^2 should be close to 1 for a good fit
-        return r2;
-    }
+    // R^2 should be close to 1 for a good fit
+    return r2;
+}
 
 // Function that converts a plane equation (ax + by + c = z) to a linear function (y = mx + d) at the intersection with the z = 0 plane. Format: (offset, slope)
 std::tuple<double, double> StatisticalAnalysis::planeToLinearFunction(double a, double b, double c)
@@ -113,4 +113,22 @@ std::optional<std::pair<double, double>> StatisticalAnalysis::findIntersection(c
     double y = line1.second * x + line1.first;
 
     return std::make_pair(x, y);
+}
+
+// Function that given a linear function and a point returns the point on the linear function that is closest to the given point
+std::pair<double, double> StatisticalAnalysis::closest_point_on_line(
+    const std::pair<double, double> &linear_function,
+    const std::pair<double, double> &point)
+{
+    double b = linear_function.first; 
+    double m = linear_function.second;
+    double x0 = point.first;          
+    double y0 = point.second;         
+
+    // Calculating the x-coordinate of the projection point
+    double xp = (m * y0 + x0 - m * b) / (m * m + 1);
+    // Calculating the y-coordinate of the projection point
+    double yp = m * xp + b;
+
+    return {xp, yp};
 }

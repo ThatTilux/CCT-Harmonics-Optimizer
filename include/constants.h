@@ -23,15 +23,13 @@ inline const int OPTIMIZER_MAX_DATAPOINTS = 10;
 
 // when the step size in the optimizer is 0, this value is used instead
 inline const double OPTIMIZER_DEFAULT_STEP = 0.000001;
-// Initial threshold for all bn values to start the next phase of the grid search optimizer
-inline const double GRID_BN_THRESHOLD = 30;
-// Initial factor to increase the offset and slope ranges in the grid search optimizer
+// Default initial factor to increase the offset and slope ranges in the grid search optimizer
 inline const double GRID_SEARCH_FACTOR = 0.05;
 // Fallback value for an offset/slope range if the current one is 0 in the grid search optimizer
 inline const double GRID_DRIVE_FALLBACK = 1e-7;
-// Minimum number of steps per grid search
+// Default minimum number of steps per grid search
 inline const int GRID_MIN_STEPS = 64;
-// Time budget in minutes for one grid search in the grid search optimizer
+// `Default time budget in minutes for one grid search in the grid search optimizer
 inline const double TIME_BUDGET_GRID_SEARCH = 1;
 
 
