@@ -26,6 +26,43 @@ double StatisticalAnalysis::computeChiSquared(const std::vector<std::pair<double
     return chi_squared;
 }
 
+// Function to compute the Normalized Root Mean Square Error (NRMSE) of a fitted linear function
+double StatisticalAnalysis::computeNRMSE(const std::vector<std::pair<double, double>> &points, double slope, double intercept){
+    if (points.empty()) {
+        throw std::invalid_argument("The points vector is empty.");
+    }
+
+    double sumSquaredResiduals = 0.0;
+    double minY = std::numeric_limits<double>::max();
+    double maxY = std::numeric_limits<double>::lowest();
+
+    for (const auto& point : points) {
+        double x = point.first;
+        double y = point.second;
+        double predictedY = slope * x + intercept;
+        double residual = y - predictedY;
+        sumSquaredResiduals += residual * residual;
+
+        if (y < minY) {
+            minY = y;
+        }
+        if (y > maxY) {
+            maxY = y;
+        }
+    }
+
+    double rmse = std::sqrt(sumSquaredResiduals / points.size());
+    double yRange = maxY - minY;
+
+    if (yRange == 0) {
+        throw std::invalid_argument("Range of the observed y-values is zero, leading to division by zero in NRMSE calculation.");
+    }
+
+    double nrmse = rmse / yRange;
+    return nrmse;
+}
+
+
 // Function to perform linear regression and return the slope and intercept
 std::pair<double, double> StatisticalAnalysis::linearRegression(const std::vector<std::pair<double, double>> &points)
 {
