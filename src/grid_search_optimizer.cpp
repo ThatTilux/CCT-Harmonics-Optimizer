@@ -16,9 +16,8 @@ GridSearchOptimizer::GridSearchOptimizer(std::vector<std::shared_ptr<AbstractObj
     assertOnlyLinearDrives();
 
     // continue setup
-    initCalcultor();
+    initCalculator();
     computeMagnetEllBounds();
-    estimateTimePerComputation();
 }
 
 // // Constructor to be used for no user interaction.
@@ -40,11 +39,12 @@ std::pair<std::pair<double, double>, std::pair<double, double>> GridSearchOptimi
 }
 
 // Function to manually inject param ranges. This will completely overwrite any current or default ranges.
-void GridSearchOptimizer::injectParamRanges(std::vector<std::pair<std::pair<double, double>, std::pair<double, double>>> param_ranges){
+void GridSearchOptimizer::injectParamRanges(std::vector<std::pair<std::pair<double, double>, std::pair<double, double>>> param_ranges)
+{
     // make sure that a param range is provided for every harmonic
     if (param_ranges.size() != 10)
     {
-        throw std::runtime_error("A parameter range must be injected for every harmonic 1-10. Use dummy values for harmonics not to be optimized.");
+        throw std::runtime_error("A parameter range must be injected for every harmonic B1-B10. Use dummy values for harmonics not to be optimized.");
     }
 
     param_ranges_ = param_ranges;
@@ -52,7 +52,6 @@ void GridSearchOptimizer::injectParamRanges(std::vector<std::pair<std::pair<doub
 
     Logger::debug("Injected parameter ranges.");
 }
-
 
 // Function to initialize the granularities for the grid search, based on the set time limit.
 void GridSearchOptimizer::computeGranularities()
@@ -155,7 +154,6 @@ void GridSearchOptimizer::setParamRanges(double factor)
         return;
     }
 
-
     // make sure that the param_ranges_ is initialized
     if (param_ranges_.empty())
     {
@@ -208,6 +206,7 @@ void GridSearchOptimizer::logResults()
 // Function to start the optimizer
 void GridSearchOptimizer::optimize()
 {
+    estimateTimePerComputation();
     Logger::info("==== Starting grid search optimizer ====");
     Logger::info("Using the following criteria:");
     for (int i = 0; i < criteria_.size(); i++)
@@ -472,4 +471,29 @@ std::pair<double, double> GridSearchOptimizer::extrapolateOptimalConfiguration(s
 
     // returns the point from the linear func that is closest to the current config
     return StatisticalAnalysis::closest_point_on_line(linear_function, {current_offset, current_slope});
+}
+
+
+// Function to compute and log criteria for a model - to be used for testing purposes only
+void GridSearchOptimizer::computeCriteria(){
+    HarmonicsDataHandler harmonics_handler;
+    calculator_.reload_and_calc_harmonics(model_handler_.getTempJsonPath(), harmonics_handler);
+
+    for (int i = 1; i <= 10; i++){
+        // Evaluate the criteria
+        Logger::info("Evaluating criteria for harmonic B" + std::to_string(i));
+        for (auto &criterion : criteria_)
+        {
+            double value;
+            // if the criteria is FittedSlopeObjective, pass more params
+            if (criterion->getLabel() == "fitted_slope")
+            {
+                value = std::dynamic_pointer_cast<FittedSlopeObjective>(criterion)->evaluate(harmonics_handler, i, getMinMagnetEll(), getMaxMagnetEll(), true);
+            } else {
+                value = criterion->evaluate(harmonics_handler, i);
+            }
+            Logger::info_double(criterion->getLabel(), value);
+        }
+    }
+    
 }

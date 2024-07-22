@@ -19,7 +19,7 @@ void BnOptimizer::setup(ModelHandler &model_handler, double max_harmonic_value)
 {
     // setup
     model_handler_ = model_handler;
-    initCalcultor();
+    initCalculator();
     harmonic_drive_values_ = initHarmonicDrives();
     max_harmonic_value_ = max_harmonic_value;
 }

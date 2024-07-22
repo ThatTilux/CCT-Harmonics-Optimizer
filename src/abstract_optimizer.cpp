@@ -17,7 +17,7 @@ ModelHandler &AbstractOptimizer::initModel()
 }
 
 // Function to init the harmonics calculator using the initialized model handler
-void AbstractOptimizer::initCalcultor()
+void AbstractOptimizer::initCalculator()
 {
     // make sure the model handler is initiliazed
     if (model_handler_.getTempJsonPath().empty())
@@ -163,7 +163,6 @@ double AbstractOptimizer::getMagnetLength()
     return getMaxMagnetEll() - getMinMagnetEll();
 }
 
-
 // Function to get the main component of the magnet, e.g. 2 for a quadrupole magnet.
 int AbstractOptimizer::getMainComponent()
 {
@@ -204,6 +203,7 @@ void AbstractOptimizer::computeMagnetEllBounds()
     double length = cct_ell_bounds_.second - cct_ell_bounds_.first;
     Logger::info("Magnet length: " + std::to_string(length) + " mm.");
 }
+
 
 // Function to export the optimized model
 void AbstractOptimizer::exportModel()

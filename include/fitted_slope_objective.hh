@@ -18,7 +18,7 @@ public:
     }
 
     // Evaluate with mag ell bounds
-    double evaluate(HarmonicsDataHandler harmonics_handler, int component, double mag_start_pos, double mag_end_pos)
+    double evaluate(HarmonicsDataHandler harmonics_handler, int component, double mag_start_pos, double mag_end_pos, bool export_Bn = false)
     {
         // get the Bn and ell
         std::vector<std::pair<double, double>> points = harmonics_handler.get_Bn(component);
@@ -26,29 +26,23 @@ public:
         // apply transformations to the data
         apply_transformations(points, mag_start_pos, mag_end_pos);
 
+        if(export_Bn){
+            export_data_to_csv(points, GRID_SEARCH_OUTPUT_DIR + "Bn_B" + std::to_string(component) + ".csv");
+        }
+
         // fit a linear function
         auto [slope, intercept] = StatisticalAnalysis::linearRegression(points);
 
         // Log
-        Logger::info("Fitted intercept: " + std::to_string(intercept));
-        Logger::info("Fitted slope: " + std::to_string(slope));
+        Logger::info_double("Fitted Slope", slope);
+        Logger::info_double("Fitted Intercept", intercept);
 
         // TODO TEMP REMOVE THIS AGAIN
-        // extract the y values
-        std::vector<double> y_values;
-        for (const auto &point : points)
-        {
-            y_values.push_back(point.second);
-        }
-
-        // compute the variance
-        double variance = StatisticalAnalysis::computeVariance(y_values);
-
-        // compute the chi squared
-        double chi_squared = StatisticalAnalysis::computeChiSquared(points, slope, intercept, variance);
+        // compute NRMSE
+        double nrmse = StatisticalAnalysis::computeNRMSE(points, slope, intercept);
 
         // Log
-        Logger::info("Chi squared: " + std::to_string(chi_squared));
+        Logger::info_double("NRME", nrmse);
 
 
         return slope;

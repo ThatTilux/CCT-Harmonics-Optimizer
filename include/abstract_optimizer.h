@@ -21,7 +21,7 @@ public:
 
 protected:
     ModelHandler &initModel();
-    void initCalcultor();
+    void initCalculator();
 
     double getMaxHarmonicValue();
     double getMinMagnetEll();
@@ -41,7 +41,7 @@ protected:
 
 private:
     void getModelSelection();
-    // min and max values in mm for the axis z position relative to ell. 
+    // min and max values in mm for the axis z position relative to ell.
     std::pair<double, double> cct_ell_bounds_ = {0, 0};
     int main_component_ = -1;
 };

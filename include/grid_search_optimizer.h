@@ -22,6 +22,7 @@ public:
     void logResults() override;
 
     void injectParamRanges(std::vector<std::pair<std::pair<double, double>, std::pair<double, double>>> param_ranges);
+    void computeCriteria();
 
     virtual ~GridSearchOptimizer(){};
 
