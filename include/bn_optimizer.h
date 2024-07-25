@@ -9,7 +9,6 @@ public:
     BnOptimizer();
 
     std::vector<double>& getResults();
-    void temp_test();
 
     void optimize() override;
     void logResults() override;
@@ -18,6 +17,7 @@ public:
 
 
 protected:
+    static double fitLinearGetRoot(const std::vector<std::pair<double, double>> &points);
 
 private:
     double max_harmonic_value_;
@@ -25,7 +25,6 @@ private:
     std::vector<double> current_bn_values_;
     
     void setup(ModelHandler &model_handler, double max_harmonic_value);
-    double fitLinearGetRoot(const std::vector<std::pair<double, double>> &points);
 };
 
 #endif // BN_OPTIMIZER_H
