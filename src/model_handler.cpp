@@ -17,12 +17,15 @@ ModelHandler::ModelHandler()
 void ModelHandler::createTemporaryFolder(const boost::filesystem::path &json_file_path)
 {
     temp_folder_ = boost::filesystem::temp_directory_path() / "model_temp";
-    if (boost::filesystem::exists(temp_folder_))
+    if (!boost::filesystem::exists(temp_folder_))
     {
-        boost::filesystem::remove_all(temp_folder_);
+        boost::filesystem::create_directory(temp_folder_);
     }
-    boost::filesystem::create_directory(temp_folder_);
     temp_json_path_ = temp_folder_ / json_file_path.filename();
+    if (boost::filesystem::exists(temp_json_path_))
+    {
+        boost::filesystem::remove(temp_json_path_);
+    }
     boost::filesystem::copy_file(json_file_path, temp_json_path_);
 }
 

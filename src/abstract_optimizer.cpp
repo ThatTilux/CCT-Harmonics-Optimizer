@@ -116,27 +116,6 @@ void AbstractOptimizer::assertAllHarmonicsPresent()
     Logger::info("Detected B" + std::to_string(main_component_) + " as the main component.");
 }
 
-// Function to check if all abs bn values are below a certain threshold
-bool AbstractOptimizer::areAllHarmonicsBelowThreshold(double threshold)
-{
-    Logger::info("Checking if all bn values are below threshold " + std::to_string(threshold) + "...");
-    HarmonicsDataHandler harmonics_handler;
-    calculator_.reload_and_calc_harmonics(model_handler_.getTempJsonPath(), harmonics_handler);
-
-    std::vector<double> bn_values = harmonics_handler.get_bn();
-    for (double bn : bn_values)
-    {
-        if (std::abs(bn) > threshold)
-        {
-            Logger::info("Found bn value " + std::to_string(bn) + " above threshold " + std::to_string(threshold) + ".");
-            return false;
-        }
-    }
-
-    Logger::info("All bn values are below threshold " + std::to_string(threshold) + ".");
-    return true;
-}
-
 // Function to return the ell value in mm where the magnet begins relative to the axis.
 double AbstractOptimizer::getMinMagnetEll()
 {

@@ -32,7 +32,6 @@ protected:
     HarmonicDriveParameterMap initHarmonicDrives();
     void assertOnlyLinearDrives();
     void assertAllHarmonicsPresent();
-    bool areAllHarmonicsBelowThreshold(double threshold);
 
     boost::filesystem::path json_file_path_;
     ModelHandler model_handler_;
