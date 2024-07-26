@@ -103,6 +103,12 @@ public:
         getInstance().logger_->flush_on(spdlog::level::trace);
     }
 
+    static void deactivate()
+    {
+        getInstance().logger_->sinks().clear();
+    }
+
+
 private:
     Logger()
     {
