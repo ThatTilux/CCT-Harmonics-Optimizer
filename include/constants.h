@@ -10,14 +10,12 @@ inline const std::string MODEL_OUTPUT_DIR = "./optimized_cct/";
 inline const std::string GRID_SEARCH_OUTPUT_DIR = "./grid_search/";
 inline const std::string TEST_DATA_DIR = "../test_data/";
 
-
 // BN OPTIMIZER CONSTANTS
 
 // this will be displayed to the user as the default value and also used in case none is entered
 inline const double DEFAULT_MAX_BN_VALUE = 0.1;
 // max datapoints before the optimizer moves on to the next harmonic
 inline const int OPTIMIZER_MAX_DATAPOINTS = 10;
-
 
 // GRID SEARCH OPTIMIZER CONSTANTS
 
@@ -27,11 +25,7 @@ inline const double OPTIMIZER_DEFAULT_STEP = 0.000001;
 inline const double GRID_SEARCH_FACTOR = 0.05;
 // Fallback value for an offset/slope range if the current one is 0 in the grid search optimizer
 inline const double GRID_DRIVE_FALLBACK = 1e-7;
-// Default minimum number of steps per grid search
-inline const int GRID_MIN_STEPS = 64;
-// `Default time budget in minutes for one grid search in the grid search optimizer
-inline const double TIME_BUDGET_GRID_SEARCH = 1;
-
-
+// Default number of steps per grid search
+inline const int GRID_DEFAULT_STEPS = 49;
 
 #endif // CONSTANTS_H

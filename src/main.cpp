@@ -74,7 +74,7 @@ int main()
         param_ranges[9] = {{-0.0005, 0.0005}, {-1e-06, 1e-06}}; //B10
 
         // run grid search optimizer
-        GridSearchOptimizer optimizer = GridSearchOptimizer(criteria, thresholds, search_factors, 64, 60, {1,7});
+        GridSearchOptimizer optimizer = GridSearchOptimizer(criteria, thresholds, search_factors, GRID_DEFAULT_STEPS, {1,7});
         optimizer.injectParamRanges(param_ranges);
         optimizer.optimize();
         optimizer.logResults();
@@ -108,7 +108,7 @@ int main()
         param_ranges[9] = {{0, 0}, {0,0}}; //B10
 
         // run grid search optimizer
-        GridSearchOptimizer optimizer = GridSearchOptimizer(criteria, thresholds, search_factors, 1, 60);
+        GridSearchOptimizer optimizer = GridSearchOptimizer(criteria, thresholds, search_factors);
         optimizer.computeCriteria();
         return 0;
     }

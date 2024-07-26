@@ -19,6 +19,7 @@ public:
     using GridSearchOptimizer::getModelHandler;
     using GridSearchOptimizer::getCurrentBnValues;
     using GridSearchOptimizer::getParamRange;
+    using GridSearchOptimizer::setNumSteps;
 };
 
 class GridSearchOptimizerTest : public ::testing::Test {
@@ -39,7 +40,7 @@ protected:
 
         // Set up the model handlers for different test cases
         ModelHandler handler1(TEST_DATA_DIR + "quad_test_all_linear.json");
-        opt_alllinear = new TestGridSearchOptimizer(handler1, criteria, thresholds, search_factors, grid_min_steps, time_budget_minutes, harmonics);
+        opt_alllinear = new TestGridSearchOptimizer(handler1, criteria, thresholds, search_factors, grid_min_steps, harmonics);
     }
 
     void TearDown() override {
@@ -139,12 +140,14 @@ TEST_F(GridSearchOptimizerTest, computeGranularities) {
     double time_per_step_second = 0.1;
     int minimum_steps = 1;
 
-
-    std::pair<double, double> granularities = opt_alllinear->computeGranularities(offset_range, slope_range,time_budget_minutes, time_per_step_second, minimum_steps);
-
-
     // compute the number of steps given the time budget
     int steps_budget = time_budget_minutes * 60 / time_per_step_second;
+
+    opt_alllinear->setNumSteps(steps_budget);
+
+    std::pair<double, double> granularities = opt_alllinear->computeGranularities(offset_range, slope_range);
+
+
 
     // compute the number of steps given the granularities (using a loop to avoid floating point errors)
     int steps_actual = 0;

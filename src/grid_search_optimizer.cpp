@@ -3,10 +3,10 @@
 // Optimizes a model by performing several grid searches and extrapolating the optimal configuration for all custom CCT harmonics
 GridSearchOptimizer::GridSearchOptimizer(std::vector<std::shared_ptr<AbstractObjective>> criteria,
                                          std::vector<double> thresholds, std::vector<double> search_factors,
-                                         const int grid_min_steps, const double time_budget_minutes,
+                                         const int grid_min_steps,
                                          std::vector<int> harmonics_to_optimize) : AbstractOptimizer(),
                                                                                    criteria_(criteria), thresholds_(thresholds), search_factors_(search_factors), harmonics_to_optimize_(harmonics_to_optimize),
-                                                                                   grid_min_steps_(grid_min_steps), time_budget_minutes_(time_budget_minutes)
+                                                                                   grid_num_steps_(grid_num_steps_)
 {
     // setup
     initModel();
@@ -16,9 +16,9 @@ GridSearchOptimizer::GridSearchOptimizer(std::vector<std::shared_ptr<AbstractObj
 // Constructor with no user interaction - to be used for testing
 GridSearchOptimizer::GridSearchOptimizer(ModelHandler &model_handler, std::vector<std::shared_ptr<AbstractObjective>> criteria,
                                          std::vector<double> thresholds, std::vector<double> search_factors,
-                                         const int grid_min_steps, const double time_budget_minutes,
+                                         const int grid_min_steps,
                                          std::vector<int> harmonics_to_optimize) : AbstractOptimizer(true), criteria_(criteria), thresholds_(thresholds), search_factors_(search_factors), harmonics_to_optimize_(harmonics_to_optimize),
-                                                                                   grid_min_steps_(grid_min_steps), time_budget_minutes_(time_budget_minutes)
+                                                                                   grid_num_steps_(grid_num_steps_)
 {
     this->model_handler_ = model_handler;
     setup();
@@ -63,6 +63,12 @@ void GridSearchOptimizer::injectParamRanges(std::vector<std::pair<std::pair<doub
     Logger::debug("Injected parameter ranges.");
 }
 
+// Function to change the number of grid search steps after initialzation
+void GridSearchOptimizer::setNumSteps(int num_steps){
+    grid_num_steps_ = num_steps;
+}
+
+
 // Function to initialize the granularities for the grid search, based on the set time limit.
 void GridSearchOptimizer::computeGranularities()
 {
@@ -78,7 +84,7 @@ void GridSearchOptimizer::computeGranularities()
         }
 
         auto [offset_range, slope_range] = getParamRange(i);
-        std::pair<double, double> granularities = computeGranularities(offset_range, slope_range, time_budget_minutes_, time_per_calc_, grid_min_steps_);
+        std::pair<double, double> granularities = computeGranularities(offset_range, slope_range);
         granularities_[i - 1] = granularities;
         Logger::log_granularity(i, granularities.first, granularities.second);
     }
@@ -87,21 +93,15 @@ void GridSearchOptimizer::computeGranularities()
 // Function to compute granularities given a time budget. Format: {offset_granularity, slope_granularity}
 // Granularities are set so that the spanned grid in the parameter space is equidistant in both dimensions.
 std::pair<double, double> GridSearchOptimizer::computeGranularities(std::pair<double, double> offset_range,
-                                                                    std::pair<double, double> slope_range,
-                                                                    double time_budget_minutes,
-                                                                    double time_per_step_seconds,
-                                                                    int minimum_steps)
+                                                                    std::pair<double, double> slope_range)
 {
     double offset_min = offset_range.first;
     double offset_max = offset_range.second;
     double slope_min = slope_range.first;
     double slope_max = slope_range.second;
 
-    double time_budget_seconds = time_budget_minutes * 60.0;
-    int num_steps = static_cast<int>(time_budget_seconds / time_per_step_seconds);
+    int num_steps = grid_num_steps_;
 
-    // fulfil the minimum step requirement
-    num_steps = std::max(num_steps, minimum_steps);
 
     double offset_span = offset_max - offset_min;
     double slope_span = slope_max - slope_min;
