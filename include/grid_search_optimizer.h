@@ -8,6 +8,11 @@
 #include "fitted_slope_objective.hh"
 #include "grid_search_result.h"
 
+struct InterimResult {
+    std::string file_path;
+    std::vector<double> bn_values;
+};
+
 class GridSearchOptimizer : public AbstractOptimizer
 {
 public:
@@ -22,6 +27,7 @@ public:
 
     void optimize() override;
     void logResults() override;
+    void exportModel() override;
 
     void injectParamRanges(std::vector<std::pair<std::pair<double, double>, std::pair<double, double>>> param_ranges);
     void setNumSteps(int num_steps);
@@ -69,6 +75,9 @@ protected:
 private:
     void setup();
 
+    // Vector with interim results of exported models
+    std::vector<InterimResult> interim_results_;
+
     // Vector with ranges for offset and slope for each harmonic drive. 0-indexed. Format: {{offset_min, offset_max}, {slope_min, slope_max}}
     std::vector<std::pair<std::pair<double, double>, std::pair<double, double>>> param_ranges_;
 
@@ -94,7 +103,6 @@ private:
 
     // Num of steps in grid search
     int grid_num_steps_;
-
 
     // Flag to not compute parameter ranges because they were injected manually
     bool injected_param_ranges_ = false;

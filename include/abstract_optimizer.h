@@ -13,8 +13,8 @@ class AbstractOptimizer
 public:
     AbstractOptimizer(bool disable_user_interaction = false);
 
-    void exportModel();
 
+    virtual void exportModel();
     virtual void optimize() = 0;
     virtual void logResults() = 0;
     virtual ~AbstractOptimizer(){};

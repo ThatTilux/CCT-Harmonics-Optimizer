@@ -240,7 +240,6 @@ void GridSearchOptimizer::logResults()
             Logger::info("==== Interim result " + std::to_string(i+1) + " ====");
         }
         Logger::info("File location: " + interim_results_[i].file_path);
-        Logger::info("Bn values:");
         print_vector(interim_results_[i].bn_values, "bn");
     }
 }

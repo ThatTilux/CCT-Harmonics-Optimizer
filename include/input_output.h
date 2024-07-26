@@ -24,7 +24,7 @@ bool askUserToProceed();
 double getUserInput(const std::string &prompt, double default_value);
 boost::filesystem::path selectJsonFile();
 int selectFromList(std::vector<std::string> options, std::string user_prompt);
-void copyModelWithTimestamp(const boost::filesystem::path &src_path);
+const boost::filesystem::path copyModelWithTimestamp(const boost::filesystem::path &src_path);
 void export_vector_to_csv(const std::vector<double>& vector, const std::string& csv_path);
 void export_data_to_csv(const std::vector<std::pair<double, double>>& vector, const std::string& csv_path);
 void print_vector(const std::vector<double>& data, std::string label);

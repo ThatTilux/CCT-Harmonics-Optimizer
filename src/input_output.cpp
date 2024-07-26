@@ -165,13 +165,13 @@ int selectFromList(std::vector<std::string> options, std::string user_prompt){
     return selected_index;
 }
 
-// Function to copy model from src to the build dir with appending timestamp
-void copyModelWithTimestamp(const boost::filesystem::path &src_path)
+// Function to copy model from src to the build dir with appending timestamp. Returns the new path
+const boost::filesystem::path copyModelWithTimestamp(const boost::filesystem::path &src_path)
 {
     if (!boost::filesystem::exists(src_path))
     {
         Logger::error("Source file does not exist: " + src_path.string());
-        return;
+        return "";
     }
 
     std::string filename = src_path.filename().string();
@@ -194,12 +194,14 @@ void copyModelWithTimestamp(const boost::filesystem::path &src_path)
         modified_dest_path.insert(1, "/build");
 
         Logger::info("The optimized model has been exported to: " + modified_dest_path);
+        return dest_path;
     }
     catch (const boost::filesystem::filesystem_error &e)
     {
         Logger::error("Error while exporting optimized model: " + std::string(e.what()));
         Logger::error("The optimized model has instead been saved to: " + src_path.string());
     }
+    return "";
 }
 
 // exports a vector to a csv with ascending indexing
