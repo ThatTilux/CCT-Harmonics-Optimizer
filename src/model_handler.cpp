@@ -116,7 +116,7 @@ void ModelHandler::parseHarmonicDrive(const Json::Value &root, HarmonicDrivePara
                     params = HarmonicDriveParameters(offset, slope);
 
                 } else {
-                    throw std::runtime_error("Unsupported harmonic drive type: " + root["harmonic_drive"]["type"].asString());
+                    throw std::runtime_error("Unsupported harmonic drive type: " + root["harmonic_drive"]["type"].asString() + ". This optimizer only supports rat::mdl::drivedc and rat::mdl::drivelinear.");
                 }
 
                 // check if a harmonic with the same name was already detected; throw an error if they are not equal 

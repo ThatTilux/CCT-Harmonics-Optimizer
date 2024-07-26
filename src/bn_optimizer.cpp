@@ -94,7 +94,7 @@ void BnOptimizer::optimize()
             }
             else
             {
-                throw std::logic_error("Optimizer only optimizes slope/constant parameters");
+                throw std::logic_error("This Optimizer only optimizes custom harmonics with constant/linear scaling functions. The scaling function for" + name + " is neither.");
             }
 
             double current_bn = current_bn_values_[component - 1];
@@ -121,7 +121,7 @@ void BnOptimizer::optimize()
 
                 double new_drive_value = current_drive_value + step;
 
-                // this can happen sometimes
+                // this may happen
                 if (std::isnan(new_drive_value))
                 {
                     throw new std::runtime_error("New drive value is NaN. This indicates that the model received some invalid drive values. Aborting optimization.");

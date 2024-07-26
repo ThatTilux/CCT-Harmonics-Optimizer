@@ -42,7 +42,7 @@ std::pair<std::pair<double, double>, std::pair<double, double>> GridSearchOptimi
     // assert that component is between 1 and 10
     if (component < 1 || component > 10)
     {
-        throw std::runtime_error("Component must be between 1 and 10.");
+        throw std::runtime_error("Component must be between 1 and 10 when getting parameter ranges.");
     }
 
     return param_ranges_[component - 1];
@@ -116,11 +116,11 @@ std::pair<double, double> GridSearchOptimizer::computeGranularities(std::pair<do
     // Check that both parameters have at least 2 steps
     if (offset_range.second - offset_range.first < 2 * offset_granularity)
     {
-        throw std::runtime_error("Offset range is too small for the time budget.");
+        throw std::runtime_error("Offset does not have at least 2 steps. Something went wrong.");
     }
     if (slope_range.second - slope_range.first < 2 * slope_granularity)
     {
-        throw std::runtime_error("Slope range is too small for the time budget.");
+        throw std::runtime_error("Slope does not have at least 2 steps. Something went wrong.");
     }
 
     return std::make_pair(offset_granularity, slope_granularity);
@@ -228,7 +228,7 @@ void GridSearchOptimizer::optimize()
 
     if (thresholds_.size() != search_factors_.size())
     {
-        throw std::runtime_error("Thresholds and search factors must have the same length.");
+        throw std::runtime_error("Thresholds and search factors must have the same length for the grid search optimizer.");
     }
 
     // Run the optimizer with the thresholds and search factors
