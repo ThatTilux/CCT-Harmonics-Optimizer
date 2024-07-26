@@ -3,10 +3,10 @@
 // Optimizes a model by performing several grid searches and extrapolating the optimal configuration for all custom CCT harmonics
 GridSearchOptimizer::GridSearchOptimizer(std::vector<std::shared_ptr<AbstractObjective>> criteria,
                                          std::vector<double> thresholds, std::vector<double> search_factors,
-                                         const int grid_min_steps,
+                                         const int grid_num_steps,
                                          std::vector<int> harmonics_to_optimize) : AbstractOptimizer(),
                                                                                    criteria_(criteria), thresholds_(thresholds), search_factors_(search_factors), harmonics_to_optimize_(harmonics_to_optimize),
-                                                                                   grid_num_steps_(grid_num_steps_)
+                                                                                   grid_num_steps_(grid_num_steps)
 {
     // setup
     initModel();
@@ -16,9 +16,9 @@ GridSearchOptimizer::GridSearchOptimizer(std::vector<std::shared_ptr<AbstractObj
 // Constructor with no user interaction - to be used for testing
 GridSearchOptimizer::GridSearchOptimizer(ModelHandler &model_handler, std::vector<std::shared_ptr<AbstractObjective>> criteria,
                                          std::vector<double> thresholds, std::vector<double> search_factors,
-                                         const int grid_min_steps,
+                                         const int grid_num_steps,
                                          std::vector<int> harmonics_to_optimize) : AbstractOptimizer(true), criteria_(criteria), thresholds_(thresholds), search_factors_(search_factors), harmonics_to_optimize_(harmonics_to_optimize),
-                                                                                   grid_num_steps_(grid_num_steps_)
+                                                                                   grid_num_steps_(grid_num_steps)
 {
     this->model_handler_ = model_handler;
     setup();
@@ -208,10 +208,41 @@ void GridSearchOptimizer::setParamRanges(double factor)
     }
 }
 
+// Function to export the optimized model and log as interim result
+void GridSearchOptimizer::exportModel()
+{
+    // Save and get path
+    const boost::filesystem::path path = copyModelWithTimestamp(model_handler_.getTempJsonPath());
+
+    // Get the bn values
+    HarmonicsDataHandler handler;
+    calculator_.reload_and_calc_harmonics(model_handler_.getTempJsonPath(), handler);
+    std::vector<double> bn_values = handler.get_bn();
+
+    // Log the interim result
+    InterimResult result;
+    result.file_path = path.string();
+    result.bn_values = bn_values;
+    interim_results_.push_back(result);
+}
+
 void GridSearchOptimizer::logResults()
 {
-    Logger::info("=== Grid Search Optimizer has finished ===");
-    print_vector(current_bn_values_, "bn");
+    Logger::info("==== Grid Search Optimizer has finished ====");
+    Logger::info("Several iterations have been run with decreasing parameters.");
+    Logger::info("After every iteration, the interim model has been saved:");
+
+    for (int i = 0; i < interim_results_.size(); i++)
+    {
+        if (i == interim_results_.size() - 1){
+            Logger::info("==== Final model ====");
+        } else {
+            Logger::info("==== Interim result " + std::to_string(i+1) + " ====");
+        }
+        Logger::info("File location: " + interim_results_[i].file_path);
+        Logger::info("Bn values:");
+        print_vector(interim_results_[i].bn_values, "bn");
+    }
 }
 
 // Function to start the optimizer
