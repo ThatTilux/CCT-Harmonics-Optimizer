@@ -1,8 +1,7 @@
 # CCT Harmonics Optimizer
 
 This software is designed to automatically optimize custom CCT (canted-cosine-theta) harmonic drive parameters for CCT magnets. The optimizer adjusts the scaling function parameters of the custom harmonics to create a magnetic field where only the main B component has a bn value of 10,000, while the other components have bn values of 0 (within a user-specified margin). This project is part of the FCC-ee HTS4 research project at CERN.
-
-**TODO**: Introduction: bn, Bn, ...
+TODO revise
 
 ## Overview
 
@@ -25,7 +24,7 @@ Please follow the instructions below to install all necessary dependencies.
    ```
 
 2. **spdlog**:
-   - spdlog is a very fast C++ logging library.
+   - spdlog is a fast C++ logging library.
    You can install `spdlog` using by cloning the repository and installing it manually:
    ```sh
    git clone https://github.com/gabime/spdlog.git
@@ -44,7 +43,7 @@ Please follow the instructions below to install all necessary dependencies.
 
 #### RAT-Library
 Follow the [RAT documentation](https://gitlab.com/Project-Rat/rat-documentation) to install the RAT library. This may take a while.
-- When a CUDA compatible GPU is available, make sure to follow the steps for installing CUDA.
+- When a CUDA compatible GPU is available, make sure to follow the steps for installing CUDA. This is highly recommended as it reduces the runtime of this software by some orders of magnitude.
 - When using CUDA with WSL, it is advised to increase the allocated memory for WSL, see [here](https://geronimo-bergk.medium.com/optimizing-wsl2-performance-setting-memory-and-cpu-allocation-on-windows-513eba7b6086).
 
 
@@ -70,6 +69,19 @@ Follow the [RAT documentation](https://gitlab.com/Project-Rat/rat-documentation)
     ```sh
     ./bin/main
     ```
+
+## Theoretical Background
+
+The magnetic field produced by CCT magnets can be described by a series of harmonics, denoted as B1, B2, ..., B10. In this context, B1 represents the dipole field, B2 represents the quadrupole field, and so on up to the decapole field (B10).
+
+When modeling CCT magnets using the RAT Library, custom harmonics can be defined to fine-tune the magnetic field. These custom harmonics allow for precise control over the magnetic field distribution. Each custom can be characterized by its scaling function.
+Custom harmonics in the CCT model have a specific number of poles (X) and are associated primarily with the harmonic BX. When simulating the magnet and computing harmonics, we are interested in 2 properties for each harmonic component:
+
+- **Bn Curve**: The Bn curve represents the magnitude of the harmonic along the length of the magnet, measured in Tesla (T).
+- **bn Value**: The bn value is the integral of the Bn curve over the length of the magnet. It indicates the overall magnitude of the harmonic component.
+
+
+## Optimizers
 
 ## Usage
 
