@@ -1,7 +1,6 @@
 # CCT Harmonics Optimizer
 
-This software is designed to automatically optimize custom CCT (canted-cosine-theta) harmonic drive parameters for CCT magnets. The optimizer adjusts the scaling function parameters of the custom harmonics to create a magnetic field where only the main B component has a bn value of 10,000, while the other components have bn values of 0 (within a user-specified margin). This project is part of the FCC-ee HTS4 research project at CERN.
-TODO revise
+This software is designed to automatically optimize custom CCT (canted-cosine-theta) harmonic drive parameters for CCT magnets. Two optimizers are provided to achieve different objectives. This project is part of the FCC-ee HTS4 research project at CERN.
 
 ## Overview
 
@@ -9,7 +8,7 @@ This software utilizes the open-source RAT Library. For more information about t
 
 ## Installation
 
-**Note: This software only works on Linux.**
+**Note: This software was made for Linux.**
 
 ### Prerequisites
 
@@ -81,29 +80,26 @@ Each custom harmonic can be characterized by its scaling function.
 Custom harmonics in the CCT model have a specific number of poles (X) and are associated primarily with the harmonic BX. When simulating the magnet and computing harmonics, we are interested in 2 properties for each harmonic component:
 
 - **Bn Curve**: The Bn curve represents the magnitude of the harmonic along the length of the magnet, measured in Tesla (T).
-- **bn Value**: The bn value is the integral of the Bn curve over the length of the magnet. It indicates the overall magnitude of the harmonic component.
+- **bn Value**: The bn value is the integral of the Bn curve over the length of the magnet. It indicates the overall magnitude of the harmonic component. The largest bn value is 10,000 and all others are relative to that one.
 
-
-## Optimizers
 
 ## Usage
+The optimizer requires a JSON file of a CCT magnet, created by the [RAT-GUI software](https://rat-gui.com/index.html) or [RAT Library](https://rat-gui.com/library.html). Ensure that the JSON file meets the following criteria:
 
-**TODO**: only linear custom ccts allowed, otherwise change? Also: update naming convention of custom harmonics; Also: include second optimizer in this
+- The JSON file should contain a harmonics calculation in the calculation tree. The optimizer will use the first harmonics calculation found in the tree.
+- The JSON file should contain a mesh calculation in the calculation tree. The optimizer will use the first mesh calculation found.
 
-The optimizer requires a JSON file of a CCT magnet, created by the [RAT-GUI software](https://rat-gui.com/index.html). Ensure that the JSON file meets the following criteria:
-
-- The JSON file should contain a harmonics calculation in the calculation tree. The optimizer will use the first harmonics calculation in the tree.
-- The JSON file should include at least one custom CCT harmonic in the model tree. These harmonics will be optimized by the software.
-    - The harmonics should have names that start with 'B' (e.g., B1 for dipole harmonics, B10 for decapole harmonics).
-    - The main harmonic, which needs a bn value of 10,000, should be named differently to prevent optimization by the software.
-    - Custom CCT harmonics must have an 'amplitude' of 'constant' or 'linear'. For 'constant', the 'constant' parameter will be optimized. For 'linear', the 'slope' parameter will be optimized.
-    - All custom harmonics with the same number of poles should have the same name and scaling function parameters, ensuring they are optimized together.
+- The JSON file should include custom CCT harmonics for all harmonics B1 to B10 (except for the main harmonic, e.g., B2 for a quadrupole) in the model tree. These harmonics will be optimized by the software.
+    - The custom harmonics should be named B1, B2, ...
+    - If there is a custom harmonic for the main harmonic, it cannot be named B1/B2/...
+    - The custom harmonics must have an 'amplitude' of 'constant' or 'linear' (further restrictions to this apply depending on the optimizer used).
+    - All custom harmonics with the same number of poles should have the same name and scaling function parameters, ensuring they are optimized together (e.g. when there are multiple magnets in the same file).
 
 
-Place the JSON file in the `data` directory. Run the program using the command specified above (`./bin/main`). You will be prompted to enter the maximum absolute bn value. For example, entering `0.1` will optimize the harmonics to achieve bn values within the range of -0.1 to 0.1.
-Caution is advised for values below 0.1 as runtime will explode.
+Place the JSON file of the magnet in the `data` directory. 
+Detailed logs of every run of the software are saved in the `logs` directory.
 
-Detailed logs are saved in the `logs` directory.
+To run the software, use the command specified above ```./bin/main``` and select the desired optimizer. Further steps might be required depending on the optimizer chosen.
 
 ### Example
 
@@ -114,19 +110,73 @@ An example model `cct.json` can be found in the `examples` directory. To test th
     ```sh
     ./bin/main
     ```
-3. Follow the prompts to select the correct JSON file and enter 0.1 (or higher) as the maximum absolute bn value.
+3. Follow the prompts to select the correct JSON file, select the bn optimizer and enter 0.1 (or higher) as the maximum absolute bn value.
 
 The program will terminate after a some minutes, providing the optimal parameters.
 
-## Optimizer
+## Optimizers
 
-The optimizer leverages the almost-linear relationship between the scaling function of BX and the corresponding bn value of BX. The process is as follows:
+### bn Optimizer
 
-1. The software performs harmonic calculations for at least two different values of the respective scaling function parameter (constant or slope).
+**Objective**
+
+The goal of this optimizer is to adjust the custom harmonics so that the bn values for all harmonics are as near to 0 as possible. The main harmonic will always stay at 10,000.
+
+**Background**
+
+This optimizer considers custom harmonics with an 'amplitude' of 'constant' or 'linear'. For constant scaling functions, the 'constant' parameter will be optimized. For linear ones, the 'slope' paramater will be optimized. 
+The relationship between the respective scaling function parameter of a custom harmonic and the bn value of that harmonic is almost linear, allowing for a fairly simple optimization.
+
+**Approach**
+
+One custom harmonic is optimized at a time. To get the bn value of this harmonic close to 0, this is the approach:
+
+1. The optimizer performs harmonic calculations for at least two different values of the scaling function parameter (constant or slope).
 2. A linear regression is applied to extrapolate the optimal parameter value that results in a bn value of 0.
-3. The optimization is done iteratively in rounds since the relationship is not completely linear and changing the scaling function of one harmonic affects other harmonics.
 
-The optimizer continues to adjust parameters until the desired result is achieved. It only optimizes the bn values of those BX components that have a corresponding custom harmonic named BX (which should have X poles).
+In one round, all harmonics B1 to B10 are optimized once using this procedure.
+
+Since the relationship between the scaling function constant and the respective bn value is not perfectly linear and the custom harmonic with X poles does not only influence the harmonic BX but also the others, the optimizer runs multiple rounds.
+The optimizer will run these rounds until all harmonic bn values are below the user-specified margin. The default margin is 0.1. Caution is advised with lower values as runtime might explode.
+
+**Limitations**
+
+For some magnets, the optimal configuration (with all bn values 0) breaks the magnet (e.g., by increasing length of the magnet by a few orders of magnitude). In this case, the optimizer will try to approach the optimal solution as close as possible. This can be solved by changing the magnet model manually (aside from the scaling functions).
+
+In certain cases of this, the optimizer might not terminate as it continuously gets closer to the optimal solution, never reaching it.
+
+
+### Grid Search Optimizer
+
+**Objective**
+
+Similarly to the bn Optimizer, this optimizer also adjusts the custom harmonics to bring the bn values to 0. Additionally, it optimizes the custom harmonics to obtain Bn curves with a favourable shape. 
+
+**Background**
+
+This optimizer requires all custom harmonics to have an 'amplitude' of 'linear. Both the 'offset' and 'slope' parameters of the scaling function will be optimized.
+Again, the relationship between these two paramaters and the respective bn value is almost linear. 
+
+"Favourable" Bn curves are those that have a shape as constant as possible, indicating that the magnitude of the harmonic does not significantly change over the length. 
+
+This is characterized numerically by fitting a linear function to the Bn curve and considering the slope of this fitted function. When this slope is near 0, the linear function is almost constant. This suggests that the Bn curve is somewhat constant, indicating that its shape is favourable. 
+
+The relationship between the two scaling function parameters and the slope of this fitted function is also almost linear.
+
+**Approach**
+
+Similarly to the bn Optimizer, this optimizer considers a single harmonic at a time and performs several rounds of optimizing all harmonics to reach the optimal configuration.
+
+To optimize one harmonic, this is the approach:
+
+1. Run a grid search in the space of the two scaling function parameters, i.e., simulate the magnet with numerous different scaling function parameters for the harmonic to be optimized.
+2. In the 3D space of [offset, slope, bn value] and [offset, slope, slope of fitted function], fit a 2D plane to the data. This is possible since both relationships are almost linear.
+3. From these 2D planes, extract the linear function where the respective plane has a bn value / slope of fitted function of 0.
+4. Compute the intersection of these linear functions to extrapolate the optimal configuration.
+
+**Limitations**
+
+The limitations of the bn Optimizer apply here as well.
 
 ## Author
 
