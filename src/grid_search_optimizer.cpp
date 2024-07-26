@@ -29,6 +29,7 @@ void GridSearchOptimizer::setup()
 {
     // perform some model checks
     assertAllHarmonicsPresent();
+    checkMainComponent();
     assertOnlyLinearDrives();
 
     // continue setup

@@ -32,6 +32,7 @@ protected:
     HarmonicDriveParameterMap initHarmonicDrives();
     void assertOnlyLinearDrives();
     void assertAllHarmonicsPresent();
+    void checkMainComponent();
 
     boost::filesystem::path json_file_path_;
     ModelHandler model_handler_;

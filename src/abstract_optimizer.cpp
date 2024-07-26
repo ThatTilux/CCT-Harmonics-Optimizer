@@ -116,6 +116,28 @@ void AbstractOptimizer::assertAllHarmonicsPresent()
     Logger::info("Detected B" + std::to_string(main_component_) + " as the main component.");
 }
 
+// Function to assure that the main component has been set and has a bn of 10,000. Throws std::runtime_error if not. Prints the bn values
+void AbstractOptimizer::checkMainComponent()
+{
+    // get the main component
+    int main_component = getMainComponent();
+
+    // get the bn values
+    HarmonicsDataHandler harmonics_handler;
+    calculator_.reload_and_calc_harmonics(model_handler_.getTempJsonPath(), harmonics_handler);
+    std::vector<double> bn_values = harmonics_handler.get_bn();
+
+    // check if the main component has a bn of 10,000
+    if (bn_values[main_component - 1] != 10000)
+    {
+        Logger::error("The main component B" + std::to_string(main_component) + " does not have a bn value of 10,000. The current value is " + std::to_string(bn_values[main_component - 1]) + ". Aborting...");
+        throw std::runtime_error("The main component does not have a bn value of 10,000.");
+    }
+
+    // print the bn values
+    print_vector(bn_values, "bn");
+}
+
 // Function to return the ell value in mm where the magnet begins relative to the axis.
 double AbstractOptimizer::getMinMagnetEll()
 {
