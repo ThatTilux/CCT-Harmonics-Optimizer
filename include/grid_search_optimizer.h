@@ -11,12 +11,15 @@
 class GridSearchOptimizer : public AbstractOptimizer
 {
 public:
-    //GridSearchOptimizer(ModelHandler &model_handler);
+    GridSearchOptimizer(ModelHandler &model_handler, std::vector<std::shared_ptr<AbstractObjective>> criteria,
+                                         std::vector<double> thresholds, std::vector<double> search_factors,
+                                         const int grid_min_steps, const double time_budget_minutes,
+                                         std::vector<int> harmonics_to_optimize);
     GridSearchOptimizer(std::vector<std::shared_ptr<AbstractObjective>> criteria,
                         std::vector<double> thresholds, std::vector<double> search_factors,
                         const int grid_min_steps = GRID_MIN_STEPS,
                         const double time_budget_minutes = TIME_BUDGET_GRID_SEARCH,
-                        std::vector<int> harmonics_to_optimize={1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+                        std::vector<int> harmonics_to_optimize = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
 
     void optimize() override;
     void logResults() override;
@@ -24,10 +27,9 @@ public:
     void injectParamRanges(std::vector<std::pair<std::pair<double, double>, std::pair<double, double>>> param_ranges);
     void computeCriteria();
 
-    virtual ~GridSearchOptimizer(){};
+    virtual ~GridSearchOptimizer() {};
 
 protected:
-private:
     void optimize(double bn_threshold);
     void recompute_bn();
     bool hasDriveValueChanged(HarmonicDriveParameterMap &drive_values_before_loop);
@@ -42,7 +44,27 @@ private:
     std::pair<double, double> computeGranularities(std::pair<double, double> offset_range, std::pair<double, double> slope_range, double time_budget_minutes, double time_per_step_seconds, int minimum_steps);
     void estimateTimePerComputation();
 
+     // Getter methods for some private variables
+    const ModelHandler& getModelHandler() {
+        return model_handler_;
+    }
+
+    const std::vector<double>& getCurrentBnValues() {
+        return current_bn_values_;
+    }
+
+    const std::vector<std::pair<double, double>>& getGranularities() {
+        return granularities_;
+    }
+
+    double getTimePerCalc() {
+        return time_per_calc_;
+    }
     std::pair<std::pair<double, double>, std::pair<double, double>> getParamRange(int component);
+
+private:
+    void setup();
+
 
     // Vector with ranges for offset and slope for each harmonic drive. 0-indexed. Format: {{offset_min, offset_max}, {slope_min, slope_max}}
     std::vector<std::pair<std::pair<double, double>, std::pair<double, double>>> param_ranges_;
@@ -75,7 +97,6 @@ private:
 
     // Flag to not compute parameter ranges because they were injected manually
     bool injected_param_ranges_ = false;
-
 };
 
 #endif // GRID_SEARCH_OPTIMIZER_H

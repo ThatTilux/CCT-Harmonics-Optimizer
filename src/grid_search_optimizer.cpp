@@ -10,7 +10,23 @@ GridSearchOptimizer::GridSearchOptimizer(std::vector<std::shared_ptr<AbstractObj
 {
     // setup
     initModel();
+    setup();
+}
 
+// Constructor with no user interaction - to be used for testing
+GridSearchOptimizer::GridSearchOptimizer(ModelHandler &model_handler, std::vector<std::shared_ptr<AbstractObjective>> criteria,
+                                         std::vector<double> thresholds, std::vector<double> search_factors,
+                                         const int grid_min_steps, const double time_budget_minutes,
+                                         std::vector<int> harmonics_to_optimize) : AbstractOptimizer(true), criteria_(criteria), thresholds_(thresholds), search_factors_(search_factors), harmonics_to_optimize_(harmonics_to_optimize),
+                                                                                   grid_min_steps_(grid_min_steps), time_budget_minutes_(time_budget_minutes)
+{
+    this->model_handler_ = model_handler;
+    setup();
+}
+
+// Setup function called from the constructors
+void GridSearchOptimizer::setup()
+{
     // perform some model checks
     assertAllHarmonicsPresent();
     assertOnlyLinearDrives();
@@ -19,12 +35,6 @@ GridSearchOptimizer::GridSearchOptimizer(std::vector<std::shared_ptr<AbstractObj
     initCalculator();
     computeMagnetEllBounds();
 }
-
-// // Constructor to be used for no user interaction.
-// GridSearchOptimizer::GridSearchOptimizer(ModelHandler &model_handler) : AbstractOptimizer()
-// {
-//     // TODO
-// }
 
 // Function to get the parameter ranges for a specific component. The component is 1-indexed. Format: {{offset_min, offset_max}, {slope_min, slope_max}}
 std::pair<std::pair<double, double>, std::pair<double, double>> GridSearchOptimizer::getParamRange(int component)
@@ -473,13 +483,14 @@ std::pair<double, double> GridSearchOptimizer::extrapolateOptimalConfiguration(s
     return StatisticalAnalysis::closest_point_on_line(linear_function, {current_offset, current_slope});
 }
 
-
 // Function to compute and log criteria for a model - to be used for testing purposes only
-void GridSearchOptimizer::computeCriteria(){
+void GridSearchOptimizer::computeCriteria()
+{
     HarmonicsDataHandler harmonics_handler;
     calculator_.reload_and_calc_harmonics(model_handler_.getTempJsonPath(), harmonics_handler);
 
-    for (int i = 1; i <= 10; i++){
+    for (int i = 1; i <= 10; i++)
+    {
         // Evaluate the criteria
         Logger::info("Evaluating criteria for harmonic B" + std::to_string(i));
         for (auto &criterion : criteria_)
@@ -489,11 +500,12 @@ void GridSearchOptimizer::computeCriteria(){
             if (criterion->getLabel() == "fitted_slope")
             {
                 value = std::dynamic_pointer_cast<FittedSlopeObjective>(criterion)->evaluate(harmonics_handler, i, getMinMagnetEll(), getMaxMagnetEll(), true);
-            } else {
+            }
+            else
+            {
                 value = criterion->evaluate(harmonics_handler, i);
             }
             Logger::info_double(criterion->getLabel(), value);
         }
     }
-    
 }
