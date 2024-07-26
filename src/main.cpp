@@ -1,70 +1,53 @@
-#include "harmonics_calculator.h"
+#include "model_calculator.h"
 #include "model_handler.h"
 #include "input_output.h"
-#include "optimizer.h"
 #include "constants.h"
-
+#include "bn_optimizer.h"
+#include "grid_search_optimizer.h"
 #include <iostream>
 #include <vector>
+#include <fstream>
+#include <sstream>
 
 int main()
 {
-    // Get the JSON file path from user selection
-    boost::filesystem::path json_file_path;
-    try
+
+    // create necessary directories
+    boost::filesystem::create_directory(MODEL_OUTPUT_DIR);
+    boost::filesystem::create_directory(GRID_SEARCH_OUTPUT_DIR);
+
+
+    // check which optimization the user wants to do
+    std::vector<std::string> optimization_options = {"Grid Search Optimizer", "bn Optimizer"};
+    int selected_optimization = selectFromList(optimization_options, "Please select the desired optimization:");
+
+    if (selected_optimization == 0)
     {
-        json_file_path = selectJsonFile();
-    }
-    catch (const std::exception &e)
-    {
-        std::cerr << e.what() << std::endl;
-        return 1;
-    }
+        // Thresholds and search factors
+        std::vector<double> thresholds = {30, 1, 0.1, 0.01};
+        std::vector<double> search_factors = {GRID_SEARCH_FACTOR, GRID_SEARCH_FACTOR, GRID_SEARCH_FACTOR / 10, GRID_SEARCH_FACTOR / 100};
 
-    // Handles manipulations of the JSON file
-    ModelHandler model_handler(json_file_path);
-    // get path of the temp model
-    const boost::filesystem::path temp_json_file_path = model_handler.getTempJsonPath();
-    // Handles calculations for the model
-    HarmonicsCalculator calculator(json_file_path);
+        // Criteria
+        std::vector<std::shared_ptr<AbstractObjective>> criteria;
+        criteria.push_back(std::make_shared<BnObjective>());
+        criteria.push_back(std::make_shared<FittedSlopeObjective>());
 
-    // Get user input for maximum harmonic value
-    double max_harmonic_value = getUserInput("Enter the maximum absolute value for harmonic values", 0.1);
-
-    // Get all the scaling values for the custom CCT harmonics
-    std::vector<std::pair<int, double>> harmonic_drive_values = model_handler.getHarmonicDriveValues();
-
-    // Check that there are harmonic drives
-    if (harmonic_drive_values.empty())
-    {
-        std::cerr << "The program could not find any custom CCT harmonics (rat::mdl::cctharmonicdrive) whose name starts with the letter 'B'. Aborting..." << std::endl;
-        return 1;
-    }
-
-    // Print them
-    print_harmonic_drive_values(harmonic_drive_values);
-
-    // Ask the user if they want to proceed
-    if (!askUserToProceed())
-    {
-        std::cout << "Optimization aborted by user." << std::endl;
+        // run grid search optimizer
+        GridSearchOptimizer optimizer = GridSearchOptimizer(criteria, thresholds, search_factors);
+        optimizer.optimize();
+        optimizer.logResults();
+        optimizer.exportModel();
         return 0;
     }
+    else if (selected_optimization == 1)
+    {
+        // only bn optimization
+        BnOptimizer optimizer = BnOptimizer();
+        optimizer.optimize();
+        optimizer.logResults();
+        optimizer.exportModel();
+        return 0;
+    } 
 
-    // optimizer will put resulting bn values in here
-    std::vector<double> current_bn_values;
-
-    // optimize the harmonic drive values
-    optimize(calculator, model_handler, current_bn_values, harmonic_drive_values, max_harmonic_value, temp_json_file_path);
-
-    // optimization was successful, print results
-    std::cout << "=== All harmonics have been optimized ===" << std::endl;
-    std::cout << "User-specified margin was: " << max_harmonic_value << std::endl;
-    print_harmonic_drive_values(harmonic_drive_values);
-    print_bn(current_bn_values);
-
-    // export the model
-    copyModelWithTimestamp(temp_json_file_path);
-
-    return 0;
+    return 1;
 }
