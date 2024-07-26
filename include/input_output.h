@@ -28,7 +28,7 @@ const boost::filesystem::path copyModelWithTimestamp(const boost::filesystem::pa
 void export_vector_to_csv(const std::vector<double>& vector, const std::string& csv_path);
 void export_data_to_csv(const std::vector<std::pair<double, double>>& vector, const std::string& csv_path);
 void print_vector(const std::vector<double>& data, std::string label);
-void export_grid_search_results_to_csv(const std::vector<GridSearchResult>& results, const std::string& csv_path);
+void export_grid_search_results_to_csv(const std::vector<GridSearchResult>& results, const std::string& csv_path, std::vector<std::string> criteria_labels);
 
 // Helper function to format arma::Row<rat::fltp>
 std::string format_arma_row(const arma::Row<rat::fltp>& row);

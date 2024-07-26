@@ -49,6 +49,17 @@ std::pair<std::pair<double, double>, std::pair<double, double>> GridSearchOptimi
     return param_ranges_[component - 1];
 }
 
+// Function to get Labels of the criteria
+std::vector<std::string> GridSearchOptimizer::getCriteriaLabels()
+{
+    std::vector<std::string> labels;
+    for (auto &criterion : criteria_)
+    {
+        labels.push_back(criterion->getLabel());
+    }
+    return labels;
+}
+
 // Function to manually inject param ranges. This will completely overwrite any current or default ranges.
 void GridSearchOptimizer::injectParamRanges(std::vector<std::pair<std::pair<double, double>, std::pair<double, double>>> param_ranges)
 {
@@ -326,7 +337,7 @@ void GridSearchOptimizer::optimize(double bn_threshold)
             runGridSearch(i, results);
 
             // export the results to csv
-            export_grid_search_results_to_csv(results, GRID_SEARCH_OUTPUT_DIR + "grid_search_results_B" + std::to_string(i) + ".csv");
+            export_grid_search_results_to_csv(results, GRID_SEARCH_OUTPUT_DIR + "grid_search_results_B" + std::to_string(i) + ".csv", getCriteriaLabels());
 
             // Extrapolate the optimal configuration
             auto [new_offset, new_slope] = extrapolateOptimalConfiguration(results, prev_drive_values["B" + std::to_string(i)]);

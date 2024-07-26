@@ -32,19 +32,7 @@ public:
 
         // fit a linear function
         auto [slope, intercept] = StatisticalAnalysis::linearRegression(points);
-
-        // Log
-        Logger::info_double("Fitted Slope", slope);
-        Logger::info_double("Fitted Intercept", intercept);
-
-        // TODO TEMP REMOVE THIS AGAIN
-        // compute NRMSE
-        double nrmse = StatisticalAnalysis::computeNRMSE(points, slope, intercept);
-
-        // Log
-        Logger::info_double("NRME", nrmse);
-
-
+        
         return slope;
     }
 

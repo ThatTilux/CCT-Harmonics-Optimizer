@@ -36,7 +36,7 @@ std::vector<std::pair<double, double>> HarmonicsDataHandler::get_Bn(int componen
         throw std::logic_error("Ell and Bn data must have the same length.");
     }
 
-    // TODO TEMP check if this applies to all models. If yes: move to appropiate location
+    // I do not now why the RAT library does this, but it is necessary to get the correct data
     if (component % 2 == 1)
     {
         for (double &value : Bn_data)
@@ -50,7 +50,6 @@ std::vector<std::pair<double, double>> HarmonicsDataHandler::get_Bn(int componen
     return data;
 }
 
-// TODO only paply these shifts when getting data for chisquared
 // function for getting the ell data in [mm]. The ell data contains the x-coordinates (length along the magnet) for the y-values Bn
 std::vector<double> HarmonicsDataHandler::get_ell_()
 {

@@ -49,6 +49,7 @@ protected:
     void computeGranularities();
     std::pair<double, double> computeGranularities(std::pair<double, double> offset_range, std::pair<double, double> slope_range);
     void estimateTimePerComputation();
+    std::vector<std::string> getCriteriaLabels();
 
     // Getter methods for some private variables
     const ModelHandler &getModelHandler()

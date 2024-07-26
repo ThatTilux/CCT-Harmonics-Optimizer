@@ -1,5 +1,4 @@
 #include "input_output.h"
-// Declaration here to avoid circular imports
 
 // Function to print harmonic drive values
 void print_harmonic_drive_values(HarmonicDriveParameterMap &harmonic_drive_values)
@@ -249,7 +248,7 @@ void print_vector(const std::vector<double>& data, std::string label)
 }
 
 // Function to export a vector of GridSearchResults to a CSV file
-void export_grid_search_results_to_csv(const std::vector<GridSearchResult>& results, const std::string& csv_path)
+void export_grid_search_results_to_csv(const std::vector<GridSearchResult>& results, const std::string& csv_path, std::vector<std::string> criteria_labels)
 {
     std::ofstream csv_file(csv_path);
     if (!csv_file)
@@ -261,8 +260,12 @@ void export_grid_search_results_to_csv(const std::vector<GridSearchResult>& resu
     // Get the number of criteria
     size_t num_criteria = results[0].criteria_values.size();
 
-    // Get the labels of the criteria TODO infer this from the criteria
-    std::vector<std::string> criteria_labels = {"bn", "fitted_slope"};	
+    // make sure critera labels has the same size
+    if (criteria_labels.size() != num_criteria)
+    {
+        Logger::error("The number of criteria labels does not match the number of criteria values. Aborting export of grid search results to CSV.");
+        return;
+    }
 
     // Write the header with the criteria labels
     csv_file << "Index,Offset,Slope";

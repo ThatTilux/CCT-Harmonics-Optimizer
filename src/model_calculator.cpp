@@ -122,7 +122,6 @@ void ModelCalculator::enable_gpu(rat::mdl::ShCalcLeafPr calc_leaf)
     }
 }
 
-// TODO remove redundancy
 // function for doing the harmonics calculation. Will update a HarmonicsHandler object that provides access to the results.
 void ModelCalculator::calc_harmonics(HarmonicsDataHandler &harmonics_handler, bool disable_logging)
 {
@@ -183,7 +182,6 @@ void ModelCalculator::calc_mesh(MeshDataHandler &mesh_handler, bool disable_logg
     }
 }
 
-// TODO make the handler a pointer and remove dummy constructor
 // reloads the model from the json and computes the bn values
 void ModelCalculator::reload_and_calc_harmonics(const boost::filesystem::path &json_file_path, HarmonicsDataHandler &harmonics_handler, bool disable_logging)
 {
@@ -191,7 +189,6 @@ void ModelCalculator::reload_and_calc_harmonics(const boost::filesystem::path &j
     calc_harmonics(harmonics_handler, disable_logging);
 }
 
-// TODO make the handler a pointer and remove dummy constructor
 // reloads the model from the json and computes the mesh
 void ModelCalculator::reload_and_calc_mesh(const boost::filesystem::path &json_file_path, MeshDataHandler &mesh_handler, bool disable_logging)
 {
