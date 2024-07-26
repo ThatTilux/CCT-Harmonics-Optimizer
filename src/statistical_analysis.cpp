@@ -13,19 +13,6 @@ double StatisticalAnalysis::computeVariance(const std::vector<double> &y)
     return variance;
 }
 
-// Function to compute chi-squared distance between (1) a function described by the points vector and (2) a linear function described by slope, intercept
-double StatisticalAnalysis::computeChiSquared(const std::vector<std::pair<double, double>> &points, double slope, double intercept, double variance_y)
-{
-    double chi_squared = 0;
-    for (const auto &point : points)
-    {
-        double y_fit = slope * point.first + intercept;
-        double residual = point.second - y_fit;
-        chi_squared += (residual * residual) / variance_y;
-    }
-    return chi_squared;
-}
-
 // Function to compute the Normalized Root Mean Square Error (NRMSE) of a fitted linear function
 double StatisticalAnalysis::computeNRMSE(const std::vector<std::pair<double, double>> &points, double slope, double intercept){
     if (points.empty()) {
