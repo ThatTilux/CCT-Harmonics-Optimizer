@@ -37,7 +37,7 @@ char getch()
 bool askUserToProceed()
 {
     std::string input;
-    std::cout << "The harmonic drive values above will be optimized to achieve bn values within the maximum value specified above. Do you want to proceed with the optimization? (Y/n): ";
+    Logger::info("The harmonic drive values above will be optimized to achieve bn values within the maximum value specified above.");
     std::getline(std::cin, input);
     return input == "Y" || input == "y";
 }
@@ -50,7 +50,7 @@ double getUserInput(const std::string &prompt, double default_value)
 
     while (value == 0)
     {
-        std::cout << prompt << " (default: " << default_value << "): ";
+        Logger::info(prompt + " (default: " + std::to_string(default_value) + "): ");
         std::getline(std::cin, input);
 
         if (input.empty())

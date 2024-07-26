@@ -4,7 +4,7 @@ ModelCalculator::ModelCalculator(const boost::filesystem::path &json_file_path)
 {
     if (!load_model(json_file_path))
     {
-        std::cerr << "Failed to load model from JSON file." << std::endl;
+        Logger::error("Failed to load model from JSON file.");
     }
 }
 
@@ -204,7 +204,7 @@ ModelCalculator::load_model_from_json(const boost::filesystem::path &json_file_p
 {
     if (!boost::filesystem::exists(json_file_path))
     {
-        std::cerr << "JSON file not found: " << json_file_path << std::endl;
+        Logger::error("JSON file not found: " + json_file_path.string());
         return {nullptr, nullptr, nullptr, nullptr};
     }
 
@@ -213,7 +213,7 @@ ModelCalculator::load_model_from_json(const boost::filesystem::path &json_file_p
 
     if (!serializer->has_valid_json_root())
     {
-        std::cerr << "Invalid JSON root in file: " << json_file_path << std::endl;
+        Logger::error("Invalid JSON root in file: " + json_file_path.string());
         return {nullptr, nullptr, nullptr, nullptr};
     }
 
@@ -221,7 +221,7 @@ ModelCalculator::load_model_from_json(const boost::filesystem::path &json_file_p
 
     if (!model)
     {
-        std::cerr << "Failed to construct model from JSON file." << std::endl;
+        Logger::error("Failed to construct model from JSON file.");
         return {nullptr, nullptr, nullptr, nullptr};
     }
 
@@ -229,7 +229,7 @@ ModelCalculator::load_model_from_json(const boost::filesystem::path &json_file_p
 
     if (!root)
     {
-        std::cerr << "Failed to cast model to ModelRoot." << std::endl;
+        Logger::error("Failed to cast model to ModelRoot.");
         return {nullptr, nullptr, nullptr, nullptr};
     }
 
@@ -238,7 +238,7 @@ ModelCalculator::load_model_from_json(const boost::filesystem::path &json_file_p
 
     if (!model_tree || !calc_tree)
     {
-        std::cerr << "Failed to extract model or calculation tree from the root." << std::endl;
+        Logger::error("Failed to extract model or calculation tree from the root.");
         return {nullptr, nullptr, nullptr, nullptr};
     }
 
