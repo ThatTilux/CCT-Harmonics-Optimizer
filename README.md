@@ -72,9 +72,12 @@ Follow the [RAT documentation](https://gitlab.com/Project-Rat/rat-documentation)
 
 ## Theoretical Background
 
-The magnetic field produced by CCT magnets can be described by a series of harmonics, denoted as B1, B2, ..., B10. In this context, B1 represents the dipole field, B2 represents the quadrupole field, and so on up to the decapole field (B10).
+The magnetic field produced by CCT magnets can be described by a series of harmonics, denoted as B1, B2, ..., B10. 
+In this context, B1 represents the dipole field, B2 represents the quadrupole field, and so on up to the decapole field (B10).
 
-When modeling CCT magnets using the RAT Library, custom harmonics can be defined to fine-tune the magnetic field. These custom harmonics allow for precise control over the magnetic field distribution. Each custom can be characterized by its scaling function.
+When modeling CCT magnets using the RAT Library, custom harmonics can be defined to fine-tune the magnetic field. These custom harmonics allow for precise control over the magnetic field distribution. 
+
+Each custom harmonic can be characterized by its scaling function.
 Custom harmonics in the CCT model have a specific number of poles (X) and are associated primarily with the harmonic BX. When simulating the magnet and computing harmonics, we are interested in 2 properties for each harmonic component:
 
 - **Bn Curve**: The Bn curve represents the magnitude of the harmonic along the length of the magnet, measured in Tesla (T).
