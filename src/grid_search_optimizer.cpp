@@ -136,7 +136,7 @@ void GridSearchOptimizer::estimateTimePerComputation()
     auto start = std::chrono::high_resolution_clock::now();
 
     // Do some dummy computations to estimate the time
-    int num_computations = 10;
+    int num_computations = 5;
     for (int i = 1; i <= num_computations; i++)
     {
         HarmonicsDataHandler handler;
