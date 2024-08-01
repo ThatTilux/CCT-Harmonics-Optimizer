@@ -145,6 +145,12 @@ For some magnets, the optimal configuration (with all bn values 0) breaks the ma
 
 In certain cases of this, the optimizer might not terminate as it continuously gets closer to the optimal solution, never reaching it.
 
+**Example**
+
+Below is an example result of the bn Optimizer on a quadrupole model with an inner and outer layer. The left are the harmonics before the optimizer and the right are the ones after. All bn values were optimized close to 0. The runtime was 1 minute on a machine with CUDA and a RTX 3080Ti.
+
+<img width="684" alt="Before vs. After for an example of the bn Optimizer" src="https://github.com/user-attachments/assets/3ce508e4-431e-4a77-be41-1ec4fdaae5fe">
+
 
 ### Grid Search Optimizer
 
@@ -177,6 +183,13 @@ To optimize one harmonic, this is the approach:
 **Limitations**
 
 The limitations of the bn Optimizer apply here as well.
+
+**Example**
+
+Below is an example result of the Grid Search Optimizer on a quadrupole model with an inner and outer layer. The left are the harmonics before the optimizer and the right are the ones after. All bn values were optimized close to 0 and all Bn curves show favourable shapes. The runtime was 60 minutes on a machine with CUDA and a RTX 3080Ti.
+
+<img width="684" alt="Before vs. After for an example of the Grid Search Optimizer" src="https://github.com/user-attachments/assets/1707c8a1-4bc0-4103-95d7-ad71efcd180d">
+
 
 ## Author
 
