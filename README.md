@@ -110,7 +110,7 @@ An example model `cct.json` can be found in the `examples` directory. To test th
     ```sh
     ./bin/main
     ```
-3. Follow the prompts to select the correct JSON file, select the bn optimizer and enter 0.1 (or higher) as the maximum absolute bn value.
+3. Follow the prompts to select the correct JSON file, select the bn optimizer and enter 0.1 as the maximum absolute bn value.
 
 The program will terminate after a some minutes, providing the optimal parameters.
 
@@ -149,8 +149,9 @@ In certain cases of this, the optimizer might not terminate as it continuously g
 
 Below is an example result of the bn Optimizer on a quadrupole model with an inner and outer layer. The left are the harmonics before the optimizer and the right are the ones after. All bn values were optimized close to 0. The runtime was 1 minute on a machine with CUDA and a RTX 3080Ti.
 
-<img width="684" alt="Before vs. After for an example of the bn Optimizer" src="https://github.com/user-attachments/assets/3ce508e4-431e-4a77-be41-1ec4fdaae5fe">
-
+<div align="center">
+  <img width="684" alt="Before vs. After for an example of the bn Optimizer" src="https://github.com/user-attachments/assets/3ce508e4-431e-4a77-be41-1ec4fdaae5fe">
+</div>
 
 ### Grid Search Optimizer
 
@@ -188,8 +189,9 @@ The limitations of the bn Optimizer apply here as well.
 
 Below is an example result of the Grid Search Optimizer on a quadrupole model with an inner and outer layer. The left are the harmonics before the optimizer and the right are the ones after. All bn values were optimized close to 0 and all Bn curves show favourable shapes. The runtime was 60 minutes on a machine with CUDA and a RTX 3080Ti.
 
+<div align="center">
 <img width="684" alt="Before vs. After for an example of the Grid Search Optimizer" src="https://github.com/user-attachments/assets/1707c8a1-4bc0-4103-95d7-ad71efcd180d">
-
+</div>
 
 ## Author
 
