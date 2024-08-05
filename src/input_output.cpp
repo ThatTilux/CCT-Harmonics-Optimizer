@@ -193,7 +193,7 @@ const boost::filesystem::path copyModelWithTimestamp(const boost::filesystem::pa
         modified_dest_path.insert(1, "/build");
 
         Logger::info("The optimized model has been exported to: " + modified_dest_path);
-        return dest_path;
+        return modified_dest_path;
     }
     catch (const boost::filesystem::filesystem_error &e)
     {
