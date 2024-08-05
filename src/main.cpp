@@ -46,23 +46,6 @@ int main()
         optimizer.logResults();
         optimizer.exportModel();
         return 0;
-    } 
-    if (selected_optimization == 2)
-    {
-        // Thresholds and search factors
-        std::vector<double> thresholds = {10000, 10000};
-        std::vector<double> search_factors = {GRID_SEARCH_FACTOR, GRID_SEARCH_FACTOR};
-
-        // Criteria
-        std::vector<std::shared_ptr<AbstractObjective>> criteria;
-        criteria.push_back(std::make_shared<BnObjective>());
-        criteria.push_back(std::make_shared<FittedSlopeObjective>());
-
-        // run grid search optimizer
-        GridSearchOptimizer optimizer = GridSearchOptimizer(criteria, thresholds, search_factors, 10, {1});
-        optimizer.optimize();
-        optimizer.logResults();
-        return 0;
     }
 
     return 1;
