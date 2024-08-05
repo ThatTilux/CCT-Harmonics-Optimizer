@@ -18,7 +18,7 @@ int main()
 
 
     // check which optimization the user wants to do
-    std::vector<std::string> optimization_options = {"Grid Search Optimizer", "bn Optimizer"};
+    std::vector<std::string> optimization_options = {"Grid Search Optimizer", "bn Optimizer", "Temp"};
     int selected_optimization = selectFromList(optimization_options, "Please select the desired optimization:");
 
     if (selected_optimization == 0)
@@ -36,7 +36,6 @@ int main()
         GridSearchOptimizer optimizer = GridSearchOptimizer(criteria, thresholds, search_factors);
         optimizer.optimize();
         optimizer.logResults();
-        optimizer.exportModel();
         return 0;
     }
     else if (selected_optimization == 1)
@@ -48,6 +47,23 @@ int main()
         optimizer.exportModel();
         return 0;
     } 
+    if (selected_optimization == 2)
+    {
+        // Thresholds and search factors
+        std::vector<double> thresholds = {10000, 10000};
+        std::vector<double> search_factors = {GRID_SEARCH_FACTOR, GRID_SEARCH_FACTOR};
+
+        // Criteria
+        std::vector<std::shared_ptr<AbstractObjective>> criteria;
+        criteria.push_back(std::make_shared<BnObjective>());
+        criteria.push_back(std::make_shared<FittedSlopeObjective>());
+
+        // run grid search optimizer
+        GridSearchOptimizer optimizer = GridSearchOptimizer(criteria, thresholds, search_factors, 10, {1});
+        optimizer.optimize();
+        optimizer.logResults();
+        return 0;
+    }
 
     return 1;
 }

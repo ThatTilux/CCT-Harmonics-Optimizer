@@ -276,10 +276,6 @@ void GridSearchOptimizer::optimize()
     // Run the optimizer with the thresholds and search factors
     for (int i = 0; i < thresholds_.size(); i++)
     {
-        // export the model of the previous run
-        if (i != 0)
-            exportModel();
-
         // Adjust parameter ranges to be around current configuration
         setParamRanges(search_factors_[i]);
 
@@ -288,6 +284,9 @@ void GridSearchOptimizer::optimize()
 
         // Run the optimization
         optimize(thresholds_[i]);
+        
+        // Export (interim) result
+        exportModel();
     }
 }
 
