@@ -87,6 +87,7 @@ Custom harmonics in the CCT model have a specific number of poles (X) and are as
 The optimizer requires a JSON file of a CCT magnet, created by the [RAT-GUI software](https://rat-gui.com/index.html) or [RAT Library](https://rat-gui.com/library.html). Ensure that the JSON file meets the following criteria:
 
 - The JSON file should contain a harmonics calculation in the calculation tree. The optimizer will use the first harmonics calculation found in the tree.
+    - The harmonics calculation's axis should span across the entire length of the magnet (or more). The optimizers will truncate the calculation's data to only consider the length of the magnet where applicable. 
 - The JSON file should contain a mesh calculation in the calculation tree. The optimizer will use the first mesh calculation found.
 
 - The JSON file should include custom CCT harmonics for all harmonics B1 to B10 (except for the main harmonic, e.g., B2 for a quadrupole) in the model tree. These harmonics will be optimized by the software.
@@ -96,7 +97,8 @@ The optimizer requires a JSON file of a CCT magnet, created by the [RAT-GUI soft
     - All custom harmonics with the same number of poles should have the same name and scaling function parameters, ensuring they are optimized together (e.g. when there are multiple magnets in the same file).
 
 
-Place the JSON file of the magnet in the `data` directory. 
+Place the JSON file of the magnet in the `data` directory. The JSON file will not be edited by the software. 
+
 Detailed logs of every run of the software are saved in the `logs` directory.
 
 To run the software, use the command specified above ```./bin/main``` and select the desired optimizer. Further steps might be required depending on the optimizer chosen.
