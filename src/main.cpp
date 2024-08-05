@@ -18,7 +18,7 @@ int main()
 
 
     // check which optimization the user wants to do
-    std::vector<std::string> optimization_options = {"Grid Search Optimizer", "bn Optimizer", "Temp"};
+    std::vector<std::string> optimization_options = {"Grid Search Optimizer", "bn Optimizer"};
     int selected_optimization = selectFromList(optimization_options, "Please select the desired optimization:");
 
     if (selected_optimization == 0)
