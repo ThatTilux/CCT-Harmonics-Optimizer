@@ -38,6 +38,7 @@ protected:
     ModelHandler model_handler_;
     ModelCalculator calculator_;
     bool disable_user_interaction_;
+    std::string harmonic_drive_prefix_ = "B";
 
 private:
     void getModelSelection();

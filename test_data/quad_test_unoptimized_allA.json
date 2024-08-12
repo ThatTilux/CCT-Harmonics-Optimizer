@@ -1,0 +1,2830 @@
+{
+	"date" : "12-08-2024",
+	"major_version" : 2,
+	"minor_version" : 17,
+	"num_nodes" : 198,
+	"patch_version" : 2,
+	"time" : "16:50:08",
+	"tree" : 
+	{
+		"calc_tree" : 
+		{
+			"calc_list" : 
+			[
+				{
+					"bg" : 
+					{
+						"type" : "cmn::null"
+					},
+					"enable" : true,
+					"id" : 190,
+					"model" : 
+					{
+						"target_index" : 188,
+						"type" : "cmn::link"
+					},
+					"name" : "Mesh",
+					"num_times" : 1,
+					"output_dir" : "",
+					"stngs" : 
+					{
+						"allow_subdivision" : true,
+						"direct" : 2,
+						"direct_tresh" : 1048576.0,
+						"fmm_enable_gpu" : true,
+						"gpu_devices" : [],
+						"id" : 189,
+						"large_ilist" : false,
+						"m2l_sorting" : 2,
+						"max_levels" : 10,
+						"memory_efficient_l2t" : true,
+						"memory_efficient_s2m" : true,
+						"min_levels" : 3,
+						"morton_weights" : 
+						[
+							1,
+							2,
+							4
+						],
+						"no_allocate" : true,
+						"num_exp" : 5,
+						"num_refine" : 240.0,
+						"num_refine_min" : 5.0,
+						"num_rescale_max" : 25,
+						"num_subdivide_max" : 5,
+						"parallel_l2l" : true,
+						"parallel_l2t" : true,
+						"parallel_m2l" : true,
+						"parallel_m2m" : true,
+						"parallel_tree_setup" : true,
+						"persistent_memory" : false,
+						"refine_stop_criterion" : 2,
+						"so2mp_enable_gpu" : true,
+						"so2ta_enable_gpu" : true,
+						"split_m2l" : true,
+						"split_s2t" : true,
+						"type" : "rat::fmm::settings",
+						"use_m2l_batch_sorting" : true
+					},
+					"t1" : 0.0,
+					"t2" : 0.0,
+					"time" : 0.0,
+					"tree_open" : false,
+					"type" : "rat::mdl::calcmesh"
+				},
+				{
+					"bg" : 
+					{
+						"type" : "cmn::null"
+					},
+					"compensate_curvature" : false,
+					"enable" : true,
+					"id" : 193,
+					"input_path" : 
+					{
+						"axis" : 122,
+						"dl" : 0.002,
+						"ell" : 0.59999999999999998,
+						"enable" : true,
+						"id" : 192,
+						"name" : "Axis",
+						"position_x" : 0.0,
+						"position_y" : 0.0,
+						"position_z" : 0.0,
+						"transverse_direction" : 121,
+						"tree_open" : false,
+						"type" : "rat::mdl::pathaxis"
+					},
+					"model" : 
+					{
+						"target_index" : 188,
+						"type" : "cmn::link"
+					},
+					"name" : "Cylyndrical Harmonics",
+					"num_max" : 10,
+					"num_theta" : 64,
+					"num_times" : 1,
+					"output_dir" : "",
+					"reference_radius" : 0.01,
+					"stngs" : 
+					{
+						"allow_subdivision" : true,
+						"direct" : 2,
+						"direct_tresh" : 1048576.0,
+						"fmm_enable_gpu" : true,
+						"gpu_devices" : [],
+						"id" : 191,
+						"large_ilist" : true,
+						"m2l_sorting" : 2,
+						"max_levels" : 10,
+						"memory_efficient_l2t" : true,
+						"memory_efficient_s2m" : true,
+						"min_levels" : 3,
+						"morton_weights" : 
+						[
+							1,
+							2,
+							4
+						],
+						"no_allocate" : true,
+						"num_exp" : 7,
+						"num_refine" : 240.0,
+						"num_refine_min" : 5.0,
+						"num_rescale_max" : 25,
+						"num_subdivide_max" : 5,
+						"parallel_l2l" : true,
+						"parallel_l2t" : true,
+						"parallel_m2l" : true,
+						"parallel_m2m" : true,
+						"parallel_tree_setup" : true,
+						"persistent_memory" : false,
+						"refine_stop_criterion" : 2,
+						"so2mp_enable_gpu" : true,
+						"so2ta_enable_gpu" : true,
+						"split_m2l" : true,
+						"split_s2t" : true,
+						"type" : "rat::fmm::settings",
+						"use_m2l_batch_sorting" : true
+					},
+					"t1" : 0.0,
+					"t2" : 0.0,
+					"time" : 0.0,
+					"tree_open" : true,
+					"type" : "rat::mdl::calcharmonics",
+					"use_magnetic_field" : false,
+					"visibility" : true
+				},
+				{
+					"bg" : 
+					{
+						"type" : "cmn::null"
+					},
+					"enable" : true,
+					"group_circuits" : false,
+					"id" : 195,
+					"model" : 
+					{
+						"target_index" : 188,
+						"type" : "cmn::link"
+					},
+					"name" : "Length",
+					"num_times" : 1,
+					"output_dir" : "",
+					"stngs" : 
+					{
+						"allow_subdivision" : true,
+						"direct" : 2,
+						"direct_tresh" : 1048576.0,
+						"fmm_enable_gpu" : true,
+						"gpu_devices" : [],
+						"id" : 194,
+						"large_ilist" : false,
+						"m2l_sorting" : 2,
+						"max_levels" : 10,
+						"memory_efficient_l2t" : true,
+						"memory_efficient_s2m" : true,
+						"min_levels" : 3,
+						"morton_weights" : 
+						[
+							1,
+							2,
+							4
+						],
+						"no_allocate" : true,
+						"num_exp" : 5,
+						"num_refine" : 240.0,
+						"num_refine_min" : 5.0,
+						"num_rescale_max" : 25,
+						"num_subdivide_max" : 5,
+						"parallel_l2l" : true,
+						"parallel_l2t" : true,
+						"parallel_m2l" : true,
+						"parallel_m2m" : true,
+						"parallel_tree_setup" : true,
+						"persistent_memory" : false,
+						"refine_stop_criterion" : 2,
+						"so2mp_enable_gpu" : true,
+						"so2ta_enable_gpu" : true,
+						"split_m2l" : true,
+						"split_s2t" : true,
+						"type" : "rat::fmm::settings",
+						"use_m2l_batch_sorting" : true
+					},
+					"t1" : 0.0,
+					"t2" : 0.0,
+					"time" : 0.0,
+					"tree_open" : false,
+					"type" : "rat::mdl::calclength"
+				}
+			],
+			"enable" : true,
+			"id" : 196,
+			"name" : "Calculation Tree",
+			"num_times" : 1,
+			"output_dir" : "",
+			"t1" : 0.0,
+			"t2" : 0.0,
+			"time" : 0.0,
+			"tree_open" : true,
+			"type" : "rat::mdl::calcgroup",
+			"use_group_time" : true
+		},
+		"color" : 
+		{
+			"B" : 0.23073999583721161,
+			"G" : 0.21952599287033081,
+			"R" : 0.11953800171613693
+		},
+		"enable" : true,
+		"id" : 197,
+		"material" : 
+		{
+			"type" : "cmn::null"
+		},
+		"model_tree" : 
+		{
+			"color" : 
+			{
+				"B" : 0.23073999583721161,
+				"G" : 0.21952599287033081,
+				"R" : 0.11953800171613693
+			},
+			"enable" : true,
+			"id" : 188,
+			"is_part" : false,
+			"material" : 
+			{
+				"type" : "cmn::null"
+			},
+			"models" : 
+			[
+				{
+					"circuit_index" : 0,
+					"color" : 
+					{
+						"B" : 0.090196080505847931,
+						"G" : 0.45098039507865906,
+						"R" : 0.92156863212585449
+					},
+					"current_drive" : 
+					{
+						"enable" : true,
+						"id" : 123,
+						"name" : "",
+						"scaling" : 1.0,
+						"tree_open" : false,
+						"type" : "rat::mdl::drivedc"
+					},
+					"enable" : true,
+					"enable_current_sharing" : false,
+					"id" : 124,
+					"input_cross" : 
+					{
+						"dn" : 0.001,
+						"dt" : 0.001,
+						"enable" : true,
+						"enable_gauss" : false,
+						"id" : 121,
+						"n1" : -0.001,
+						"n2" : 0.001,
+						"name" : "rectangle",
+						"t1" : -0.0020499999999999997,
+						"t2" : 0.0020499999999999997,
+						"tree_open" : false,
+						"type" : "rat::mdl::crossrectangle"
+					},
+					"input_path" : 
+					{
+						"element_size" : 0.002,
+						"ell_trans1" : 0.0,
+						"ell_trans2" : 0.0,
+						"enable" : true,
+						"id" : 120,
+						"input_paths" : 
+						[
+							{
+								"axis" : 122,
+								"dl" : 0.002,
+								"ell" : 0.01,
+								"enable" : true,
+								"id" : 26,
+								"name" : "lead north upper",
+								"position_x" : 0.082000000000000003,
+								"position_y" : 0.0,
+								"position_z" : 0.12,
+								"trans" : 
+								[
+									{
+										"enable" : true,
+										"id" : 24,
+										"name" : "reverse",
+										"tree_open" : false,
+										"type" : "rat::mdl::transreverse"
+									},
+									{
+										"enable" : true,
+										"id" : 25,
+										"name" : "Flip",
+										"tree_open" : false,
+										"type" : "rat::mdl::transflip"
+									}
+								],
+								"transverse_direction" : 120,
+								"tree_open" : true,
+								"type" : "rat::mdl::pathaxis"
+							},
+							{
+								"element_size" : 0.002,
+								"ell_trans1" : 0.0040000000000000001,
+								"ell_trans2" : 0.0030000000000000001,
+								"enable" : true,
+								"id" : 119,
+								"input_paths" : 
+								[
+									{
+										"element_size" : 0.002,
+										"ell" : 0.12,
+										"ell_trans1" : 0.0,
+										"ell_trans2" : 0.0040000000000000001,
+										"enable" : true,
+										"enable_w" : true,
+										"exact_length" : false,
+										"fg" : 100000.0,
+										"flip_first" : false,
+										"flip_second" : false,
+										"fn" : 1.0,
+										"ft" : 1.0,
+										"id" : 117,
+										"input_paths" : 
+										[
+											{
+												"bending_arc_length" : 0.0,
+												"bending_origin" : false,
+												"bending_radius" : 0.0,
+												"enable" : true,
+												"enable_lead1" : false,
+												"enable_lead2" : false,
+												"enable_lead3" : false,
+												"enable_lead4" : false,
+												"harmonics" : 
+												[
+													{
+														"b2" : -0.22,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 31,
+															"name" : "",
+															"scaling" : 0.87266462599716477,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 32,
+														"is_skew" : false,
+														"name" : "quad",
+														"normalize_length" : true,
+														"num_poles" : 2,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : true
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 33,
+															"name" : "",
+															"scaling" : -0.00024645416164351607,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 34,
+														"is_skew" : false,
+														"name" : "B4",
+														"normalize_length" : true,
+														"num_poles" : 4,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 35,
+															"name" : "",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 36,
+														"is_skew" : true,
+														"name" : "skew dipole",
+														"normalize_length" : true,
+														"num_poles" : 1,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 37,
+															"name" : "",
+															"scaling" : 5.0274900000000002e-05,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 38,
+														"is_skew" : false,
+														"name" : "B1",
+														"normalize_length" : true,
+														"num_poles" : 1,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 39,
+															"name" : "",
+															"scaling" : -0.00018617604979581347,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 40,
+														"is_skew" : false,
+														"name" : "B3",
+														"normalize_length" : true,
+														"num_poles" : 3,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 41,
+															"name" : "",
+															"scaling" : -0.00020169498553400584,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 42,
+														"is_skew" : false,
+														"name" : "B5",
+														"normalize_length" : true,
+														"num_poles" : 5,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 43,
+															"name" : "",
+															"scaling" : -0.001462563623493985,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 44,
+														"is_skew" : false,
+														"name" : "B6",
+														"normalize_length" : true,
+														"num_poles" : 6,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 45,
+															"name" : "",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 46,
+														"is_skew" : false,
+														"name" : "B7",
+														"normalize_length" : true,
+														"num_poles" : 7,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 47,
+															"name" : "",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 48,
+														"is_skew" : false,
+														"name" : "B8",
+														"normalize_length" : true,
+														"num_poles" : 8,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 49,
+															"name" : "",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 50,
+														"is_skew" : false,
+														"name" : "B9",
+														"normalize_length" : true,
+														"num_poles" : 9,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 51,
+															"name" : "",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 52,
+														"is_skew" : false,
+														"name" : "B10",
+														"normalize_length" : true,
+														"num_poles" : 10,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 53,
+															"name" : "DC",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 54,
+														"is_skew" : true,
+														"name" : "A1",
+														"normalize_length" : true,
+														"num_poles" : 1,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 55,
+															"name" : "DC",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 56,
+														"is_skew" : true,
+														"name" : "A3",
+														"normalize_length" : true,
+														"num_poles" : 3,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 57,
+															"name" : "DC",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 58,
+														"is_skew" : true,
+														"name" : "A4",
+														"normalize_length" : true,
+														"num_poles" : 4,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 59,
+															"name" : "DC",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 60,
+														"is_skew" : true,
+														"name" : "A5",
+														"normalize_length" : true,
+														"num_poles" : 5,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 61,
+															"name" : "DC",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 62,
+														"is_skew" : true,
+														"name" : "A6",
+														"normalize_length" : true,
+														"num_poles" : 6,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 63,
+															"name" : "DC",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 64,
+														"is_skew" : true,
+														"name" : "A7",
+														"normalize_length" : true,
+														"num_poles" : 7,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 65,
+															"name" : "DC",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 66,
+														"is_skew" : true,
+														"name" : "A8",
+														"normalize_length" : true,
+														"num_poles" : 8,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 67,
+															"name" : "DC",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 68,
+														"is_skew" : true,
+														"name" : "A9",
+														"normalize_length" : true,
+														"num_poles" : 9,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 69,
+															"name" : "DC",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 70,
+														"is_skew" : true,
+														"name" : "A10",
+														"normalize_length" : true,
+														"num_poles" : 10,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													}
+												],
+												"id" : 71,
+												"is_reverse" : true,
+												"is_reverse_solenoid" : false,
+												"is_solenoid" : false,
+												"leadness1" : 0.050000000000000003,
+												"leadness2" : 0.050000000000000003,
+												"leadness3" : 0.050000000000000003,
+												"leadness4" : 0.050000000000000003,
+												"name" : "custom cct outer",
+												"new_orientation" : false,
+												"normal_scaling" : 
+												{
+													"enable" : true,
+													"id" : 30,
+													"name" : "DC",
+													"scaling" : 1.0,
+													"tree_open" : false,
+													"type" : "rat::mdl::drivedc"
+												},
+												"normalize_length" : true,
+												"nt1" : -8.8529999999999998,
+												"nt1nrm" : -0.5,
+												"nt2" : 9.0,
+												"nt2nrm" : 0.5,
+												"nt3" : 0.0,
+												"nt4" : 0.0,
+												"num_layers" : 1,
+												"num_nodes_per_turn" : 360,
+												"num_sect_per_turn" : 36,
+												"omega" : 
+												{
+													"enable" : true,
+													"id" : 27,
+													"name" : "",
+													"scaling" : 0.0030000000000000001,
+													"tree_open" : false,
+													"type" : "rat::mdl::drivedc"
+												},
+												"rho" : 
+												{
+													"alpha" : 1.1344640137963142,
+													"b2" : -0.40000000000000002,
+													"enable" : true,
+													"fstr" : 0.0,
+													"id" : 28,
+													"is_skew" : false,
+													"name" : "RCCT-Drive",
+													"num_poles" : 2,
+													"radius" : 0.082000000000000003,
+													"tree_open" : false,
+													"type" : "rat::mdl::drivercct"
+												},
+												"rho_increment" : 0.0,
+												"same_alpha" : false,
+												"theta_lead1" : 0.78539816339744828,
+												"theta_lead2" : 0.78539816339744828,
+												"theta_lead3" : 0.78539816339744828,
+												"theta_lead4" : 0.78539816339744828,
+												"tree_open" : true,
+												"twist" : 
+												{
+													"enable" : true,
+													"id" : 29,
+													"name" : "DC",
+													"scaling" : 0.0,
+													"tree_open" : false,
+													"type" : "rat::mdl::drivedc"
+												},
+												"type" : "rat::mdl::pathcctcustom",
+												"use_binormal" : true,
+												"use_field_style_omega" : false,
+												"use_frenet_serret" : true,
+												"use_layer_jumps" : false,
+												"use_local_radius" : false,
+												"use_omega_normal" : true,
+												"use_radius" : false,
+												"zlead1" : 0.10000000000000001,
+												"zlead2" : 0.10000000000000001,
+												"zlead3" : 0.10000000000000001,
+												"zlead4" : 0.10000000000000001
+											},
+											{
+												"bending_arc_length" : 0.0,
+												"bending_origin" : false,
+												"bending_radius" : 0.0,
+												"enable" : true,
+												"enable_lead1" : false,
+												"enable_lead2" : false,
+												"enable_lead3" : false,
+												"enable_lead4" : false,
+												"harmonics" : 
+												[
+													{
+														"b2" : -0.22,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 76,
+															"name" : "",
+															"scaling" : 0.87266462599716477,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 77,
+														"is_skew" : false,
+														"name" : "quad",
+														"normalize_length" : true,
+														"num_poles" : 2,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : true
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 78,
+															"name" : "",
+															"scaling" : -0.00024645416164351607,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 79,
+														"is_skew" : false,
+														"name" : "B4",
+														"normalize_length" : true,
+														"num_poles" : 4,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 80,
+															"name" : "DC",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 81,
+														"is_skew" : true,
+														"name" : "skew Dipole",
+														"normalize_length" : true,
+														"num_poles" : 1,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 82,
+															"name" : "",
+															"scaling" : 5.0274900000000002e-05,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 83,
+														"is_skew" : false,
+														"name" : "B1",
+														"normalize_length" : true,
+														"num_poles" : 1,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 84,
+															"name" : "",
+															"scaling" : -0.00018617604979581347,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 85,
+														"is_skew" : false,
+														"name" : "B3",
+														"normalize_length" : true,
+														"num_poles" : 3,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 86,
+															"name" : "",
+															"scaling" : -0.00020169498553400584,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 87,
+														"is_skew" : false,
+														"name" : "B5",
+														"normalize_length" : true,
+														"num_poles" : 5,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 88,
+															"name" : "",
+															"scaling" : -0.001462563623493985,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 89,
+														"is_skew" : false,
+														"name" : "B6",
+														"normalize_length" : true,
+														"num_poles" : 6,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 90,
+															"name" : "",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 91,
+														"is_skew" : false,
+														"name" : "B7",
+														"normalize_length" : true,
+														"num_poles" : 7,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 92,
+															"name" : "",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 93,
+														"is_skew" : false,
+														"name" : "B8",
+														"normalize_length" : true,
+														"num_poles" : 8,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 94,
+															"name" : "",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 95,
+														"is_skew" : false,
+														"name" : "B9",
+														"normalize_length" : true,
+														"num_poles" : 9,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 96,
+															"name" : "",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 97,
+														"is_skew" : false,
+														"name" : "B10",
+														"normalize_length" : true,
+														"num_poles" : 10,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 98,
+															"name" : "DC",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 99,
+														"is_skew" : true,
+														"name" : "A1",
+														"normalize_length" : true,
+														"num_poles" : 1,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 100,
+															"name" : "DC",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 101,
+														"is_skew" : true,
+														"name" : "A3",
+														"normalize_length" : true,
+														"num_poles" : 3,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 102,
+															"name" : "DC",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 103,
+														"is_skew" : true,
+														"name" : "A4",
+														"normalize_length" : true,
+														"num_poles" : 4,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 104,
+															"name" : "DC",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 105,
+														"is_skew" : true,
+														"name" : "A5",
+														"normalize_length" : true,
+														"num_poles" : 5,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 106,
+															"name" : "DC",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 107,
+														"is_skew" : true,
+														"name" : "A6",
+														"normalize_length" : true,
+														"num_poles" : 6,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 108,
+															"name" : "DC",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 109,
+														"is_skew" : true,
+														"name" : "A7",
+														"normalize_length" : true,
+														"num_poles" : 7,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 110,
+															"name" : "DC",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 111,
+														"is_skew" : true,
+														"name" : "A8",
+														"normalize_length" : true,
+														"num_poles" : 8,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 112,
+															"name" : "DC",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 113,
+														"is_skew" : true,
+														"name" : "A9",
+														"normalize_length" : true,
+														"num_poles" : 9,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 114,
+															"name" : "DC",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 115,
+														"is_skew" : true,
+														"name" : "A10",
+														"normalize_length" : true,
+														"num_poles" : 10,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													}
+												],
+												"id" : 116,
+												"is_reverse" : false,
+												"is_reverse_solenoid" : false,
+												"is_solenoid" : false,
+												"leadness1" : 0.050000000000000003,
+												"leadness2" : 0.050000000000000003,
+												"leadness3" : 0.050000000000000003,
+												"leadness4" : 0.050000000000000003,
+												"name" : "custom cct inner",
+												"new_orientation" : false,
+												"normal_scaling" : 
+												{
+													"enable" : true,
+													"id" : 75,
+													"name" : "DC",
+													"scaling" : 1.0,
+													"tree_open" : false,
+													"type" : "rat::mdl::drivedc"
+												},
+												"normalize_length" : true,
+												"nt1" : -8.9749999999999996,
+												"nt1nrm" : -0.5,
+												"nt2" : 9.0,
+												"nt2nrm" : 0.5,
+												"nt3" : 0.0,
+												"nt4" : 0.0,
+												"num_layers" : 1,
+												"num_nodes_per_turn" : 360,
+												"num_sect_per_turn" : 36,
+												"omega" : 
+												{
+													"enable" : true,
+													"id" : 72,
+													"name" : "",
+													"scaling" : 0.0035000000000000001,
+													"tree_open" : false,
+													"type" : "rat::mdl::drivedc"
+												},
+												"rho" : 
+												{
+													"alpha" : 1.1344640137963142,
+													"b2" : -0.40000000000000002,
+													"enable" : true,
+													"fstr" : 0.0,
+													"id" : 73,
+													"is_skew" : false,
+													"name" : "RCCT-Drive",
+													"num_poles" : 2,
+													"radius" : 0.072000000000000008,
+													"tree_open" : false,
+													"type" : "rat::mdl::drivercct"
+												},
+												"rho_increment" : 0.0080000000000000002,
+												"same_alpha" : false,
+												"theta_lead1" : 0.17453292519943295,
+												"theta_lead2" : 0.17453292519943295,
+												"theta_lead3" : 0.17453292519943295,
+												"theta_lead4" : 0.17453292519943295,
+												"tree_open" : true,
+												"twist" : 
+												{
+													"enable" : true,
+													"id" : 74,
+													"name" : "DC",
+													"scaling" : 0.0,
+													"tree_open" : false,
+													"type" : "rat::mdl::drivedc"
+												},
+												"type" : "rat::mdl::pathcctcustom",
+												"use_binormal" : true,
+												"use_field_style_omega" : false,
+												"use_frenet_serret" : true,
+												"use_layer_jumps" : false,
+												"use_local_radius" : false,
+												"use_omega_normal" : true,
+												"use_radius" : false,
+												"zlead1" : 0.050000000000000003,
+												"zlead2" : 0.10000000000000001,
+												"zlead3" : 0.050000000000000003,
+												"zlead4" : 0.10000000000000001
+											}
+										],
+										"is_symmetric" : false,
+										"min_bending_radius" : 0.02,
+										"name" : "Connect South V2",
+										"order" : 7,
+										"t1" : -0.012,
+										"t2" : 0.012,
+										"tree_open" : true,
+										"type" : "rat::mdl::pathconnect2",
+										"use_binormal" : false,
+										"use_previous" : false,
+										"uvw1" : 
+										[
+											{
+												"u" : 0.0,
+												"v" : 0.0,
+												"w" : 0.0
+											},
+											{
+												"u" : 0.0038653561481442663,
+												"v" : 0.0,
+												"w" : 0.0
+											},
+											{
+												"u" : 0.0083774655469841391,
+												"v" : 0.0,
+												"w" : 0.0
+											},
+											{
+												"u" : 0.015048817510951737,
+												"v" : 0.0,
+												"w" : 0.0
+											},
+											{
+												"u" : 0.023544941530917102,
+												"v" : 0.016828967708006921,
+												"w" : 0.0
+											},
+											{
+												"u" : 0.06650994092202403,
+												"v" : 0.021840242825616682,
+												"w" : 0.0
+											},
+											{
+												"u" : 0.011684354750948742,
+												"v" : 0.02719476230875701,
+												"w" : 0.0
+											},
+											{
+												"u" : 0.031235865879594857,
+												"v" : 0.032261053445692113,
+												"w" : -0.0056482751617111127
+											}
+										],
+										"uvw2" : 
+										[
+											{
+												"u" : 0.0,
+												"v" : 0.0,
+												"w" : 0.0
+											},
+											{
+												"u" : 0.0044467331602554951,
+												"v" : 0.0,
+												"w" : 0.0
+											},
+											{
+												"u" : 0.0086995170152838024,
+												"v" : 0.0,
+												"w" : 0.0
+											},
+											{
+												"u" : 0.013097372842864463,
+												"v" : 0.0,
+												"w" : 0.0
+											},
+											{
+												"u" : 0.026603902210505334,
+												"v" : 0.016872759679729479,
+												"w" : 0.0
+											},
+											{
+												"u" : 0.026667342898959397,
+												"v" : 0.022040215334458286,
+												"w" : 0.0
+											},
+											{
+												"u" : 0.011264314552647004,
+												"v" : 0.027005497715324976,
+												"w" : 0.0
+											},
+											{
+												"u" : 0.072751242742553138,
+												"v" : 0.031794077948361074,
+												"w" : 0.0075746046611819022
+											}
+										],
+										"xtol" : 0.001
+									},
+									{
+										"axis" : 122,
+										"dl" : 0.002,
+										"ell" : 0.01,
+										"enable" : true,
+										"id" : 118,
+										"name" : "lead north lower",
+										"position_x" : 0.072000000000000008,
+										"position_y" : 0.0,
+										"position_z" : 0.12,
+										"transverse_direction" : 120,
+										"tree_open" : false,
+										"type" : "rat::mdl::pathaxis"
+									}
+								],
+								"name" : "connect north lower",
+								"str1" : 0.0018000000000000002,
+								"str2" : 0.0018000000000000002,
+								"str3" : -0.0001,
+								"str4" : 0.0,
+								"tree_open" : true,
+								"type" : "rat::mdl::pathconnect",
+								"use_binormal" : false
+							}
+						],
+						"name" : "connect north upper",
+						"str1" : 0.009399999618530273,
+						"str2" : 0.0036000001907348636,
+						"str3" : -0.00020000000000000004,
+						"str4" : 0.0044000000000000003,
+						"tree_open" : true,
+						"type" : "rat::mdl::pathconnect",
+						"use_binormal" : false
+					},
+					"material" : 
+					{
+						"classification" : "none",
+						"conductor_list" : 
+						[
+							{
+								"conductor" : 
+								{
+									"classification" : "htstape",
+									"core" : 
+									{
+										"classification" : "htscore",
+										"enable" : true,
+										"id" : 11,
+										"name" : "REBCO Core Fujikura FESC Rat",
+										"sc" : 
+										{
+											"E0" : 0.0001,
+											"classification" : "superconductors",
+											"cp_fit" : 
+											{
+												"type" : "cmn::null"
+											},
+											"d_fit" : 
+											{
+												"enable" : true,
+												"id" : 0,
+												"is_public" : true,
+												"link" : "-",
+												"name" : "REBCO Fujikura CERN",
+												"property_str" : "Density",
+												"source" : "unknown",
+												"standard" : "unknown",
+												"t1" : 1.0,
+												"t2" : 300.0,
+												"tree_open" : false,
+												"type" : "rat::mat::constfit",
+												"value" : 6380.0
+											},
+											"enable" : true,
+											"id" : 3,
+											"jc_fit" : 
+											{
+												"Bi0ab" : 250.0,
+												"Bi0c" : 140.0,
+												"Bi0r" : 180.0,
+												"Tc0" : 86.513821121269345,
+												"a" : 0.66971723811269235,
+												"alphaab" : 526402594737.46759,
+												"alphac" : 1383456286846.9536,
+												"alphar" : 782838813970.3158,
+												"ar" : 0.011806912824679315,
+												"enable" : true,
+												"force_parallel" : false,
+												"force_perpendicular" : false,
+												"g0" : 0.040777809047918667,
+												"g1" : 0.24147305456338605,
+												"g2" : 0.011256355995428957,
+												"g3" : 0.10654295854450087,
+												"gammaab" : 0.77704688017607915,
+												"gammac" : 1.4448269174590229,
+												"gammar" : 1.1166480201485265,
+												"id" : 1,
+												"ignore_pkoff" : true,
+												"is_public" : true,
+												"k" : 0.13611070414780313,
+												"link" : "https://www.fujikura.co.jp/eng/products/newbusiness/superconductors/01/superconductor.pdf",
+												"n" : 0.4039473662305878,
+												"n1" : 1.7381071836299722,
+												"n2" : 5.5225121572353375,
+												"name" : "REBCO Fujikura FESC Rat",
+												"nr" : 0.79950820752299967,
+												"nr1" : 0.71448988147060799,
+												"nr2" : 1.0846356818003209,
+												"nu" : 1.6097513724512178,
+												"pab" : 0.91878515566406593,
+												"pc" : 0.98804698864739526,
+												"pkoff" : 0.0031519679522679558,
+												"pr" : 3.3065242358478835,
+												"property_str" : "Critical Current",
+												"qab1" : 1.0182541251442543,
+												"qab2" : 0.31983785185482116,
+												"qc1" : 0.29312925236020587,
+												"qc2" : 0.0012717058629293856,
+												"qr1" : 3.8298225859120594,
+												"qr2" : 0.41542394233775831,
+												"source" : "Tohoku University, Institute for Materials Research, High Field Laboratory for Superconducting Materials",
+												"spkoff" : 0.0,
+												"standard" : "-",
+												"t1" : 4.2000000000000002,
+												"t2" : 100.0,
+												"tree_open" : false,
+												"tsc" : 9.9999999999999995e-07,
+												"type" : "rat::mat::fleiterbristowfit",
+												"type0_flip" : false
+											},
+											"k_fit" : 
+											{
+												"type" : "cmn::null"
+											},
+											"name" : "REBCO Fujikura FESC Rat",
+											"nv_fit" : 
+											{
+												"enable" : true,
+												"id" : 2,
+												"is_public" : true,
+												"link" : "-",
+												"name" : "REBCO Fujikura FESC Rat",
+												"property_str" : "N-Value",
+												"source" : "Rat",
+												"standard" : "-",
+												"t1" : 1.0,
+												"t2" : 300.0,
+												"tree_open" : false,
+												"type" : "rat::mat::constfit",
+												"value" : 20.0
+											},
+											"rho_fit" : 
+											{
+												"type" : "cmn::null"
+											},
+											"tree_open" : false,
+											"type" : "rat::mat::superconductor"
+										},
+										"substr" : 
+										{
+											"classification" : "stainless",
+											"cp_fit" : 
+											{
+												"enable" : true,
+												"id" : 8,
+												"is_public" : true,
+												"link" : "https://trc.nist.gov/cryogenics/materials/316Stainless/316Stainless_rev.htm",
+												"name" : "Stainless 316",
+												"property_str" : "Heat Capacity",
+												"source" : "NIST",
+												"standard" : "unknown",
+												"sub_fits" : 
+												[
+													{
+														"a" : 12.2486,
+														"b" : -80.642200000000003,
+														"c" : 218.74299999999999,
+														"d" : -308.85399999999998,
+														"e" : 239.52959999999999,
+														"enable" : true,
+														"f" : -89.998199999999997,
+														"g" : 3.1531500000000001,
+														"h" : 8.4499600000000008,
+														"i" : -1.91368,
+														"id" : 6,
+														"is_public" : true,
+														"link" : "https://trc.nist.gov/cryogenics/materials/316Stainless/316Stainless_rev.htm",
+														"name" : "Stainless 316",
+														"property_str" : "Heat Capacity",
+														"source" : "NIST",
+														"standard" : "UNS S31600",
+														"t1" : 4.0,
+														"t2" : 50.0,
+														"tree_open" : false,
+														"type" : "rat::mat::nist8sumfit"
+													},
+													{
+														"a" : -1879.4639999999999,
+														"b" : 3643.1979999999999,
+														"c" : 76.701250000000002,
+														"d" : -6176.0280000000002,
+														"e" : 7437.6247000000003,
+														"enable" : true,
+														"f" : -4305.7217000000001,
+														"g" : 1382.4627,
+														"h" : -237.22703999999999,
+														"i" : 17.052620000000001,
+														"id" : 7,
+														"is_public" : true,
+														"link" : "https://trc.nist.gov/cryogenics/materials/316Stainless/316Stainless_rev.htm",
+														"name" : "Stainless 316",
+														"property_str" : "Heat Capacity",
+														"source" : "NIST",
+														"standard" : "UNS S31600",
+														"t1" : 50.0,
+														"t2" : 300.0,
+														"tree_open" : false,
+														"type" : "rat::mat::nist8sumfit"
+													}
+												],
+												"t1" : 4.0,
+												"t2" : 299.99000000000001,
+												"tree_open" : false,
+												"type" : "rat::mat::multifit"
+											},
+											"d_fit" : 
+											{
+												"enable" : true,
+												"id" : 9,
+												"is_public" : true,
+												"link" : "https://en.wikipedia.org/wiki/Brass",
+												"name" : "constfit",
+												"property_str" : "Density",
+												"source" : "unknown",
+												"standard" : "unknown",
+												"t1" : 1.0,
+												"t2" : 300.0,
+												"tree_open" : false,
+												"type" : "rat::mat::constfit",
+												"value" : 8027.0
+											},
+											"enable" : true,
+											"id" : 10,
+											"k_fit" : 
+											{
+												"a" : -1.4087000000000001,
+												"b" : 1.3982000000000001,
+												"c" : 0.25430000000000003,
+												"d" : -0.626,
+												"e" : 0.2334,
+												"enable" : true,
+												"f" : 0.42559999999999998,
+												"g" : -0.46579999999999999,
+												"h" : 0.16500000000000001,
+												"i" : -0.019900000000000001,
+												"id" : 4,
+												"is_public" : true,
+												"link" : "https://trc.nist.gov/cryogenics/materials/316Stainless/316Stainless_rev.htm",
+												"name" : "Stainless 316",
+												"property_str" : "Thermal Conductivity",
+												"source" : "NIST",
+												"standard" : "unknown",
+												"t1" : 4.0,
+												"t2" : 300.0,
+												"tree_open" : false,
+												"type" : "rat::mat::nist8sumfit"
+											},
+											"name" : "Stainless 316",
+											"rho_fit" : 
+											{
+												"a" : -4.0841000000000001e-21,
+												"b" : 3.4417e-18,
+												"c" : -1.009e-15,
+												"d" : 1.0363e-13,
+												"e" : 2.8033e-12,
+												"enable" : true,
+												"f" : -9.9750000000000005e-11,
+												"g" : 5.3923000000000004e-07,
+												"id" : 5,
+												"is_public" : true,
+												"link" : "-",
+												"name" : "Stainless 316",
+												"property_str" : "Electrical Resistivity",
+												"source" : "unknown",
+												"standard" : "unknown",
+												"t1" : 1.0,
+												"t2" : 300.0,
+												"tree_open" : false,
+												"type" : "rat::mat::polyfit"
+											},
+											"tree_open" : false,
+											"type" : "rat::mat::baseconductor"
+										},
+										"thickness" : 5.7000000000000003e-05,
+										"tree_open" : true,
+										"tsc" : 9.9999999999999995e-07,
+										"tsubstr" : 5.0000000000000002e-05,
+										"type" : "rat::mat::htscore",
+										"width" : 0.0040000000000000001
+									},
+									"enable" : true,
+									"id" : 18,
+									"is_flipped_pair" : false,
+									"name" : "REBCO Tape Fujikura FESC Rat",
+									"num_cores" : 1,
+									"stab" : 
+									{
+										"classification" : "metals",
+										"cp_fit" : 
+										{
+											"a" : -1.9184399999999999,
+											"b" : -0.15973000000000001,
+											"c" : 8.6101299999999998,
+											"d" : -18.995999999999999,
+											"e" : 21.966100000000001,
+											"enable" : true,
+											"f" : -12.732799999999999,
+											"g" : 3.5432199999999998,
+											"h" : -0.37969999999999998,
+											"i" : 0.0,
+											"id" : 15,
+											"is_public" : true,
+											"link" : "https://trc.nist.gov/cryogenics/materials/OFHC%20Copper/OFHC_Copper_rev1.htm",
+											"name" : "Copper OFHC",
+											"property_str" : "Heat Capacity",
+											"source" : "NIST",
+											"standard" : "UNS C10100/C10200",
+											"t1" : 4.0,
+											"t2" : 300.0,
+											"tree_open" : false,
+											"type" : "rat::mat::nist8sumfit"
+										},
+										"d_fit" : 
+										{
+											"enable" : true,
+											"id" : 16,
+											"is_public" : true,
+											"link" : "https://en.wikipedia.org/wiki/Copper",
+											"name" : "Copper OFHC",
+											"property_str" : "Density",
+											"source" : "Wikipedia",
+											"standard" : "unknown",
+											"t1" : 1.0,
+											"t2" : 300.0,
+											"tree_open" : false,
+											"type" : "rat::mat::constfit",
+											"value" : 8960.0
+										},
+										"enable" : true,
+										"id" : 17,
+										"k_fit" : 
+										{
+											"enable" : true,
+											"id" : 13,
+											"is_public" : true,
+											"krho_fit" : 
+											{
+												"C0" : 1.7,
+												"C1" : 2330000000.0,
+												"C2" : 957000.0,
+												"C3" : 163.0,
+												"RRR" : 50.0,
+												"enable" : true,
+												"id" : 12,
+												"is_public" : true,
+												"link" : "-",
+												"name" : "Copper OFHC",
+												"p" : 0.37,
+												"property_str" : "Electrical Resistivity",
+												"q" : 0.00050000000000000001,
+												"source" : "CUDI Manual",
+												"standard" : "unknown",
+												"t1" : 4.0,
+												"t2" : 300.0,
+												"tree_open" : false,
+												"type" : "rat::mat::cudifit"
+											},
+											"link" : "https://en.wikipedia.org/wiki/Wiedemann%E2%80%93Franz_law",
+											"name" : "Copper OFHC",
+											"property_str" : "Thermal Conductivity",
+											"source" : "Wikipedia",
+											"standard" : "unknown",
+											"t1" : 1.0,
+											"t2" : 300.0,
+											"tree_open" : false,
+											"type" : "rat::mat::wflfit"
+										},
+										"name" : "Copper OFHC RRR50",
+										"rho_fit" : 
+										{
+											"C0" : 1.7,
+											"C1" : 2330000000.0,
+											"C2" : 957000.0,
+											"C3" : 163.0,
+											"RRR" : 50.0,
+											"enable" : true,
+											"id" : 14,
+											"is_public" : true,
+											"link" : "-",
+											"name" : "Copper OFHC",
+											"p" : 0.37,
+											"property_str" : "Electrical Resistivity",
+											"q" : 0.00050000000000000001,
+											"source" : "CUDI Manual",
+											"standard" : "unknown",
+											"t1" : 4.0,
+											"t2" : 300.0,
+											"tree_open" : false,
+											"type" : "rat::mat::cudifit"
+										},
+										"tree_open" : false,
+										"type" : "rat::mat::baseconductor"
+									},
+									"thickness" : 9.7e-05,
+									"tree_open" : true,
+									"type" : "rat::mat::htstape",
+									"width" : 0.0040199999999999993
+								},
+								"fraction" : 0.62580000000000002
+							},
+							{
+								"conductor" : 
+								{
+									"classification" : "plastics",
+									"cp_fit" : 
+									{
+										"a" : -1.3684000000000001,
+										"b" : 0.65891999999999995,
+										"c" : 2.8719000000000001,
+										"d" : 0.42651,
+										"e" : -3.0087999999999999,
+										"enable" : true,
+										"f" : 1.9558,
+										"g" : -0.51998,
+										"h" : 0.051574000000000002,
+										"i" : 0.0,
+										"id" : 20,
+										"is_public" : true,
+										"link" : "https://trc.nist.gov/cryogenics/materials/Polyimide%20Kapton/PolyimideKapton_rev.htm",
+										"name" : "Polyimide",
+										"property_str" : "Heat Capacity",
+										"source" : "NIST",
+										"standard" : "-",
+										"t1" : 4.0,
+										"t2" : 300.0,
+										"tree_open" : false,
+										"type" : "rat::mat::nist8sumfit"
+									},
+									"d_fit" : 
+									{
+										"enable" : true,
+										"id" : 21,
+										"is_public" : true,
+										"link" : "-",
+										"name" : "Polyimide",
+										"property_str" : "Density",
+										"source" : "unknown",
+										"standard" : "unknown",
+										"t1" : 1.0,
+										"t2" : 300.0,
+										"tree_open" : false,
+										"type" : "rat::mat::constfit",
+										"value" : 1420.0
+									},
+									"enable" : true,
+									"id" : 22,
+									"k_fit" : 
+									{
+										"a" : 5.7310100000000004,
+										"b" : -39.5199,
+										"c" : 79.931299999999993,
+										"d" : -83.857200000000006,
+										"e" : 50.915700000000001,
+										"enable" : true,
+										"f" : -17.983499999999999,
+										"g" : 3.4241299999999999,
+										"h" : -0.27133000000000002,
+										"i" : 0.0,
+										"id" : 19,
+										"is_public" : true,
+										"link" : "https://trc.nist.gov/cryogenics/materials/Polyimide%20Kapton/PolyimideKapton_rev.htm",
+										"name" : "Polyimide",
+										"property_str" : "Thermal Conductivity",
+										"source" : "NIST",
+										"standard" : "-",
+										"t1" : 4.0,
+										"t2" : 300.0,
+										"tree_open" : false,
+										"type" : "rat::mat::nist8sumfit"
+									},
+									"name" : "Polyimide",
+									"rho_fit" : 
+									{
+										"type" : "cmn::null"
+									},
+									"tree_open" : false,
+									"type" : "rat::mat::baseconductor"
+								},
+								"fraction" : 0.37418999999999997
+							}
+						],
+						"enable" : true,
+						"id" : 23,
+						"name" : "Fujicura insulated tape",
+						"tree_open" : false,
+						"type" : "rat::mat::parallelconductor"
+					},
+					"name" : "Cable (Binormal)",
+					"num_gauss" : 1,
+					"number_turns" : 10.0,
+					"operating_current" : -250.0,
+					"operating_current_density" : 0.0,
+					"operating_temperature" : 40.0,
+					"softening" : 1.3999999999999999,
+					"temperature_drive" : 
+					{
+						"enable" : true,
+						"id" : 122,
+						"name" : "",
+						"scaling" : 1.0,
+						"tree_open" : false,
+						"type" : "rat::mdl::drivedc"
+					},
+					"tree_open" : true,
+					"type" : "rat::mdl::modelcoil",
+					"use_current_density" : false,
+					"use_custom_color" : true
+				},
+				{
+					"circuit_index" : 0,
+					"color" : 
+					{
+						"B" : 0.74071687459945679,
+						"G" : 0.84065932035446167,
+						"R" : 0.087761156260967255
+					},
+					"current_drive" : 
+					{
+						"enable" : true,
+						"id" : 186,
+						"name" : "",
+						"scaling" : 1.0,
+						"tree_open" : false,
+						"type" : "rat::mdl::drivedc"
+					},
+					"enable" : false,
+					"enable_current_sharing" : false,
+					"id" : 187,
+					"input_cross" : 
+					{
+						"dn" : 0.001,
+						"dt" : 0.001,
+						"enable" : true,
+						"enable_gauss" : false,
+						"id" : 184,
+						"n1" : -0.00080000000000000004,
+						"n2" : 0.00080000000000000004,
+						"name" : "rectangle",
+						"t1" : -0.0021000000000000003,
+						"t2" : 0.0020499999999999997,
+						"tree_open" : false,
+						"type" : "rat::mdl::crossrectangle"
+					},
+					"input_path" : 
+					{
+						"element_size" : 0.002,
+						"ell_trans1" : 0.0,
+						"ell_trans2" : 0.0,
+						"enable" : true,
+						"id" : 183,
+						"input_paths" : 
+						[
+							{
+								"axis" : 122,
+								"dl" : 0.002,
+								"ell" : 0.01,
+								"enable" : true,
+								"id" : 127,
+								"name" : "lead north upper",
+								"position_x" : 0.080000000000000002,
+								"position_y" : 0.0,
+								"position_z" : 0.11,
+								"trans" : 
+								[
+									{
+										"enable" : true,
+										"id" : 125,
+										"name" : "reverse",
+										"tree_open" : false,
+										"type" : "rat::mdl::transreverse"
+									},
+									{
+										"enable" : true,
+										"id" : 126,
+										"name" : "flip",
+										"tree_open" : false,
+										"type" : "rat::mdl::transflip"
+									}
+								],
+								"transverse_direction" : 120,
+								"tree_open" : true,
+								"type" : "rat::mdl::pathaxis"
+							},
+							{
+								"element_size" : 0.002,
+								"ell_trans1" : 0.0040000000000000001,
+								"ell_trans2" : 0.0030000000000000001,
+								"enable" : true,
+								"id" : 182,
+								"input_paths" : 
+								[
+									{
+										"element_size" : 0.002,
+										"ell_trans1" : 0.0018000000000000002,
+										"ell_trans2" : 0.0,
+										"enable" : true,
+										"id" : 180,
+										"input_paths" : 
+										[
+											{
+												"bending_arc_length" : 0.0,
+												"bending_origin" : false,
+												"bending_radius" : 0.0,
+												"enable" : true,
+												"enable_lead1" : false,
+												"enable_lead2" : false,
+												"enable_lead3" : false,
+												"enable_lead4" : false,
+												"harmonics" : 
+												[
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 132,
+															"name" : "",
+															"scaling" : 1.0471975511965976,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 133,
+														"is_skew" : false,
+														"name" : "quad",
+														"normalize_length" : true,
+														"num_poles" : 2,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : true
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 134,
+															"name" : "",
+															"scaling" : -0.00024645416164351607,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 135,
+														"is_skew" : false,
+														"name" : "B4",
+														"normalize_length" : true,
+														"num_poles" : 4,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 136,
+															"name" : "",
+															"scaling" : -2.0000000000000002e-05,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 137,
+														"is_skew" : true,
+														"name" : "dipole",
+														"normalize_length" : true,
+														"num_poles" : 1,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 138,
+															"name" : "",
+															"scaling" : 5.0274900000000002e-05,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 139,
+														"is_skew" : false,
+														"name" : "B1",
+														"normalize_length" : true,
+														"num_poles" : 1,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 140,
+															"name" : "",
+															"scaling" : -0.00018617604979581347,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 141,
+														"is_skew" : false,
+														"name" : "B3",
+														"normalize_length" : true,
+														"num_poles" : 3,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 142,
+															"name" : "",
+															"scaling" : -0.00020169498553400584,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 143,
+														"is_skew" : false,
+														"name" : "B5",
+														"normalize_length" : true,
+														"num_poles" : 5,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 144,
+															"name" : "",
+															"scaling" : -0.001462563623493985,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 145,
+														"is_skew" : false,
+														"name" : "B6",
+														"normalize_length" : true,
+														"num_poles" : 6,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 146,
+															"name" : "",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 147,
+														"is_skew" : false,
+														"name" : "B7",
+														"normalize_length" : true,
+														"num_poles" : 7,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 148,
+															"name" : "",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 149,
+														"is_skew" : false,
+														"name" : "B8",
+														"normalize_length" : true,
+														"num_poles" : 8,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 150,
+															"name" : "",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 151,
+														"is_skew" : false,
+														"name" : "B9",
+														"normalize_length" : true,
+														"num_poles" : 9,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 152,
+															"name" : "",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 153,
+														"is_skew" : false,
+														"name" : "B10",
+														"normalize_length" : true,
+														"num_poles" : 10,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													}
+												],
+												"id" : 154,
+												"is_reverse" : true,
+												"is_reverse_solenoid" : false,
+												"is_solenoid" : false,
+												"leadness1" : 0.050000000000000003,
+												"leadness2" : 0.050000000000000003,
+												"leadness3" : 0.050000000000000003,
+												"leadness4" : 0.050000000000000003,
+												"name" : "custom cct outer",
+												"new_orientation" : false,
+												"normal_scaling" : 
+												{
+													"amplitude" : 0.10000000000000001,
+													"enable" : true,
+													"frequency" : 12.0,
+													"id" : 131,
+													"name" : "AC",
+													"offset" : 1.1000000000000001,
+													"phase" : -1.5707963267948966,
+													"phase_velocity" : 0.0,
+													"tree_open" : false,
+													"type" : "rat::mdl::driveac"
+												},
+												"normalize_length" : true,
+												"nt1" : -6.8460000000000001,
+												"nt1nrm" : -0.5,
+												"nt2" : 7.0,
+												"nt2nrm" : 0.5,
+												"nt3" : 0.0,
+												"nt4" : 0.0,
+												"num_layers" : 1,
+												"num_nodes_per_turn" : 360,
+												"num_sect_per_turn" : 36,
+												"omega" : 
+												{
+													"enable" : true,
+													"id" : 128,
+													"name" : "",
+													"scaling" : 0.0020499999999999997,
+													"tree_open" : false,
+													"type" : "rat::mdl::drivedc"
+												},
+												"rho" : 
+												{
+													"alpha" : 1.1344640137963142,
+													"b2" : 0.0,
+													"enable" : true,
+													"fstr" : 0.0,
+													"id" : 129,
+													"is_skew" : false,
+													"name" : "RCCT-Drive",
+													"num_poles" : 2,
+													"radius" : 0.080000000000000002,
+													"tree_open" : false,
+													"type" : "rat::mdl::drivercct"
+												},
+												"rho_increment" : 0.0,
+												"same_alpha" : false,
+												"theta_lead1" : 0.78539816339744828,
+												"theta_lead2" : 0.78539816339744828,
+												"theta_lead3" : 0.78539816339744828,
+												"theta_lead4" : 0.78539816339744828,
+												"tree_open" : true,
+												"twist" : 
+												{
+													"amplitude" : 0.0,
+													"enable" : true,
+													"frequency" : 6.0,
+													"id" : 130,
+													"name" : "AC",
+													"offset" : 0.0,
+													"phase" : -1.5707963267948966,
+													"phase_velocity" : 0.0,
+													"tree_open" : false,
+													"type" : "rat::mdl::driveac"
+												},
+												"type" : "rat::mdl::pathcctcustom",
+												"use_binormal" : true,
+												"use_field_style_omega" : false,
+												"use_frenet_serret" : true,
+												"use_layer_jumps" : false,
+												"use_local_radius" : false,
+												"use_omega_normal" : true,
+												"use_radius" : false,
+												"zlead1" : 0.10000000000000001,
+												"zlead2" : 0.10000000000000001,
+												"zlead3" : 0.10000000000000001,
+												"zlead4" : 0.10000000000000001
+											},
+											{
+												"bending_arc_length" : 0.0,
+												"bending_origin" : false,
+												"bending_radius" : 0.0,
+												"enable" : true,
+												"enable_lead1" : false,
+												"enable_lead2" : false,
+												"enable_lead3" : false,
+												"enable_lead4" : false,
+												"harmonics" : 
+												[
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 159,
+															"name" : "",
+															"scaling" : 1.0471975511965976,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 160,
+														"is_skew" : false,
+														"name" : "quad",
+														"normalize_length" : true,
+														"num_poles" : 2,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : true
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 161,
+															"name" : "",
+															"scaling" : -0.00024645416164351607,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 162,
+														"is_skew" : false,
+														"name" : "B4",
+														"normalize_length" : true,
+														"num_poles" : 4,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 163,
+															"name" : "",
+															"scaling" : 5.0274900000000002e-05,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 164,
+														"is_skew" : false,
+														"name" : "B1",
+														"normalize_length" : true,
+														"num_poles" : 1,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 165,
+															"name" : "",
+															"scaling" : -0.00018617604979581347,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 166,
+														"is_skew" : false,
+														"name" : "B3",
+														"normalize_length" : true,
+														"num_poles" : 3,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 167,
+															"name" : "",
+															"scaling" : -0.00020169498553400584,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 168,
+														"is_skew" : false,
+														"name" : "B5",
+														"normalize_length" : true,
+														"num_poles" : 5,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 169,
+															"name" : "",
+															"scaling" : -0.001462563623493985,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 170,
+														"is_skew" : false,
+														"name" : "B6",
+														"normalize_length" : true,
+														"num_poles" : 6,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 171,
+															"name" : "",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 172,
+														"is_skew" : false,
+														"name" : "B7",
+														"normalize_length" : true,
+														"num_poles" : 7,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 173,
+															"name" : "",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 174,
+														"is_skew" : false,
+														"name" : "B8",
+														"normalize_length" : true,
+														"num_poles" : 8,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 175,
+															"name" : "",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 176,
+														"is_skew" : false,
+														"name" : "B9",
+														"normalize_length" : true,
+														"num_poles" : 9,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													},
+													{
+														"b2" : 0.0,
+														"enable" : true,
+														"harmonic_drive" : 
+														{
+															"enable" : true,
+															"id" : 177,
+															"name" : "",
+															"scaling" : 0.0,
+															"tree_open" : false,
+															"type" : "rat::mdl::drivedc"
+														},
+														"id" : 178,
+														"is_skew" : false,
+														"name" : "B10",
+														"normalize_length" : true,
+														"num_poles" : 10,
+														"tree_open" : false,
+														"type" : "rat::mdl::cctharmonicdrive",
+														"use_skew_angle" : false
+													}
+												],
+												"id" : 179,
+												"is_reverse" : false,
+												"is_reverse_solenoid" : false,
+												"is_solenoid" : false,
+												"leadness1" : 0.050000000000000003,
+												"leadness2" : 0.050000000000000003,
+												"leadness3" : 0.050000000000000003,
+												"leadness4" : 0.050000000000000003,
+												"name" : "custom cct inner",
+												"new_orientation" : false,
+												"normal_scaling" : 
+												{
+													"amplitude" : 0.10000000000000001,
+													"enable" : true,
+													"frequency" : 12.0,
+													"id" : 158,
+													"name" : "AC",
+													"offset" : 1.1000000000000001,
+													"phase" : -1.5707963267948966,
+													"phase_velocity" : 0.0,
+													"tree_open" : false,
+													"type" : "rat::mdl::driveac"
+												},
+												"normalize_length" : true,
+												"nt1" : -6.9950000000000001,
+												"nt1nrm" : -0.5,
+												"nt2" : 7.0,
+												"nt2nrm" : 0.5,
+												"nt3" : 0.0,
+												"nt4" : 0.0,
+												"num_layers" : 1,
+												"num_nodes_per_turn" : 360,
+												"num_sect_per_turn" : 36,
+												"omega" : 
+												{
+													"enable" : true,
+													"id" : 155,
+													"name" : "",
+													"scaling" : 0.0030000000000000001,
+													"tree_open" : false,
+													"type" : "rat::mdl::drivedc"
+												},
+												"rho" : 
+												{
+													"alpha" : 1.1344640137963142,
+													"b2" : 0.0,
+													"enable" : true,
+													"fstr" : 0.0,
+													"id" : 156,
+													"is_skew" : false,
+													"name" : "RCCT-Drive",
+													"num_poles" : 2,
+													"radius" : 0.070000000000000007,
+													"tree_open" : false,
+													"type" : "rat::mdl::drivercct"
+												},
+												"rho_increment" : 0.0080000000000000002,
+												"same_alpha" : false,
+												"theta_lead1" : 0.17453292519943295,
+												"theta_lead2" : 0.17453292519943295,
+												"theta_lead3" : 0.17453292519943295,
+												"theta_lead4" : 0.17453292519943295,
+												"tree_open" : true,
+												"twist" : 
+												{
+													"amplitude" : 0.0,
+													"enable" : true,
+													"frequency" : 6.0,
+													"id" : 157,
+													"name" : "AC",
+													"offset" : 0.0,
+													"phase" : -1.5707963267948966,
+													"phase_velocity" : 0.0,
+													"tree_open" : false,
+													"type" : "rat::mdl::driveac"
+												},
+												"type" : "rat::mdl::pathcctcustom",
+												"use_binormal" : true,
+												"use_field_style_omega" : false,
+												"use_frenet_serret" : true,
+												"use_layer_jumps" : false,
+												"use_local_radius" : false,
+												"use_omega_normal" : true,
+												"use_radius" : false,
+												"zlead1" : 0.050000000000000003,
+												"zlead2" : 0.10000000000000001,
+												"zlead3" : 0.050000000000000003,
+												"zlead4" : 0.10000000000000001
+											}
+										],
+										"name" : "connect south",
+										"str1" : 0.0052000000000000006,
+										"str2" : 0.0040000000000000001,
+										"str3" : 0.0040000000000000001,
+										"str4" : 0.001,
+										"tree_open" : true,
+										"type" : "rat::mdl::pathconnect",
+										"use_binormal" : true
+									},
+									{
+										"axis" : 122,
+										"dl" : 0.002,
+										"ell" : 0.01,
+										"enable" : true,
+										"id" : 181,
+										"name" : "lead north lower",
+										"position_x" : 0.070000000000000007,
+										"position_y" : 0.0,
+										"position_z" : 0.11025,
+										"transverse_direction" : 120,
+										"tree_open" : false,
+										"type" : "rat::mdl::pathaxis"
+									}
+								],
+								"name" : "connect north lower",
+								"str1" : 0.0018000000000000002,
+								"str2" : 0.0018000000000000002,
+								"str3" : -0.0001,
+								"str4" : 0.0,
+								"tree_open" : true,
+								"type" : "rat::mdl::pathconnect",
+								"use_binormal" : true
+							}
+						],
+						"name" : "connect north upper",
+						"str1" : 0.0090000000000000011,
+						"str2" : 0.0033999999999999998,
+						"str3" : -0.001,
+						"str4" : 0.0044000000000000003,
+						"tree_open" : true,
+						"type" : "rat::mdl::pathconnect",
+						"use_binormal" : true
+					},
+					"material" : 
+					{
+						"type" : "cmn::null"
+					},
+					"name" : "Slot (binormal)",
+					"num_gauss" : 1,
+					"number_turns" : 10.0,
+					"operating_current" : 0.0,
+					"operating_current_density" : 0.0,
+					"operating_temperature" : 40.0,
+					"softening" : 1.3999999999999999,
+					"temperature_drive" : 
+					{
+						"enable" : true,
+						"id" : 185,
+						"name" : "",
+						"scaling" : 1.0,
+						"tree_open" : false,
+						"type" : "rat::mdl::drivedc"
+					},
+					"tree_open" : true,
+					"type" : "rat::mdl::modelcoil",
+					"use_current_density" : false,
+					"use_custom_color" : true
+				}
+			],
+			"name" : "Model Tree",
+			"tree_open" : true,
+			"type" : "rat::mdl::modelgroup",
+			"use_custom_color" : false
+		},
+		"name" : "nested quad 50deg b binorm",
+		"t1" : 0.0,
+		"t2" : 0.0,
+		"tree_open" : false,
+		"type" : "rat::mdl::modelroot",
+		"use_custom_color" : false
+	},
+	"version" : "2.017.2"
+}

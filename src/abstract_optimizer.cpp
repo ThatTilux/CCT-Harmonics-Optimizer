@@ -53,12 +53,12 @@ double AbstractOptimizer::getMaxHarmonicValue()
 HarmonicDriveParameterMap AbstractOptimizer::initHarmonicDrives()
 {
     // Get all the scaling values for the custom CCT harmonics
-    HarmonicDriveParameterMap harmonic_drive_values = model_handler_.getHarmonicDriveValues();
+    HarmonicDriveParameterMap harmonic_drive_values = model_handler_.getHarmonicDriveValues(harmonic_drive_prefix_);
 
     // Check that there are harmonic drives
     if (harmonic_drive_values.empty())
     {
-        Logger::error("The program could not find any custom CCT harmonics (rat::mdl::cctharmonicdrive) whose name starts with the letter 'B'. Aborting...");
+        Logger::error("The program could not find any custom CCT harmonics (rat::mdl::cctharmonicdrive) whose name starts with '" + harmonic_drive_prefix_ + "'. Aborting...");
         throw std::runtime_error("No custom CCT harmonics found in the model.");
     }
 

@@ -1,29 +1,23 @@
 #include "linear_optimizer.h"
 
 // Default constructor
-LinearOptimizer::LinearOptimizer(std::string optimized_value_label) : AbstractOptimizer(false), optimized_value_label_(optimized_value_label)
+LinearOptimizer::LinearOptimizer(std::string optimized_value_label, std::string harmonic_drive_prefix) : AbstractOptimizer(false), optimized_value_label_(optimized_value_label)
 {
     ModelHandler model_handler = initModel();
     double max_value = getMaxHarmonicValue();
-    setup(model_handler, max_value);
-}
-
-// Constructor with given max value
-LinearOptimizer::LinearOptimizer(std::string optimized_value_label, double max_value) : AbstractOptimizer(false), optimized_value_label_(optimized_value_label)
-{
-    ModelHandler model_handler = initModel();
-    setup(model_handler, max_value);
+    setup(model_handler, max_value, harmonic_drive_prefix);
 }
 
 // Constructor without any user interaction
-LinearOptimizer::LinearOptimizer(std::string optimized_value_label, ModelHandler &model_handler, double max_value) : AbstractOptimizer(true), optimized_value_label_(optimized_value_label)
+LinearOptimizer::LinearOptimizer(std::string optimized_value_label, std::string harmonic_drive_prefix, ModelHandler &model_handler, double max_value) : AbstractOptimizer(true), optimized_value_label_(optimized_value_label)
 {
-    setup(model_handler, max_value);
+    setup(model_handler, max_value, harmonic_drive_prefix);
 }
 
 // Setup function called from the constructors
-void LinearOptimizer::setup(ModelHandler &model_handler, double max_value)
+void LinearOptimizer::setup(ModelHandler &model_handler, double max_value, std::string harmonic_drive_prefix)
 {
+    harmonic_drive_prefix_ = harmonic_drive_prefix;
     model_handler_ = model_handler;
     initCalculator();
     drive_values_ = initHarmonicDrives();
@@ -164,7 +158,7 @@ void LinearOptimizer::optimize()
                         }
                         else
                         {
-                            Logger::info("Optimized " + harmonic.first + " with drive value " + std::to_string(optimized_drive_value) + " and value: " + std::to_string(optimized_value));
+                            Logger::info("Optimized " + harmonic.first + " with drive value " + std::to_string(optimized_drive_value) + " and  " + optimized_value_label_ + " value: " + std::to_string(optimized_value));
                         }
                         break;
                     }

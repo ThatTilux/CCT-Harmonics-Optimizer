@@ -6,9 +6,8 @@
 
 class LinearOptimizer : public AbstractOptimizer {
 public:
-    LinearOptimizer(std::string optimized_value_label, ModelHandler &model_handler, double max_value);
-    LinearOptimizer(std::string optimized_value_label, double max_value);
-    LinearOptimizer(std::string optimized_value_label);
+    LinearOptimizer(std::string optimized_value_label, std::string harmonic_drive_prefix, ModelHandler &model_handler, double max_value);
+    LinearOptimizer(std::string optimized_value_label, std::string harmonic_drive_prefix);
 
     std::vector<double>& getResults();
 
@@ -31,7 +30,7 @@ private:
     HarmonicDriveParameterMap drive_values_;
     std::vector<double> current_values_;
     
-    void setup(ModelHandler &model_handler, double max_value);
+    void setup(ModelHandler &model_handler, double max_value, std::string harmonic_drive_prefix);
 };
 
 #endif // LINEAR_OPTIMIZER_H
