@@ -46,7 +46,7 @@ void AbstractOptimizer::getModelSelection()
 // Function to let the user select the maximum bn value
 double AbstractOptimizer::getMaxHarmonicValue()
 {
-    return getUserInput("Enter the maximum absolute value for harmonic values", DEFAULT_MAX_BN_VALUE);
+    return getUserInput("Enter the maximum absolute value for harmonic values", LINEAR_OPTIMIZER_DEFAULT_MAX_VALUE);
 }
 
 // Function to get, print and return all custom CCT harmonics in the loaded model. Will ask for user's confirmation to proceed (if not disabled by flag)
@@ -204,7 +204,6 @@ void AbstractOptimizer::computeMagnetEllBounds()
     double length = cct_ell_bounds_.second - cct_ell_bounds_.first;
     Logger::info("Magnet length: " + std::to_string(length) + " mm.");
 }
-
 
 // Function to export the optimized model
 void AbstractOptimizer::exportModel()

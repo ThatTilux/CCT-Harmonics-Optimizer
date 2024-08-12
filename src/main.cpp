@@ -3,6 +3,7 @@
 #include "input_output.h"
 #include "constants.h"
 #include "bn_optimizer.h"
+#include "an_optimizer.h"
 #include "grid_search_optimizer.h"
 #include <iostream>
 #include <vector>
@@ -18,7 +19,7 @@ int main()
 
 
     // check which optimization the user wants to do
-    std::vector<std::string> optimization_options = {"Grid Search Optimizer", "bn Optimizer"};
+    std::vector<std::string> optimization_options = {"Grid Search Optimizer", "bn Optimizer", "an Optimizer"};
     int selected_optimization = selectFromList(optimization_options, "Please select the desired optimization:");
 
     if (selected_optimization == 0)
@@ -42,6 +43,15 @@ int main()
     {
         // only bn optimization
         BnOptimizer optimizer = BnOptimizer();
+        optimizer.optimize();
+        optimizer.logResults();
+        optimizer.exportModel();
+        return 0;
+    }
+    else if (selected_optimization == 2)
+    {
+        // only an optimization
+        AnOptimizer optimizer = AnOptimizer();
         optimizer.optimize();
         optimizer.logResults();
         optimizer.exportModel();

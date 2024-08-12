@@ -1,30 +1,17 @@
 #ifndef BN_OPTIMIZER_H
 #define BN_OPTIMIZER_H
 
-#include "abstract_optimizer.h"
+#include "linear_optimizer.h"
 
-class BnOptimizer : public AbstractOptimizer {
+class BnOptimizer : public LinearOptimizer {
 public:
-    BnOptimizer(ModelHandler &model_handler, double max_harmonic_value);
+    BnOptimizer(ModelHandler &model_handler, double max_value);
     BnOptimizer();
-
-    std::vector<double>& getResults();
-
-    void optimize() override;
-    void logResults() override;
 
     virtual ~BnOptimizer() {};
 
-
 protected:
-    static double fitLinearGetRoot(const std::vector<std::pair<double, double>> &points);
-
-private:
-    double max_harmonic_value_;
-    HarmonicDriveParameterMap harmonic_drive_values_;
-    std::vector<double> current_bn_values_;
-    
-    void setup(ModelHandler &model_handler, double max_harmonic_value);
+    std::vector<double> getValues(HarmonicsDataHandler &harmonics_handler) override;
 };
 
 #endif // BN_OPTIMIZER_H
