@@ -10,8 +10,8 @@ HarmonicsDataHandler::HarmonicsDataHandler(rat::mdl::ShHarmonicsDataPr harmonics
     if (harmonics_data)
     {
         harmonics_data_ = harmonics_data;
-        // extract bn
-        bn_ = extract_bn(harmonics_data);
+        // extract an and bn
+        extract_an_bn(harmonics_data);
         // extract the ell (= length) and all the Bn data
         std::tie(ell_, Bn_per_component_) = extract_ell_Bn(harmonics_data);
     }
@@ -84,8 +84,13 @@ std::vector<double> HarmonicsDataHandler::get_bn()
     return bn_;
 }
 
-// function to extract the bn values from harmonics data
-std::vector<double> HarmonicsDataHandler::extract_bn(rat::mdl::ShHarmonicsDataPr harmonics_data)
+// function for getting the an data for all components. 
+std::vector<double> HarmonicsDataHandler::get_an(){
+    return an_;
+}
+
+// function to extract and set the an and bn values from harmonics data
+void HarmonicsDataHandler::extract_an_bn(rat::mdl::ShHarmonicsDataPr harmonics_data)
 {
     arma::Row<rat::fltp> An, Bn;
     harmonics_data->get_harmonics(An, Bn);
@@ -93,7 +98,8 @@ std::vector<double> HarmonicsDataHandler::extract_bn(rat::mdl::ShHarmonicsDataPr
     const rat::fltp ABmax = std::max(std::abs(An(idx)), std::abs(Bn(idx)));
     const arma::Row<rat::fltp> an = 1e4 * An / ABmax;
     const arma::Row<rat::fltp> bn = 1e4 * Bn / ABmax;
-    return convert_bn_to_vector(bn);
+    an_ = convert_bn_to_vector(an);
+    bn_ = convert_bn_to_vector(bn);
 }
 
 // function to convert an arma::Row of harmonics data to a vector, omitting the first value

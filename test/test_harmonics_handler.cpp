@@ -46,6 +46,15 @@ TEST_F(HarmonicsHandlerTest, GetbnCorrectSizes)
     EXPECT_EQ(bn.size(), 10);
 }
 
+TEST_F(HarmonicsHandlerTest, GetanCorrectSizes)
+{
+    std::vector<double> an = handler.get_an();
+
+    // should have bn values for B1 to B10
+    EXPECT_FALSE(an.empty());
+    EXPECT_EQ(an.size(), 10);
+}
+
 TEST_F(HarmonicsHandlerTest, ConstructorHandlesNullData)
 {
     ASSERT_NO_THROW({
