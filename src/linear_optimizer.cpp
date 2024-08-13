@@ -158,7 +158,7 @@ void LinearOptimizer::optimize()
                         }
                         else
                         {
-                            Logger::info("Optimized " + harmonic.first + " with drive value " + std::to_string(optimized_drive_value) + " and  " + optimized_value_label_ + " value: " + std::to_string(optimized_value));
+                            Logger::info("Optimized " + harmonic.first + " with drive value " + std::to_string(optimized_drive_value) + " and " + optimized_value_label_ + " value: " + std::to_string(optimized_value));
                         }
                         break;
                     }
