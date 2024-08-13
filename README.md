@@ -1,10 +1,10 @@
 # CCT Harmonics Optimizer
 
-This software is designed to automatically optimize custom CCT (canted-cosine-theta) harmonic drive parameters for CCT magnets. Two optimizers are provided to achieve different objectives. This project is part of the FCC-ee HTS4 research project at CERN.
+This software is designed to automatically optimize harmonic drive parameters for CCT (canted-cosine-theta) magnets. Three optimizers are provided to achieve different objectives. This project is part of the FCC-ee HTS4 research project at CERN.
 
 ## Overview
 
-This software utilizes the open-source RAT Library. For more information about the RAT Library, visit the [RAT Library website](https://rat-gui.com/library.html).
+This software is built upon the open-source RAT Library. For more information about the RAT Library, visit the [RAT Library website](https://rat-gui.com/library.html).
 
 ## Installation
 
@@ -24,7 +24,7 @@ Please follow the instructions below to install all necessary dependencies.
 
 2. **spdlog**:
    - spdlog is a fast C++ logging library.
-   You can install `spdlog` using by cloning the repository and installing it manually:
+   You can install `spdlog` by cloning the repository and installing it manually:
    ```sh
    git clone https://github.com/gabime/spdlog.git
    cd spdlog
@@ -43,7 +43,7 @@ Please follow the instructions below to install all necessary dependencies.
 #### RAT-Library
 Follow the [RAT documentation](https://gitlab.com/Project-Rat/rat-documentation) to install the RAT library. This may take a while.
 - When a CUDA compatible GPU is available, make sure to follow the steps for installing CUDA. This is highly recommended as it reduces the runtime of this software by some orders of magnitude.
-- When using CUDA with WSL, it is advised to increase the allocated memory for WSL, see [here](https://geronimo-bergk.medium.com/optimizing-wsl2-performance-setting-memory-and-cpu-allocation-on-windows-513eba7b6086).
+- When using CUDA with WSL, it is advised to increase the allocated memory and CPU cores for WSL, see [here](https://geronimo-bergk.medium.com/optimizing-wsl2-performance-setting-memory-and-cpu-allocation-on-windows-513eba7b6086).
 
 
 
@@ -51,12 +51,12 @@ Follow the [RAT documentation](https://gitlab.com/Project-Rat/rat-documentation)
 
 1. Clone this repository and build the software:
     ```sh
-    git clone <repository_url>
-    cd <repository_directory>
+    git clone https://github.com/ThatTilux/CCT-Harmonics-Optimizer.git
+    cd cct-harmonics-optimizer
     mkdir build
     cd build
     cmake ..
-    make
+    make -j
     ```
 
 2. Run all tests:
@@ -74,13 +74,21 @@ Follow the [RAT documentation](https://gitlab.com/Project-Rat/rat-documentation)
 The magnetic field produced by CCT magnets can be described by a series of harmonics, denoted as B1, B2, ..., B10. 
 In this context, B1 represents the dipole field, B2 represents the quadrupole field, and so on up to the decapole field (B10).
 
-When modeling CCT magnets using the RAT Library, custom harmonics can be defined to fine-tune the magnetic field. These custom harmonics allow for precise control over the magnetic field distribution. 
+When modeling CCT magnets using the RAT Library, custom harmonic components can be defined to fine-tune the magnetic field. These custom components allow for precise control over the magnetic field distribution. 
 
-Each custom harmonic can be characterized by its scaling function.
-Custom harmonics in the CCT model have a specific number of poles (X) and are associated primarily with the harmonic BX. When simulating the magnet and computing harmonics, we are interested in 2 properties for each harmonic component:
+Each custom component can be characterized by its scaling function.
+Custom harmonic components in the CCT model have a specific number of poles (X) and are associated primarily with the harmonic BX. When simulating the magnet and computing harmonics, we are interested in a few properties for each harmonic:
 
 - **Bn Curve**: The Bn curve represents the magnitude of the harmonic along the length of the magnet, measured in Tesla (T).
 - **bn Value**: The bn value is the integral of the Bn curve over the length of the magnet. It indicates the overall magnitude of the harmonic component. The largest bn value is 10,000 and all others are relative to that one.
+
+In addition to the B components, we also consider the A components when analyzing the magnetic field:
+
+- **An Curve**: The An curve represents the phase angle of the harmonic along the length of the magnet (i.e., the change in the harmonic's direction). The An curve provides insight into how the harmonic component rotates or shifts as it propagates along the magnet's length.
+- **an Value**: The an value is the integral of the An curve over the length of the magnet. It quantifies the overall phase shift or rotation of the harmonic component.
+
+Together, the Bn and An curves, along with their respective bn and an values, provide a comprehensive understanding of the magnetic field characteristics within CCT magnets.
+
 
 
 ## Usage
@@ -93,12 +101,15 @@ The optimizer requires a JSON file of a CCT magnet, created by the [RAT-GUI soft
 
 - The JSON file should include custom CCT harmonics for all harmonics B1 to B10 (except for the main harmonic, e.g., B2 for a quadrupole) in the model tree. These harmonics will be optimized by the software.
     - The custom harmonics should be named B1, B2, ...
-    - If there is a custom harmonic for the main harmonic, it cannot be named B1/B2/...
+    - If there is a custom component for the main harmonic, it cannot be named B1/B2/...
     - The custom harmonics must have an 'amplitude' of 'constant' or 'linear' (further restrictions to this apply depending on the optimizer used).
     - All custom harmonics with the same number of poles should have the same name and scaling function parameters, ensuring they are optimized together (e.g. when there are multiple magnets in the same file).
+- If the an Optimizer is to be used, skew harmonic components A1 to A10 need to be included with the same restrictions as the B harmonics.
+    - Contrary to the B components, the skew harmonic component for the main component (e.g., A2 for a quadrupule) needs to be included here as well and named accordingly (e.g., 'A2').
+    
 
 
-Place the JSON file of the magnet in the `data` directory. The JSON file will not be edited by the software. 
+Place the JSON file of the magnet in the `data` directory. The JSON file will not be modified by the software. 
 
 Detailed logs of every run of the software are saved in the `logs` directory.
 
@@ -113,7 +124,7 @@ An example model `cct.json` can be found in the `examples` directory. To test th
     ```sh
     ./bin/main
     ```
-3. Follow the prompts to select the correct JSON file, select the bn optimizer and enter 0.1 as the maximum absolute bn value.
+3. Follow the prompts to select the correct JSON file, select the bn Optimizer and enter 0.1 as the maximum absolute bn value.
 
 The program will terminate after a some minutes, providing the optimal parameters.
 
@@ -150,10 +161,30 @@ In certain cases of this, the optimizer might not terminate as it continuously g
 
 **Example**
 
-Below is an example result of the bn Optimizer on a quadrupole model with an inner and outer layer. The left are the harmonics before the optimizer and the right are the ones after. All bn values were optimized close to 0. The runtime was 1 minute on a machine with CUDA and a RTX 3080Ti.
+Below is an example result of the bn Optimizer on a quadrupole model with an inner and outer layer. The left are the harmonics before the optimizer and the right are the ones after. A threshold of 0.005 was used. All bn values were optimized below that threshold. The runtime was 1 minute on a machine with CUDA and a RTX 3080Ti.
 
 <div align="center">
   <img width="684" alt="Before vs. After for an example of the bn Optimizer" src="https://github.com/user-attachments/assets/3ce508e4-431e-4a77-be41-1ec4fdaae5fe">
+</div>
+
+### an Optimizer
+
+**Objective**
+
+Similarly to the bn Optimizer, the goal of this optimizer is to adjust the custom harmonics so that the an values for all harmonics are as near to 0 as possible. The main harmonic will also be brought to 0.
+
+**Background**
+
+This optimizer works in the same way as the bn Optimizer. Instead of modifying the B harmonics to get low bn values, it modifies the A harmonics to get low an values.
+
+The same background, approach & limitations apply.
+
+**Example**
+
+Below is an example result of the an Optimizer on a quadrupole model with an inner and outer layer. The left are the harmonics before the optimizer and the right are the ones after. A threshold of 0.01 was used. All an values were optimized below that threshold. The runtime was 1.5 minutes on a machine with CUDA and a RTX 3080Ti.
+
+<div align="center">
+<img width="684" alt="Before vs. After for an example of the an Optimizer" src="https://github.com/user-attachments/assets/615651f6-7d9f-44f9-a9b0-6d2c1bdd5e14">
 </div>
 
 ### Grid Search Optimizer
@@ -164,7 +195,7 @@ Similarly to the bn Optimizer, this optimizer also adjusts the custom harmonics 
 
 **Background**
 
-This optimizer requires all custom harmonics to have an 'amplitude' of 'linear. Both the 'offset' and 'slope' parameters of the scaling function will be optimized.
+This optimizer requires all custom harmonics to have an 'amplitude' of 'linear'. Both the 'offset' and 'slope' parameters of the scaling function will be optimized.
 Again, the relationship between these two paramaters and the respective bn value is almost linear. 
 
 "Favourable" Bn curves are those that have a shape as constant as possible, indicating that the magnitude of the harmonic does not significantly change over the length. 
