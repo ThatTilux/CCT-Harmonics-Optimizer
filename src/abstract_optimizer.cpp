@@ -85,7 +85,7 @@ void AbstractOptimizer::assertOnlyLinearDrives()
     for (auto &param : params)
     {
         if (!param.second.isOffsetAndSlope())
-            throw std::runtime_error("The selected model has one or more custom harmonics with an 'amplitude' value other than 'linear'. This is not supported for this optimizer.");
+            throw std::runtime_error("The selected model has the custom harmonic "+ param.first +" with an 'amplitude' value other than 'linear'. This is not supported for this optimizer.");
     }
 }
 
