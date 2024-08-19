@@ -56,7 +56,7 @@ Follow the [RAT documentation](https://gitlab.com/Project-Rat/rat-documentation)
     mkdir build
     cd build
     cmake ..
-    make -j
+    make
     ```
 
 2. Run all tests:
