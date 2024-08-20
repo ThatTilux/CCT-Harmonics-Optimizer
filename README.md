@@ -103,7 +103,7 @@ The optimizer requires a JSON file of a CCT magnet, created by the [RAT-GUI soft
     - The custom harmonics should be named B1, B2, ...
     - If there is a custom component for the main harmonic, it cannot be named B1/B2/...
     - The custom harmonics must have an 'amplitude' of 'constant' or 'linear' (further restrictions to this apply depending on the optimizer used).
-    - All custom harmonics with the same number of poles should have the same name and scaling function parameters, ensuring they are optimized together (e.g. when there are multiple magnets in the same file).
+    - All custom harmonics with the same number of poles should have the same name and scaling function parameters, ensuring they are optimized together (e.g. when there are different custom harmonics for the different layers of a CCT).
 - If the an Optimizer is to be used, skew harmonic components A1 to A10 need to be included with the same restrictions as the B harmonics.
     - Contrary to the B components, the skew harmonic component for the main component (e.g., A2 for a quadrupule) needs to be included here as well and named accordingly (e.g., 'A2').
     
@@ -155,7 +155,7 @@ The optimizer will run these rounds until all harmonic bn values are below the u
 
 **Limitations**
 
-For some magnets, the optimal configuration (with all bn values 0) breaks the magnet (e.g., by increasing length of the magnet by a few orders of magnitude). In this case, the optimizer will try to approach the optimal solution as close as possible. This can be solved by changing the magnet model manually (aside from the scaling functions).
+For some magnets, the optimal configuration (with all bn values 0) breaks the magnet (e.g., by increasing length of the magnet by a few orders of magnitude). In this case, the optimizer will try to approach the optimal solution as close as possible. This can be solved by changing the magnet model manually (e.g., changing the shape of current leads; this is the issue in many cases).
 
 In certain cases of this, the optimizer might not terminate as it continuously gets closer to the optimal solution, never reaching it.
 
