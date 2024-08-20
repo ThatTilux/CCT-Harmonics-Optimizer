@@ -221,7 +221,7 @@ The limitations of the bn Optimizer apply here as well.
 
 **Example**
 
-Below is an example result of the Grid Search Optimizer on a quadrupole model with an inner and outer layer. The left are the harmonics before the optimizer and the right are the ones after. All bn values were optimized close to 0 and all Bn curves show favourable shapes. The runtime was 60 minutes on a machine with CUDA and a RTX 3080Ti.
+Below is an example result of the Grid Search Optimizer on a quadrupole model with an inner and outer layer. The left are the harmonics before the optimizer and the right are the ones after. All bn values were optimized close to 0 and all Bn curves show favourable shapes. The runtime was 60 minutes on a machine with CUDA and a RTX 3080Ti. For larger magnet models, the runtime can reach 5 hours with the same harware.
 
 <div align="center">
 <img width="684" alt="Before vs. After for an example of the Grid Search Optimizer" src="https://github.com/user-attachments/assets/1707c8a1-4bc0-4103-95d7-ad71efcd180d">
