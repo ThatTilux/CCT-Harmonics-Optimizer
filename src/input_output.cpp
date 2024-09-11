@@ -36,7 +36,7 @@ char getch()
 bool askUserToProceed()
 {
     std::string input;
-    Logger::info("The harmonic drive values above will be optimized to achieve bn values within the maximum value specified above. Continue? (Y/n)");
+    Logger::info("The harmonic drive values above will be optimized to achieve bn values within the maximum value specified above. Enter Y to continue or N to abort the program (Y/n)");
     std::getline(std::cin, input);
     return input == "Y" || input == "y";
 }
