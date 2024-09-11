@@ -24,10 +24,10 @@ protected:
 
     // label of the type of values optimized
     std::string optimized_value_label_;
+    HarmonicDriveParameterMap drive_values_;
 
 private:
     double max_value_;
-    HarmonicDriveParameterMap drive_values_;
     std::vector<double> current_values_;
     
     void setup(ModelHandler &model_handler, double max_value, std::string harmonic_drive_prefix);

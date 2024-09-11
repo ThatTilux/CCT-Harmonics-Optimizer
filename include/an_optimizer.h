@@ -13,6 +13,11 @@ public:
 
 protected:
     std::vector<double> getValues(HarmonicsDataHandler &harmonics_handler) override;
+
+
+private:
+    void setup();
+    void checkForHarmonicDriveConstraints(HarmonicDriveParameterMap harmonic_drive_values);
 };
 
 #endif // AN_OPTIMIZER_H
