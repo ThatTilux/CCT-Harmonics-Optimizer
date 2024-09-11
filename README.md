@@ -104,8 +104,9 @@ The optimizer requires a JSON file of a CCT magnet, created by the [RAT-GUI soft
     - If there is a custom component for the main harmonic, it cannot be named B1/B2/...
     - The custom harmonics must have an 'amplitude' of 'constant' or 'linear' (further restrictions to this apply depending on the optimizer used).
     - All custom harmonics with the same number of poles should have the same name and scaling function parameters, ensuring they are optimized together (e.g. when there are different custom harmonics for the different layers of a CCT).
-- If the an Optimizer is to be used, skew harmonic components A1 to A10 need to be included with the same restrictions as the B harmonics.
+- If the an Optimizer is to be used, skew harmonic components A1 to A10 need to be included with the same restrictions as the B harmonics. Additionally, these restrictions apply:
     - Contrary to the B components, the skew harmonic component for the main component (e.g., A2 for a quadrupule) needs to be included here as well and named accordingly (e.g., 'A2').
+    - All skew harmonic components need to have an 'amplitude' of 'constant'.
     
 
 
