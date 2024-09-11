@@ -8,10 +8,7 @@ This software is built upon the open-source RAT Library. For more information ab
 
 ## Installation
 
-**Note: This software was made for Linux.**
-
-### Prerequisites
-
+**Note: This software was made for Linux.**i
 Please follow the instructions below to install all necessary dependencies.
 
 #### System Packages
@@ -162,7 +159,7 @@ In certain cases of this, the optimizer might not terminate as it continuously g
 
 **Example**
 
-Below is an example result of the bn Optimizer on a quadrupole model with an inner and outer layer. The left are the harmonics before the optimizer and the right are the ones after. A threshold of 0.005 was used. All bn values were optimized below that threshold. The runtime was 1 minute on a machine with CUDA and a RTX 3080Ti.
+Below is an example result of the bn Optimizer on a quadrupole model. The left are the harmonics before the optimizer and the right are the ones after. A threshold of 0.005 was used. All bn values were optimized below that threshold. The runtime was 1 minute on a machine with CUDA and a RTX 3080Ti.
 
 <div align="center">
   <img width="684" alt="Before vs. After for an example of the bn Optimizer" src="https://github.com/user-attachments/assets/3ce508e4-431e-4a77-be41-1ec4fdaae5fe">
@@ -182,7 +179,7 @@ The same background, approach & limitations apply.
 
 **Example**
 
-Below is an example result of the an Optimizer on a quadrupole model with an inner and outer layer. The left are the harmonics before the optimizer and the right are the ones after. A threshold of 0.01 was used. All an values were optimized below that threshold. The runtime was 1.5 minutes on a machine with CUDA and a RTX 3080Ti.
+Below is an example result of the an Optimizer on a quadrupole model. The left are the harmonics before the optimizer and the right are the ones after. A threshold of 0.01 was used. All an values were optimized below that threshold. The runtime was 1.5 minutes on a machine with CUDA and a RTX 3080Ti.
 
 <div align="center">
 <img width="684" alt="Before vs. After for an example of the an Optimizer" src="https://github.com/user-attachments/assets/615651f6-7d9f-44f9-a9b0-6d2c1bdd5e14">
@@ -222,7 +219,7 @@ The limitations of the bn Optimizer apply here as well.
 
 **Example**
 
-Below is an example result of the Grid Search Optimizer on a quadrupole model with an inner and outer layer. The left are the harmonics before the optimizer and the right are the ones after. All bn values were optimized close to 0 and all Bn curves show favourable shapes. The runtime was 60 minutes on a machine with CUDA and a RTX 3080Ti. For larger magnet models, the runtime can reach 5 hours with the same harware.
+Below is an example result of the Grid Search Optimizer on a quadrupole model. The left are the harmonics before the optimizer and the right are the ones after. All bn values were optimized close to 0 and all Bn curves show favourable shapes. The runtime was 60 minutes on a machine with CUDA and a RTX 3080Ti. For larger magnet models, the runtime can reach 5 hours with the same hardware.
 
 <div align="center">
 <img width="684" alt="Before vs. After for an example of the Grid Search Optimizer" src="https://github.com/user-attachments/assets/1707c8a1-4bc0-4103-95d7-ad71efcd180d">
