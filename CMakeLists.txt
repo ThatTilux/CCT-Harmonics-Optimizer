@@ -57,7 +57,7 @@ list(REMOVE_ITEM SOURCES "${CMAKE_SOURCE_DIR}/src/main.cpp")
 # Create the main executable
 add_executable(main ${CMAKE_SOURCE_DIR}/src/main.cpp ${SOURCES})
 target_include_directories(main PRIVATE ${EIGEN3_INCLUDE_DIR})
-target_link_libraries(main PRIVATE Rat::Models CCTools armadillo Boost::filesystem)
+target_link_libraries(main PRIVATE CCTools)
 
 
 # Get all test files in test directory
@@ -69,7 +69,7 @@ enable_testing()
 # Create the test executable
 add_executable(runTests ${SOURCES} ${TEST_SOURCES})
 target_include_directories(runTests PRIVATE ${EIGEN3_INCLUDE_DIR})
-target_link_libraries(runTests PRIVATE gtest_main Rat::Models CCTools armadillo Boost::filesystem)
+target_link_libraries(runTests PRIVATE gtest_main CCTools)
 
 # Add tests
 add_test(NAME runTests COMMAND runTests)
