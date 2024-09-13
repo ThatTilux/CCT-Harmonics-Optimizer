@@ -45,6 +45,9 @@ Follow the [RAT documentation](https://gitlab.com/Project-Rat/rat-documentation)
 - When a CUDA compatible GPU is available, make sure to follow the steps for installing CUDA. This is highly recommended as it reduces the runtime of this software by some orders of magnitude.
 - When using CUDA with WSL, it is advised to increase the allocated memory and CPU cores for WSL, see [here](https://geronimo-bergk.medium.com/optimizing-wsl2-performance-setting-memory-and-cpu-allocation-on-windows-513eba7b6086).
 
+#### CCTools
+The [CCTools](https://github.com/ThatTilux/CCTools) library is automatically installed at configure time as long as all the prior requirements have been installed.
+
 
 
 ### Building and Running the Software
