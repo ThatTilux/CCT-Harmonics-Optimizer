@@ -8,7 +8,8 @@ This software utilizes the [CCTools](https://github.com/ThatTilux/CCTools) libra
 
 ## Installation
 
-**Note: This software was made for Linux.**i
+**Note: This software was made for Linux.**
+
 Please follow the instructions below to install all necessary dependencies.
 
 #### System Packages
