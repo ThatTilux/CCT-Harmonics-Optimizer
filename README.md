@@ -4,7 +4,7 @@ This software is designed to automatically optimize harmonic drive parameters fo
 
 ## Overview
 
-This software is built upon the open-source RAT Library. For more information about the RAT Library, visit the [RAT Library website](https://rat-gui.com/library.html).
+This software utilizes the [CCTools](https://github.com/ThatTilux/CCTools) library, which is built on top of the open-source [Project-Rat](https://gitlab.com/Project-Rat) library.
 
 ## Installation
 
