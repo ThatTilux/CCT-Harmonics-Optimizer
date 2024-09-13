@@ -30,20 +30,6 @@ void export_data_to_csv(const std::vector<std::pair<double, double>>& vector, co
 void print_vector(const std::vector<double>& data, std::string label);
 void export_grid_search_results_to_csv(const std::vector<GridSearchResult>& results, const std::string& csv_path, std::vector<std::string> criteria_labels);
 
-// Helper function to format arma::Row<rat::fltp>
-std::string format_arma_row(const arma::Row<rat::fltp>& row);
-
-// Helper function to format std::vector<arma::uword>
-std::string format_vector(const std::vector<arma::uword>& vec);
-
-// Helper function to format arma::Mat<arma::uword>
-std::string format_arma_mat(const arma::Mat<arma::uword>& mat);
-
-// Helper function to format arma::Mat<rat::fltp>
-std::string format_arma_mat_flt(const arma::Mat<rat::fltp>& mat);
-
-// Helper function to format arma::field<arma::Mat<rat::fltp>>
-std::string format_arma_field(const arma::field<arma::Mat<rat::fltp>>& field);
 
 
 #endif // INPUT_OUTPUT_H

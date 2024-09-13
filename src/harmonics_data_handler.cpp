@@ -148,31 +148,6 @@ std::tuple<std::vector<double>, std::vector<std::vector<double>>> HarmonicsDataH
     return {ell_vector, all_Bn};
 }
 
-// function for exporting all the component's Bn values to CSV files
-void HarmonicsDataHandler::export_Bns_to_csv(const std::string &dir_path)
-{
-    // Create the directory if it doesn't exist
-    if (!std::filesystem::exists(dir_path))
-    {
-        std::filesystem::create_directory(dir_path);
-    }
-    else
-    {
-        std::filesystem::remove_all(dir_path);
-        std::filesystem::create_directory(dir_path);
-    }
-
-    // Export each component's Bn values to a separate CSV file
-    for (int i = 1; i <= Bn_per_component_.size(); ++i)
-    {
-        std::string file_path = dir_path + "/Bn_component_" + std::to_string(i) + ".csv";
-
-        std::vector<std::pair<double, double>> data = get_Bn(i);
-
-        // export the Bn values
-        export_data_to_csv(data, file_path);
-    }
-}
 
 // Function to combine x and y points into a vector of pairs
 std::vector<std::pair<double, double>> combinePoints(const std::vector<double> &x, const std::vector<double> &y)

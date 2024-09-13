@@ -23,7 +23,6 @@ public:
     HarmonicsDataHandler(std::vector<double> ell, std::vector<std::vector<double>> Bn_per_component);
     std::vector<double> get_an();
     std::vector<double> get_bn();
-    void export_Bns_to_csv(const std::string &dir_path);
     std::vector<std::pair<double, double>> get_Bn(int component);
 
 private:

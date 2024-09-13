@@ -14,8 +14,6 @@ inline const std::string TEST_DATA_DIR = "../test_data/";
 
 // this will be displayed to the user as the default value and also used in case none is entered
 inline const double LINEAR_OPTIMIZER_DEFAULT_MAX_VALUE = 0.1;
-// max value for an optimizer
-inline const double AN_OPTIMIZER_MAX_VALUE = 1;
 // max datapoints before the optimizer moves on to the next harmonic
 inline const int LINEAR_OPTIMIZER_MAX_DATAPOINTS = 10;
 
