@@ -15,6 +15,7 @@
 #include <vector>
 #include "harmonics_data_handler.h"
 #include "mesh_data_handler.h"
+#include "Logger.hh"
 
 class ModelCalculator
 {

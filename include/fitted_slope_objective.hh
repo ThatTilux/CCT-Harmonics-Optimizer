@@ -2,6 +2,8 @@
 #define FITTED_SLOPE_OBJECTIVE_HH
 
 #include "abstract_objective.hh"
+#include "constants.h"
+#include "input_output.h"
 
 // Class to define the following objective: take the Bn data and fit a linear function. The objective is the slope of the fitted line
 class FittedSlopeObjective : public AbstractObjective
