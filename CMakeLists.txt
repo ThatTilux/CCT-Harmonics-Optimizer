@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.11 FATAL_ERROR)
 project(CCTHarmonicsOptimizer VERSION 1.0.0 LANGUAGES CXX)
 
 # Set C++ standard
