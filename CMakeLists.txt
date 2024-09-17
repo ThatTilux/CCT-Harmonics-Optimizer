@@ -56,7 +56,7 @@ list(REMOVE_ITEM SOURCES "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
 # Create the main executable
 add_executable(main ${CMAKE_SOURCE_DIR}/src/main.cpp ${SOURCES})
-target_include_directories(main PRIVATE ${EIGEN3_INCLUDE_DIR})
+target_include_directories(main PRIVATE ${EIGEN3_INCLUDE_DIR} ${CCTools_SOURCE_DIR}/include)
 target_link_libraries(main PRIVATE CCTools)
 
 

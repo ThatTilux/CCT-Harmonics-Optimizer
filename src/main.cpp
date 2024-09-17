@@ -1,14 +1,15 @@
-#include "model_calculator.h"
-#include "model_handler.h"
-#include "input_output.h"
-#include "constants.h"
-#include "bn_optimizer.h"
-#include "an_optimizer.h"
-#include "grid_search_optimizer.h"
-#include <iostream>
+#include <boost/filesystem.hpp>
 #include <vector>
-#include <fstream>
-#include <sstream>
+#include <string>
+#include <memory>
+#include "constants.h"
+#include <input_output.h>
+#include <bn_objective.hh>
+#include <bn_optimizer.h>
+#include <an_optimizer.h>
+#include <abstract_objective.hh>
+#include <fitted_slope_objective.hh>
+#include <grid_search_optimizer.h>
 
 int main()
 {
@@ -16,7 +17,6 @@ int main()
     // create necessary directories
     boost::filesystem::create_directory(MODEL_OUTPUT_DIR);
     boost::filesystem::create_directory(GRID_SEARCH_OUTPUT_DIR);
-
 
     // check which optimization the user wants to do
     std::vector<std::string> optimization_options = {"Grid Search Optimizer", "bn Optimizer", "an Optimizer"};

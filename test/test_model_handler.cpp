@@ -43,7 +43,7 @@ TEST_F(ModelHandlerTest, ConstructorAndCreateTemporaryFolder)
     boost::filesystem::path temp_json_path;
 
     ASSERT_NO_THROW({
-        ModelHandler handler(test_file);
+        CCTools::ModelHandler handler(test_file);
         temp_json_path = handler.getTempJsonPath();
     });
 
@@ -52,7 +52,7 @@ TEST_F(ModelHandlerTest, ConstructorAndCreateTemporaryFolder)
     EXPECT_TRUE(boost::filesystem::exists(temp_json_path));
 }
 
-bool containsParameterValue(HarmonicDriveParameterMap map, std::string name, HarmonicDriveParameterType type, double value, double margin)
+bool containsParameterValue(CCTools::HarmonicDriveParameterMap map, std::string name, CCTools::HarmonicDriveParameterType type, double value, double margin)
 {
     for (const auto &pair : map)
     {
@@ -67,8 +67,8 @@ bool containsParameterValue(HarmonicDriveParameterMap map, std::string name, Har
 // Test the getHarmonicDriveValues method
 TEST_F(ModelHandlerTest, GetHarmonicDriveValues)
 {
-    ModelHandler handler(test_file);
-    HarmonicDriveParameterMap harmonic_drive_values;
+    CCTools::ModelHandler handler(test_file);
+    CCTools::HarmonicDriveParameterMap harmonic_drive_values;
 
     ASSERT_NO_THROW({
         harmonic_drive_values = handler.getHarmonicDriveValues("B");
@@ -77,56 +77,56 @@ TEST_F(ModelHandlerTest, GetHarmonicDriveValues)
     // Verify the parsed values
     EXPECT_EQ(harmonic_drive_values.size(), 9);
 
-    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B1", HarmonicDriveParameterType::Constant, 3.0274872794616347e-05, 1e-6));
-    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B3", HarmonicDriveParameterType::Constant, -0.00018617604979581347, 1e-6));
-    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B4", HarmonicDriveParameterType::Constant, -0.00024645416164351607, 1e-6));
-    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B5", HarmonicDriveParameterType::Constant, -0.00020169498553400584, 1e-6));
-    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B6", HarmonicDriveParameterType::Constant, -0.001462563623493985, 1e-6));
-    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B7", HarmonicDriveParameterType::Constant, 0, 1e-6));
-    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B8", HarmonicDriveParameterType::Constant, 0, 1e-6));
-    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B9", HarmonicDriveParameterType::Constant, 0, 1e-6));
-    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B10", HarmonicDriveParameterType::Constant, 0, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B1", CCTools::HarmonicDriveParameterType::Constant, 3.0274872794616347e-05, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B3", CCTools::HarmonicDriveParameterType::Constant, -0.00018617604979581347, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B4", CCTools::HarmonicDriveParameterType::Constant, -0.00024645416164351607, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B5", CCTools::HarmonicDriveParameterType::Constant, -0.00020169498553400584, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B6", CCTools::HarmonicDriveParameterType::Constant, -0.001462563623493985, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B7", CCTools::HarmonicDriveParameterType::Constant, 0, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B8", CCTools::HarmonicDriveParameterType::Constant, 0, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B9", CCTools::HarmonicDriveParameterType::Constant, 0, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B10", CCTools::HarmonicDriveParameterType::Constant, 0, 1e-6));
 }
 
 // Test the setHarmonicDriveValue method (aplitude = constant)
 TEST_F(ModelHandlerTest, SetHarmonicDriveValueConstant)
 {
-    ModelHandler handler(test_file);
+    CCTools::ModelHandler handler(test_file);
     double new_value = 1.23456789;
 
     ASSERT_NO_THROW({
-        handler.setHarmonicDriveValue("B1", HarmonicDriveParameters(new_value, HarmonicDriveParameterType::Constant));
+        handler.setHarmonicDriveValue("B1", CCTools::HarmonicDriveParameters(new_value, CCTools::HarmonicDriveParameterType::Constant));
     });
 
     // Verify the updated value
-    HarmonicDriveParameterMap harmonic_drive_values;
+    CCTools::HarmonicDriveParameterMap harmonic_drive_values;
     ASSERT_NO_THROW({
         harmonic_drive_values = handler.getHarmonicDriveValues("B");
     });
 
-    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B1", HarmonicDriveParameterType::Constant, 1.23456789, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B1", CCTools::HarmonicDriveParameterType::Constant, 1.23456789, 1e-6));
 }
 
 // Test the setHarmonicDriveValue method (aplitude = linear)
 TEST_F(ModelHandlerTest, SetHarmonicDriveValueLinear)
 {
-    ModelHandler handler(test_file_2);
+    CCTools::ModelHandler handler(test_file_2);
     double new_slope = 1.23456789;
     double new_offset = 2.23456789;
 
     ASSERT_NO_THROW({
-        handler.setHarmonicDriveValue("B5", HarmonicDriveParameters(new_slope, HarmonicDriveParameterType::Slope));
-        handler.setHarmonicDriveValue("B5", HarmonicDriveParameters(new_offset, HarmonicDriveParameterType::Offset));
+        handler.setHarmonicDriveValue("B5", CCTools::HarmonicDriveParameters(new_slope, CCTools::HarmonicDriveParameterType::Slope));
+        handler.setHarmonicDriveValue("B5", CCTools::HarmonicDriveParameters(new_offset, CCTools::HarmonicDriveParameterType::Offset));
     });
 
     // Verify the updated value
-    HarmonicDriveParameterMap harmonic_drive_values;
+    CCTools::HarmonicDriveParameterMap harmonic_drive_values;
     ASSERT_NO_THROW({
         harmonic_drive_values = handler.getHarmonicDriveValues("B");
     });
 
-    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B5", HarmonicDriveParameterType::Slope, 1.23456789, 1e-6));
-    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B5", HarmonicDriveParameterType::Offset, 2.23456789, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B5", CCTools::HarmonicDriveParameterType::Slope, 1.23456789, 1e-6));
+    EXPECT_TRUE(containsParameterValue(harmonic_drive_values, "B5", CCTools::HarmonicDriveParameterType::Offset, 2.23456789, 1e-6));
 }
 
 // Test to ensure that no files in test_data directory are modified after tests
@@ -137,9 +137,9 @@ TEST_F(ModelHandlerTest, NoModificationOfOriginalFiles)
     auto original_time = boost::filesystem::last_write_time(test_file);
 
     // Perform operations that modify the temporary file
-    ModelHandler handler(test_file);
+    CCTools::ModelHandler handler(test_file);
     double new_value = 1.23456789;
-    handler.setHarmonicDriveValue("quad", HarmonicDriveParameters(new_value, HarmonicDriveParameterType::Constant));
+    handler.setHarmonicDriveValue("quad", CCTools::HarmonicDriveParameters(new_value, CCTools::HarmonicDriveParameterType::Constant));
 
     // Check file size and modification time of the original JSON file again
     auto final_size = boost::filesystem::file_size(test_file);
@@ -153,25 +153,25 @@ TEST_F(ModelHandlerTest, NoModificationOfOriginalFiles)
 // Test for apply_params method
 TEST_F(ModelHandlerTest, ApplyParams)
 {
-    ModelHandler handler(test_file_2);
+    CCTools::ModelHandler handler(test_file_2);
 
     // create a map with new params
-    HarmonicDriveParameterMap params;
-    params["B1"] = HarmonicDriveParameters(1.23456789, HarmonicDriveParameterType::Constant);
-    params["B3"] = HarmonicDriveParameters(3.23456789, HarmonicDriveParameterType::Constant);
-    params["B4"] = HarmonicDriveParameters(4.23456789, HarmonicDriveParameterType::Constant);
+    CCTools::HarmonicDriveParameterMap params;
+    params["B1"] = CCTools::HarmonicDriveParameters(1.23456789, CCTools::HarmonicDriveParameterType::Constant);
+    params["B3"] = CCTools::HarmonicDriveParameters(3.23456789, CCTools::HarmonicDriveParameterType::Constant);
+    params["B4"] = CCTools::HarmonicDriveParameters(4.23456789, CCTools::HarmonicDriveParameterType::Constant);
 
-    params["B5"] = HarmonicDriveParameters(5.23456789, 6.23456789);
+    params["B5"] = CCTools::HarmonicDriveParameters(5.23456789, 6.23456789);
 
-    params["B6"] = HarmonicDriveParameters(7.23456789, HarmonicDriveParameterType::Constant);
-    params["B7"] = HarmonicDriveParameters(8.23456789, HarmonicDriveParameterType::Constant);
-    params["B8"] = HarmonicDriveParameters(9.23456789, HarmonicDriveParameterType::Constant);
-    params["B9"] = HarmonicDriveParameters(10.23456789, HarmonicDriveParameterType::Constant);
-    params["B10"] = HarmonicDriveParameters(11.23456789, HarmonicDriveParameterType::Constant);
+    params["B6"] = CCTools::HarmonicDriveParameters(7.23456789, CCTools::HarmonicDriveParameterType::Constant);
+    params["B7"] = CCTools::HarmonicDriveParameters(8.23456789, CCTools::HarmonicDriveParameterType::Constant);
+    params["B8"] = CCTools::HarmonicDriveParameters(9.23456789, CCTools::HarmonicDriveParameterType::Constant);
+    params["B9"] = CCTools::HarmonicDriveParameters(10.23456789, CCTools::HarmonicDriveParameterType::Constant);
+    params["B10"] = CCTools::HarmonicDriveParameters(11.23456789, CCTools::HarmonicDriveParameterType::Constant);
 
     handler.apply_params(params);
 
-    HarmonicDriveParameterMap new_drive_values = handler.getHarmonicDriveValues();
+    CCTools::HarmonicDriveParameterMap new_drive_values = handler.getHarmonicDriveValues();
 
     // Assert that every element of  params is also in the new drive values (with the same key)
     for (const auto &pair : params)

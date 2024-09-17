@@ -11,7 +11,7 @@ class AbstractObjective
 public:
     AbstractObjective(){};
 
-    virtual double evaluate(HarmonicsDataHandler harmonics_handler, int component) = 0;
+    virtual double evaluate(CCTools::HarmonicsDataHandler harmonics_handler, int component) = 0;
     virtual ~AbstractObjective(){};
 
     std::string getLabel() const

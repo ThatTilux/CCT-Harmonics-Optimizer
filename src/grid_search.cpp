@@ -1,7 +1,9 @@
 #include "grid_search.h"
 
-GridSearch::GridSearch(ModelHandler &model_handler,
-                       ModelCalculator calculator,
+using CCTools::Logger;
+
+GridSearch::GridSearch(CCTools::ModelHandler &model_handler,
+                       CCTools::ModelCalculator calculator,
                        int component,
                        std::pair<double, double> &offset_range,
                        std::pair<double, double> &slope_range,
@@ -61,12 +63,12 @@ void GridSearch::run()
             Logger::info_double("Slope", slope);
 
             // Apply the new parameters
-            HarmonicDriveParameterMap params;
-            params["B" + std::to_string(component_)] = HarmonicDriveParameters(offset, slope);
+            CCTools::HarmonicDriveParameterMap params;
+            params["B" + std::to_string(component_)] = CCTools::HarmonicDriveParameters(offset, slope);
             model_handler_.apply_params(params);
 
             // Run harmonics calculation
-            HarmonicsDataHandler harmonics_handler;
+            CCTools::HarmonicsDataHandler harmonics_handler;
             calculator_.reload_and_calc_harmonics(model_handler_.getTempJsonPath(), harmonics_handler);
 
             // Evaluate the criteria

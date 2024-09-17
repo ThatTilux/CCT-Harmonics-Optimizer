@@ -30,7 +30,7 @@ protected:
 TEST_F(AnOptimizerTest, AnOptimizer)
 {
     // Initialize variables
-    ModelHandler model_handler(test_file);
+    CCTools::ModelHandler model_handler(test_file);
     double max_harmonic_value = 1.0;
 
     // Create optimizer object and call optimization
@@ -61,8 +61,8 @@ TEST_F(AnOptimizerTest, AnOptimizer)
 TEST_F(AnOptimizerTest, checkForHarmonicDriveConstraints)
 {
     // Initialize variables
-    ModelHandler model_handler(test_file);
-    ModelHandler model_handler_2(test_file_2);
+    CCTools::ModelHandler model_handler(test_file);
+    CCTools::ModelHandler model_handler_2(test_file_2);
     double max_harmonic_value = 1.0;
 
     // All linear harmonics

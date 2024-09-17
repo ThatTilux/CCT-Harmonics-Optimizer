@@ -1,18 +1,20 @@
+#include <constants.h>
 #include "gtest/gtest.h"
 #include "grid_search.h"
 #include "model_handler.h"
 #include "model_calculator.h"
 #include "bn_objective.hh"
 #include "fitted_slope_objective.hh"
-#include <constants.h>
 #include <vector>
 #include <memory>
 
-class GridSearchTest : public ::testing::Test {
+class GridSearchTest : public ::testing::Test
+{
 protected:
-    void SetUp() override {
+    void SetUp() override
+    {
         // Initialize the model handler
-        model_handler_ = new ModelHandler(TEST_DATA_DIR + "quad_test_all_linear.json");
+        model_handler_ = new CCTools::ModelHandler(TEST_DATA_DIR + "quad_test_all_linear.json");
 
         // Initialize the criteria
         criteria_.push_back(std::make_shared<BnObjective>());
@@ -35,12 +37,13 @@ protected:
         results_ = std::vector<GridSearchResult>();
     }
 
-    void TearDown() override {
+    void TearDown() override
+    {
         delete model_handler_;
     }
 
-    ModelHandler* model_handler_;
-    ModelCalculator calculator_;
+    CCTools::ModelHandler *model_handler_;
+    CCTools::ModelCalculator calculator_;
     std::vector<std::shared_ptr<AbstractObjective>> criteria_;
     std::pair<double, double> offset_range_;
     std::pair<double, double> slope_range_;
@@ -52,7 +55,8 @@ protected:
     std::vector<GridSearchResult> results_;
 };
 
-TEST_F(GridSearchTest, RunGridSearch) {
+TEST_F(GridSearchTest, RunGridSearch)
+{
     // Create and run the grid search object
     GridSearch grid_search(*model_handler_, calculator_, 1, offset_range_, slope_range_, offset_granularity_, slope_granularity_, results_, criteria_, mag_ell_start_, mag_ell_end_, estimated_time_per_calc_);
 
@@ -60,7 +64,8 @@ TEST_F(GridSearchTest, RunGridSearch) {
     ASSERT_EQ(results_.size(), 9);
 
     // Check that each result has 2 criteria values
-    for (const auto& result : results_) {
+    for (const auto &result : results_)
+    {
         ASSERT_EQ(result.criteria_values.size(), 2);
     }
 }

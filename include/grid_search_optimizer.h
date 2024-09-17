@@ -16,7 +16,7 @@ struct InterimResult {
 class GridSearchOptimizer : public AbstractOptimizer
 {
 public:
-    GridSearchOptimizer(ModelHandler &model_handler, std::vector<std::shared_ptr<AbstractObjective>> criteria,
+    GridSearchOptimizer(CCTools::ModelHandler &model_handler, std::vector<std::shared_ptr<AbstractObjective>> criteria,
                         std::vector<double> thresholds, std::vector<double> search_factors,
                         const int grid_min_steps = GRID_DEFAULT_STEPS,
                         std::vector<int> harmonics_to_optimize = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
@@ -38,13 +38,13 @@ public:
 protected:
     void optimize(double bn_threshold);
     void recompute_bn();
-    bool hasDriveValueChanged(HarmonicDriveParameterMap &drive_values_before_loop);
-    bool checkBnValue(int component, double prev_bn, HarmonicDriveParameterMap &prev_drive_values);
-    void checkLengthSanity(HarmonicDriveParameterMap &fallback_drives);
+    bool hasDriveValueChanged(CCTools::HarmonicDriveParameterMap &drive_values_before_loop);
+    bool checkBnValue(int component, double prev_bn, CCTools::HarmonicDriveParameterMap &prev_drive_values);
+    void checkLengthSanity(CCTools::HarmonicDriveParameterMap &fallback_drives);
     void runGridSearch(int component, std::vector<GridSearchResult> &results);
-    std::pair<double, double> extrapolateOptimalConfiguration(std::vector<GridSearchResult> &results, HarmonicDriveParameters &current_drive);
+    std::pair<double, double> extrapolateOptimalConfiguration(std::vector<GridSearchResult> &results, CCTools::HarmonicDriveParameters &current_drive);
     std::pair<double, double> extrapolateOptimalConfiguration(std::pair<double, double> linear_function1, std::pair<double, double> linear_function2);
-    std::pair<double, double> extrapolateOptimalConfiguration(std::pair<double, double> linear_function, HarmonicDriveParameters &current_drive);
+    std::pair<double, double> extrapolateOptimalConfiguration(std::pair<double, double> linear_function, CCTools::HarmonicDriveParameters &current_drive);
     void setParamRanges(double factor);
     void computeGranularities();
     std::pair<double, double> computeGranularities(std::pair<double, double> offset_range, std::pair<double, double> slope_range);
@@ -52,7 +52,7 @@ protected:
     std::vector<std::string> getCriteriaLabels();
 
     // Getter methods for some private variables
-    const ModelHandler &getModelHandler()
+    const CCTools::ModelHandler &getModelHandler()
     {
         return model_handler_;
     }

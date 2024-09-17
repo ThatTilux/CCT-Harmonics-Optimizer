@@ -1,7 +1,9 @@
 #include "input_output.h"
 
+using CCTools::Logger;
+
 // Function to print harmonic drive values
-void print_harmonic_drive_values(HarmonicDriveParameterMap &harmonic_drive_values)
+void print_harmonic_drive_values(CCTools::HarmonicDriveParameterMap &harmonic_drive_values)
 {
     Logger::info("Harmonic Drive Values: (units are m/coil and m)");
     for (const auto &value : harmonic_drive_values)

@@ -1,5 +1,7 @@
 #include "grid_search_optimizer.h"
 
+using CCTools::Logger;
+
 // Optimizes a model by performing several grid searches and extrapolating the optimal configuration for all custom CCT harmonics
 GridSearchOptimizer::GridSearchOptimizer(std::vector<std::shared_ptr<AbstractObjective>> criteria,
                                          std::vector<double> thresholds, std::vector<double> search_factors,
@@ -14,7 +16,7 @@ GridSearchOptimizer::GridSearchOptimizer(std::vector<std::shared_ptr<AbstractObj
 }
 
 // Constructor with no user interaction - to be used for testing
-GridSearchOptimizer::GridSearchOptimizer(ModelHandler &model_handler, std::vector<std::shared_ptr<AbstractObjective>> criteria,
+GridSearchOptimizer::GridSearchOptimizer(CCTools::ModelHandler &model_handler, std::vector<std::shared_ptr<AbstractObjective>> criteria,
                                          std::vector<double> thresholds, std::vector<double> search_factors,
                                          const int grid_num_steps,
                                          std::vector<int> harmonics_to_optimize) : AbstractOptimizer(true), criteria_(criteria), thresholds_(thresholds), search_factors_(search_factors), harmonics_to_optimize_(harmonics_to_optimize),
@@ -150,7 +152,7 @@ void GridSearchOptimizer::estimateTimePerComputation()
     int num_computations = 5;
     for (int i = 1; i <= num_computations; i++)
     {
-        HarmonicsDataHandler handler;
+        CCTools::HarmonicsDataHandler handler;
         calculator_.reload_and_calc_harmonics(model_handler_.getTempJsonPath(), handler);
     }
 
@@ -183,7 +185,7 @@ void GridSearchOptimizer::setParamRanges(double factor)
     }
 
     // get the current drive values
-    HarmonicDriveParameterMap harmonic_drive_values = model_handler_.getHarmonicDriveValues();
+    CCTools::HarmonicDriveParameterMap harmonic_drive_values = model_handler_.getHarmonicDriveValues();
 
     // update the param_ranges_ with the new values
     for (int i = 1; i <= 10; i++)
@@ -226,7 +228,7 @@ void GridSearchOptimizer::exportModel()
     const boost::filesystem::path path = copyModelWithTimestamp(model_handler_.getTempJsonPath());
 
     // Get the bn values
-    HarmonicsDataHandler handler;
+    CCTools::HarmonicsDataHandler handler;
     calculator_.reload_and_calc_harmonics(model_handler_.getTempJsonPath(), handler);
     std::vector<double> bn_values = handler.get_bn();
 
@@ -306,7 +308,7 @@ void GridSearchOptimizer::optimize(double bn_threshold)
         allHarmonicsBelowThreshold = true;
 
         // save the harmonic drive values. If they do not change in one iteration, the optimization may be stuck
-        HarmonicDriveParameterMap drive_values_before_loop = model_handler_.getHarmonicDriveValues();
+        CCTools::HarmonicDriveParameterMap drive_values_before_loop = model_handler_.getHarmonicDriveValues();
 
         // run grid searches
         for (int i : harmonics_to_optimize_)
@@ -329,7 +331,7 @@ void GridSearchOptimizer::optimize(double bn_threshold)
             }
 
             // save the current drive values. If the new bn value is worse, revert to these values
-            HarmonicDriveParameterMap prev_drive_values = model_handler_.getHarmonicDriveValues();
+            CCTools::HarmonicDriveParameterMap prev_drive_values = model_handler_.getHarmonicDriveValues();
 
             // run the grid search
             std::vector<GridSearchResult> results;
@@ -343,8 +345,8 @@ void GridSearchOptimizer::optimize(double bn_threshold)
             Logger::log_extrapolated_values(i, new_offset, new_slope);
 
             // Update the model with the new configuration
-            HarmonicDriveParameterMap new_config;
-            new_config["B" + std::to_string(i)] = HarmonicDriveParameters(new_offset, new_slope);
+            CCTools::HarmonicDriveParameterMap new_config;
+            new_config["B" + std::to_string(i)] = CCTools::HarmonicDriveParameters(new_offset, new_slope);
             model_handler_.apply_params(new_config);
 
             // Recompute bn
@@ -378,15 +380,15 @@ void GridSearchOptimizer::optimize(double bn_threshold)
 
 void GridSearchOptimizer::recompute_bn()
 {
-    HarmonicsDataHandler handler;
+    CCTools::HarmonicsDataHandler handler;
     calculator_.reload_and_calc_harmonics(model_handler_.getTempJsonPath(), handler);
     current_bn_values_ = handler.get_bn();
 }
 
-bool GridSearchOptimizer::hasDriveValueChanged(HarmonicDriveParameterMap &drive_values_before_loop)
+bool GridSearchOptimizer::hasDriveValueChanged(CCTools::HarmonicDriveParameterMap &drive_values_before_loop)
 {
     // get the current drive values after the loop
-    HarmonicDriveParameterMap drive_values_after_loop = model_handler_.getHarmonicDriveValues();
+    CCTools::HarmonicDriveParameterMap drive_values_after_loop = model_handler_.getHarmonicDriveValues();
 
     // check if at least one value has changed
     if (drive_values_before_loop == drive_values_after_loop)
@@ -397,7 +399,7 @@ bool GridSearchOptimizer::hasDriveValueChanged(HarmonicDriveParameterMap &drive_
 }
 
 // Function to check if the new configuration improved the bn value. If not, revert to the previous configuration
-bool GridSearchOptimizer::checkBnValue(int component, double prev_bn, HarmonicDriveParameterMap &prev_drive_values)
+bool GridSearchOptimizer::checkBnValue(int component, double prev_bn, CCTools::HarmonicDriveParameterMap &prev_drive_values)
 {
     double new_bn = current_bn_values_[component - 1];
     if (std::abs(new_bn) < std::abs(prev_bn))
@@ -422,7 +424,7 @@ bool GridSearchOptimizer::checkBnValue(int component, double prev_bn, HarmonicDr
 }
 
 // Function to check the sanity of the magnet model. Will revert to the fallback config if the length of the magnet changed considerably.
-void GridSearchOptimizer::checkLengthSanity(HarmonicDriveParameterMap &fallback_drives)
+void GridSearchOptimizer::checkLengthSanity(CCTools::HarmonicDriveParameterMap &fallback_drives)
 {
     static double previous_length = 0;
 
@@ -456,7 +458,7 @@ void GridSearchOptimizer::runGridSearch(int component, std::vector<GridSearchRes
 }
 
 // Function to extrapolate the optimal configuration from the grid search results. The optimal offset, slope configuration is the one that minimizes all objectives (criteria).
-std::pair<double, double> GridSearchOptimizer::extrapolateOptimalConfiguration(std::vector<GridSearchResult> &results, HarmonicDriveParameters &current_drive)
+std::pair<double, double> GridSearchOptimizer::extrapolateOptimalConfiguration(std::vector<GridSearchResult> &results, CCTools::HarmonicDriveParameters &current_drive)
 {
     // make sure there are at least 1 criterion
     if (criteria_.size() < 1)
@@ -514,7 +516,7 @@ std::pair<double, double> GridSearchOptimizer::extrapolateOptimalConfiguration(s
 }
 
 // Function to extrapolate the optimal config given the linear functions of 1 criterion
-std::pair<double, double> GridSearchOptimizer::extrapolateOptimalConfiguration(std::pair<double, double> linear_function, HarmonicDriveParameters &current_drive)
+std::pair<double, double> GridSearchOptimizer::extrapolateOptimalConfiguration(std::pair<double, double> linear_function, CCTools::HarmonicDriveParameters &current_drive)
 {
     // get current drive values
     double current_offset = current_drive.getOffset();
@@ -527,7 +529,7 @@ std::pair<double, double> GridSearchOptimizer::extrapolateOptimalConfiguration(s
 // Function to compute and log criteria for a model - to be used for testing purposes only
 void GridSearchOptimizer::computeCriteria()
 {
-    HarmonicsDataHandler harmonics_handler;
+    CCTools::HarmonicsDataHandler harmonics_handler;
     calculator_.reload_and_calc_harmonics(model_handler_.getTempJsonPath(), harmonics_handler);
 
     for (int i = 1; i <= 10; i++)

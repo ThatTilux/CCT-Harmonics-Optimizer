@@ -5,13 +5,13 @@
 
 class BnOptimizer : public LinearOptimizer {
 public:
-    BnOptimizer(ModelHandler &model_handler, double max_value);
+    BnOptimizer(CCTools::ModelHandler &model_handler, double max_value);
     BnOptimizer();
 
     virtual ~BnOptimizer() {};
 
 protected:
-    std::vector<double> getValues(HarmonicsDataHandler &harmonics_handler) override;
+    std::vector<double> getValues(CCTools::HarmonicsDataHandler &harmonics_handler) override;
 };
 
 #endif // BN_OPTIMIZER_H

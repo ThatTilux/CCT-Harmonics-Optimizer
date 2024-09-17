@@ -1,17 +1,19 @@
 #include "abstract_optimizer.h"
 
+using CCTools::Logger;
+
 AbstractOptimizer::AbstractOptimizer(bool disable_user_interaction) : disable_user_interaction_(disable_user_interaction)
 {
 }
 
 // Function to initialize the model
-ModelHandler &AbstractOptimizer::initModel()
+CCTools::ModelHandler &AbstractOptimizer::initModel()
 {
     // let user select model
     getModelSelection();
 
     // load model
-    model_handler_ = ModelHandler(json_file_path_);
+    model_handler_ = CCTools::ModelHandler(json_file_path_);
 
     return model_handler_;
 }
@@ -27,7 +29,7 @@ void AbstractOptimizer::initCalculator()
     }
 
     // load calculator
-    calculator_ = ModelCalculator(model_handler_.getTempJsonPath());
+    calculator_ = CCTools::ModelCalculator(model_handler_.getTempJsonPath());
 }
 
 // Function to let the user select the desired model
@@ -50,10 +52,10 @@ double AbstractOptimizer::getMaxHarmonicValue()
 }
 
 // Function to get, print and return all custom CCT harmonics in the loaded model. Will ask for user's confirmation to proceed (if not disabled by flag)
-HarmonicDriveParameterMap AbstractOptimizer::initHarmonicDrives()
+CCTools::HarmonicDriveParameterMap AbstractOptimizer::initHarmonicDrives()
 {
     // Get all the scaling values for the custom CCT harmonics
-    HarmonicDriveParameterMap harmonic_drive_values = model_handler_.getHarmonicDriveValues(harmonic_drive_prefix_);
+    CCTools::HarmonicDriveParameterMap harmonic_drive_values = model_handler_.getHarmonicDriveValues(harmonic_drive_prefix_);
 
     // Check that there are harmonic drives
     if (harmonic_drive_values.empty())
@@ -81,7 +83,7 @@ HarmonicDriveParameterMap AbstractOptimizer::initHarmonicDrives()
 // Function to assert that there are only custom harmonics with an 'amplitude' of linear. Throws std::runtime_error if not
 void AbstractOptimizer::assertOnlyLinearDrives()
 {
-    HarmonicDriveParameterMap params = model_handler_.getHarmonicDriveValues();
+    CCTools::HarmonicDriveParameterMap params = model_handler_.getHarmonicDriveValues();
     for (auto &param : params)
     {
         if (!param.second.isOffsetAndSlope())
@@ -92,7 +94,7 @@ void AbstractOptimizer::assertOnlyLinearDrives()
 // Function to assert that there are custom harmonics for all harmonics from 1 to 10 (except for the main one). Throws std::runtime_error if not. Sets the main component.
 void AbstractOptimizer::assertAllHarmonicsPresent()
 {
-    HarmonicDriveParameterMap params = model_handler_.getHarmonicDriveValues();
+    CCTools::HarmonicDriveParameterMap params = model_handler_.getHarmonicDriveValues();
     for (int i = 1; i <= 10; i++)
     {
         if (params.find("B" + std::to_string(i)) == params.end())
@@ -123,7 +125,7 @@ void AbstractOptimizer::checkMainComponent()
     int main_component = getMainComponent();
 
     // get the bn values
-    HarmonicsDataHandler harmonics_handler;
+    CCTools::HarmonicsDataHandler harmonics_handler;
     calculator_.reload_and_calc_harmonics(model_handler_.getTempJsonPath(), harmonics_handler);
     std::vector<double> bn_values = harmonics_handler.get_bn();
 
@@ -178,7 +180,7 @@ int AbstractOptimizer::getMainComponent()
 void AbstractOptimizer::computeMagnetEllBounds()
 {
     // retrieve the z bounds of the magnet
-    MeshDataHandler mesh_handler;
+    CCTools::MeshDataHandler mesh_handler;
     calculator_.reload_and_calc_mesh(model_handler_.getTempJsonPath(), mesh_handler);
     auto [z_min, z_max] = mesh_handler.getMinMaxZValues();
 

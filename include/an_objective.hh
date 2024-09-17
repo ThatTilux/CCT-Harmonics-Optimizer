@@ -12,7 +12,7 @@ public:
         label_ = "an";
     };
 
-    double evaluate(HarmonicsDataHandler harmonics_handler, int component) override
+    double evaluate(CCTools::HarmonicsDataHandler harmonics_handler, int component) override
     {
         return harmonics_handler.get_an()[component - 1];
     }

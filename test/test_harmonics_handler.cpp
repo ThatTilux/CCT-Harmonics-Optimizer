@@ -8,21 +8,21 @@ class HarmonicsHandlerTest : public ::testing::Test
 {
 protected:
     static boost::filesystem::path test_file;
-    static HarmonicsDataHandler handler;
+    static CCTools::HarmonicsDataHandler handler;
 
     // Setup before the first test
     // the calculation
     static void SetUpTestSuite()
     {
         test_file = TEST_DATA_DIR + "quad_test.json";
-        ModelCalculator calculator(test_file);
+        CCTools::ModelCalculator calculator(test_file);
         calculator.calc_harmonics(handler, true);
     }
 };
 
 // Initialize static members
 boost::filesystem::path HarmonicsHandlerTest::test_file;
-HarmonicsDataHandler HarmonicsHandlerTest::handler;
+CCTools::HarmonicsDataHandler HarmonicsHandlerTest::handler;
 
 TEST_F(HarmonicsHandlerTest, GetBnCorrectSizes)
 {
@@ -58,7 +58,7 @@ TEST_F(HarmonicsHandlerTest, GetanCorrectSizes)
 TEST_F(HarmonicsHandlerTest, ConstructorHandlesNullData)
 {
     ASSERT_NO_THROW({
-        HarmonicsDataHandler handler(nullptr);
+        CCTools::HarmonicsDataHandler handler(nullptr);
         EXPECT_TRUE(handler.get_Bn(1).empty());
     });
 }

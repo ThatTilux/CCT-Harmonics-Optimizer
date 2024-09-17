@@ -20,7 +20,7 @@ public:
     virtual ~AbstractOptimizer(){};
 
 protected:
-    ModelHandler &initModel();
+    CCTools::ModelHandler &initModel();
     void initCalculator();
 
     double getMaxHarmonicValue();
@@ -29,14 +29,14 @@ protected:
     double getMagnetLength();
     int getMainComponent();
     void computeMagnetEllBounds();
-    HarmonicDriveParameterMap initHarmonicDrives();
+    CCTools::HarmonicDriveParameterMap initHarmonicDrives();
     void assertOnlyLinearDrives();
     void assertAllHarmonicsPresent();
     void checkMainComponent();
 
     boost::filesystem::path json_file_path_;
-    ModelHandler model_handler_;
-    ModelCalculator calculator_;
+    CCTools::ModelHandler model_handler_;
+    CCTools::ModelCalculator calculator_;
     bool disable_user_interaction_;
     std::string harmonic_drive_prefix_ = "B";
 

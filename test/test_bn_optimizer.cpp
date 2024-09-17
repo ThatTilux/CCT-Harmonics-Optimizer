@@ -3,18 +3,20 @@
 #include <boost/filesystem.hpp>
 #include <constants.h>
 
-
 // Define class that exposes the private method fitLinearGetRoot for testing
-class TestBnOptimizer : public BnOptimizer {
+class TestBnOptimizer : public BnOptimizer
+{
 public:
     using BnOptimizer::BnOptimizer; // Inherit constructors
 
     using BnOptimizer::fitLinearGetRoot;
-}; 
+};
 
-class BnOptimizerTest : public ::testing::Test {
+class BnOptimizerTest : public ::testing::Test
+{
 protected:
-    void SetUp() override {
+    void SetUp() override
+    {
         test_file = TEST_DATA_DIR + "quad_test_unoptimized.json";
     }
 
@@ -22,9 +24,10 @@ protected:
 };
 
 // Simple BnOptimizer test. Only B1 needs to be optimized
-TEST_F(BnOptimizerTest, BnOptimizer) {
+TEST_F(BnOptimizerTest, BnOptimizer)
+{
     // initialize variables
-    ModelHandler model_handler(test_file);
+    CCTools::ModelHandler model_handler(test_file);
     double max_harmonic_value = 0.1;
 
     // create optimizer object and call optimization
@@ -33,24 +36,24 @@ TEST_F(BnOptimizerTest, BnOptimizer) {
         optimizer.optimize();
     });
 
-
     // get results
     std::vector<double> bn_values = optimizer.getResults();
 
-    
-
     // make sure all variables are optimized
-    for (auto &bn : bn_values) {
-        if (bn != 10000){
+    for (auto &bn : bn_values)
+    {
+        if (bn != 10000)
+        {
             ASSERT_LE(std::abs(bn), max_harmonic_value);
         }
     }
 }
 
 // Test for the fitLinearGetRoot method
-TEST_F(BnOptimizerTest, FitLinearGetRoot) {
+TEST_F(BnOptimizerTest, FitLinearGetRoot)
+{
     // Initialize variables
-    ModelHandler model_handler(test_file);
+    CCTools::ModelHandler model_handler(test_file);
     double max_harmonic_value = 0.1;
     TestBnOptimizer optimizer(model_handler, max_harmonic_value);
 

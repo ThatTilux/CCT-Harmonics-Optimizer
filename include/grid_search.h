@@ -10,8 +10,8 @@
 class GridSearch
 {
 public:
-    GridSearch(ModelHandler &model_handler,
-               ModelCalculator calculator,
+    GridSearch(CCTools::ModelHandler &model_handler,
+               CCTools::ModelCalculator calculator,
                int component,
                std::pair<double, double> &offset_range,
                std::pair<double, double> &slope_range,
@@ -24,8 +24,8 @@ public:
                double estimated_time_per_calc);
 
 private:
-    ModelHandler model_handler_;
-    ModelCalculator calculator_;
+    CCTools::ModelHandler model_handler_;
+    CCTools::ModelCalculator calculator_;
     int component_;
     std::pair<double, double> &offset_range_;
     std::pair<double, double> &slope_range_;

@@ -14,13 +14,13 @@ public:
         label_ = "fitted_slope";
     };
 
-    double evaluate(HarmonicsDataHandler harmonics_handler, int component) override
+    double evaluate(CCTools::HarmonicsDataHandler harmonics_handler, int component) override
     {
         return evaluate(harmonics_handler, component, std::numeric_limits<double>::min(), std::numeric_limits<double>::max());
     }
 
     // Evaluate with mag ell bounds
-    double evaluate(HarmonicsDataHandler harmonics_handler, int component, double mag_start_pos, double mag_end_pos, bool export_Bn = false)
+    double evaluate(CCTools::HarmonicsDataHandler harmonics_handler, int component, double mag_start_pos, double mag_end_pos, bool export_Bn = false)
     {
         // get the Bn and ell
         std::vector<std::pair<double, double>> points = harmonics_handler.get_Bn(component);
@@ -28,13 +28,14 @@ public:
         // apply transformations to the data
         apply_transformations(points, mag_start_pos, mag_end_pos);
 
-        if(export_Bn){
+        if (export_Bn)
+        {
             export_data_to_csv(points, GRID_SEARCH_OUTPUT_DIR + "Bn_B" + std::to_string(component) + ".csv");
         }
 
         // fit a linear function
         auto [slope, intercept] = StatisticalAnalysis::linearRegression(points);
-        
+
         return slope;
     }
 
@@ -62,7 +63,7 @@ public:
         }
     }
 
-    virtual ~FittedSlopeObjective(){};
+    virtual ~FittedSlopeObjective() {};
 };
 
 #endif // FITTED_SLOPE_OBJECTIVE_HH

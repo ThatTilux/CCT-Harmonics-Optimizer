@@ -1,21 +1,23 @@
 #include "linear_optimizer.h"
 
+using CCTools::Logger;
+
 // Default constructor
 LinearOptimizer::LinearOptimizer(std::string optimized_value_label, std::string harmonic_drive_prefix) : AbstractOptimizer(false), optimized_value_label_(optimized_value_label)
 {
-    ModelHandler model_handler = initModel();
+    CCTools::ModelHandler model_handler = initModel();
     double max_value = getMaxHarmonicValue();
     setup(model_handler, max_value, harmonic_drive_prefix);
 }
 
 // Constructor without any user interaction
-LinearOptimizer::LinearOptimizer(std::string optimized_value_label, std::string harmonic_drive_prefix, ModelHandler &model_handler, double max_value) : AbstractOptimizer(true), optimized_value_label_(optimized_value_label)
+LinearOptimizer::LinearOptimizer(std::string optimized_value_label, std::string harmonic_drive_prefix, CCTools::ModelHandler &model_handler, double max_value) : AbstractOptimizer(true), optimized_value_label_(optimized_value_label)
 {
     setup(model_handler, max_value, harmonic_drive_prefix);
 }
 
 // Setup function called from the constructors
-void LinearOptimizer::setup(ModelHandler &model_handler, double max_value, std::string harmonic_drive_prefix)
+void LinearOptimizer::setup(CCTools::ModelHandler &model_handler, double max_value, std::string harmonic_drive_prefix)
 {
     harmonic_drive_prefix_ = harmonic_drive_prefix;
     model_handler_ = model_handler;
@@ -49,17 +51,17 @@ double LinearOptimizer::fitLinearGetRoot(const std::vector<std::pair<double, dou
 }
 
 // Get the drive value and type for a drive
-void LinearOptimizer::getDriveValueAndType(const std::string &name, double &current_drive_value, HarmonicDriveParameterType &drive_type)
+void LinearOptimizer::getDriveValueAndType(const std::string &name, double &current_drive_value, CCTools::HarmonicDriveParameterType &drive_type)
 {
     if (drive_values_[name].isConstant())
     {
         current_drive_value = drive_values_[name].getConstant();
-        drive_type = HarmonicDriveParameterType::Constant;
+        drive_type = CCTools::HarmonicDriveParameterType::Constant;
     }
     else if (drive_values_[name].isSlope())
     {
         current_drive_value = drive_values_[name].getSlope();
-        drive_type = HarmonicDriveParameterType::Slope;
+        drive_type = CCTools::HarmonicDriveParameterType::Slope;
     }
     else
     {
@@ -78,7 +80,7 @@ void LinearOptimizer::optimize()
     bool all_within_margin;
 
     // handler for handling the results of the harmonics calculation
-    HarmonicsDataHandler harmonics_handler;
+    CCTools::HarmonicsDataHandler harmonics_handler;
 
     // get the current values
     calculator_.reload_and_calc_harmonics(temp_json_file_path, harmonics_handler);
@@ -94,7 +96,7 @@ void LinearOptimizer::optimize()
         {
             // get current drive value and type
             double current_drive_value;
-            HarmonicDriveParameterType drive_type;
+            CCTools::HarmonicDriveParameterType drive_type;
             getDriveValueAndType(harmonic.first, current_drive_value, drive_type);
 
             // get the value for the component currently being optimized
@@ -125,7 +127,7 @@ void LinearOptimizer::optimize()
                     throw std::runtime_error("New drive value is NaN. This indicates that the model received some invalid drive values. Aborting optimization.");
                 }
 
-                model_handler_.setHarmonicDriveValue(harmonic.first, HarmonicDriveParameters(new_drive_value, drive_type));
+                model_handler_.setHarmonicDriveValue(harmonic.first, CCTools::HarmonicDriveParameters(new_drive_value, drive_type));
 
                 calculator_.reload_and_calc_harmonics(temp_json_file_path, harmonics_handler);
                 std::vector<double> new_values = getValues(harmonics_handler);
@@ -138,7 +140,7 @@ void LinearOptimizer::optimize()
                 {
                     double optimized_drive_value = fitLinearGetRoot(data_points);
 
-                    model_handler_.setHarmonicDriveValue(harmonic.first, HarmonicDriveParameters(optimized_drive_value, drive_type));
+                    model_handler_.setHarmonicDriveValue(harmonic.first, CCTools::HarmonicDriveParameters(optimized_drive_value, drive_type));
 
                     calculator_.reload_and_calc_harmonics(temp_json_file_path, harmonics_handler);
 

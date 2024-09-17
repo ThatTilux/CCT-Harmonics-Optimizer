@@ -6,7 +6,7 @@
 
 class LinearOptimizer : public AbstractOptimizer {
 public:
-    LinearOptimizer(std::string optimized_value_label, std::string harmonic_drive_prefix, ModelHandler &model_handler, double max_value);
+    LinearOptimizer(std::string optimized_value_label, std::string harmonic_drive_prefix, CCTools::ModelHandler &model_handler, double max_value);
     LinearOptimizer(std::string optimized_value_label, std::string harmonic_drive_prefix);
 
     std::vector<double>& getResults();
@@ -17,20 +17,20 @@ public:
     virtual ~LinearOptimizer() {};
 
 protected:
-    void getDriveValueAndType(const std::string &name, double &current_drive_value, HarmonicDriveParameterType &drive_type);
-    virtual std::vector<double> getValues(HarmonicsDataHandler &harmonics_handler) = 0;
+    void getDriveValueAndType(const std::string &name, double &current_drive_value, CCTools::HarmonicDriveParameterType &drive_type);
+    virtual std::vector<double> getValues(CCTools::HarmonicsDataHandler &harmonics_handler) = 0;
 
     static double fitLinearGetRoot(const std::vector<std::pair<double, double>> &points);
 
     // label of the type of values optimized
     std::string optimized_value_label_;
-    HarmonicDriveParameterMap drive_values_;
+    CCTools::HarmonicDriveParameterMap drive_values_;
 
 private:
     double max_value_;
     std::vector<double> current_values_;
     
-    void setup(ModelHandler &model_handler, double max_value, std::string harmonic_drive_prefix);
+    void setup(CCTools::ModelHandler &model_handler, double max_value, std::string harmonic_drive_prefix);
 };
 
 #endif // LINEAR_OPTIMIZER_H

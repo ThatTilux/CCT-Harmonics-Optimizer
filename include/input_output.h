@@ -17,19 +17,16 @@
 #include "Logger.hh"
 #include "grid_search_result.h"
 
-
-void print_harmonic_drive_values(HarmonicDriveParameterMap &harmonic_drive_values);
+void print_harmonic_drive_values(CCTools::HarmonicDriveParameterMap &harmonic_drive_values);
 char getch();
 bool askUserToProceed();
 double getUserInput(const std::string &prompt, double default_value);
 boost::filesystem::path selectJsonFile();
 int selectFromList(std::vector<std::string> options, std::string user_prompt);
 const boost::filesystem::path copyModelWithTimestamp(const boost::filesystem::path &src_path);
-void export_vector_to_csv(const std::vector<double>& vector, const std::string& csv_path);
-void export_data_to_csv(const std::vector<std::pair<double, double>>& vector, const std::string& csv_path);
-void print_vector(const std::vector<double>& data, std::string label);
-void export_grid_search_results_to_csv(const std::vector<GridSearchResult>& results, const std::string& csv_path, std::vector<std::string> criteria_labels);
-
-
+void export_vector_to_csv(const std::vector<double> &vector, const std::string &csv_path);
+void export_data_to_csv(const std::vector<std::pair<double, double>> &vector, const std::string &csv_path);
+void print_vector(const std::vector<double> &data, std::string label);
+void export_grid_search_results_to_csv(const std::vector<GridSearchResult> &results, const std::string &csv_path, std::vector<std::string> criteria_labels);
 
 #endif // INPUT_OUTPUT_H

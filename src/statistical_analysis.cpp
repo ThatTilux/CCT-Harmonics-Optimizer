@@ -1,5 +1,7 @@
 #include "statistical_analysis.h"
 
+using CCTools::Logger;
+
 // Function to compute the variance of y values with Bessel's correction
 double StatisticalAnalysis::computeVariance(const std::vector<double> &y)
 {
