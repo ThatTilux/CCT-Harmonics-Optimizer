@@ -10,39 +10,15 @@ This software utilizes the [CCTools](https://github.com/ThatTilux/CCTools) libra
 
 **Note: This software was made for Linux.**
 
-Please follow the instructions below to install all necessary dependencies.
+Follow the [Prerequisites section](https://github.com/ThatTilux/CCTools/blob/main/README.md#prerequisites) from CCTools to install required dependencies. Additionally, follow the instructions below to install necessary dependencies.
 
 #### System Packages
 
-1. **Google Test (gtest) Library**:
-   - Google Test is a framework for C++ tests.
-   ```sh
-   sudo apt-get install libgtest-dev
-   ```
-
-2. **spdlog**:
-   - spdlog is a fast C++ logging library.
-   You can install `spdlog` by cloning the repository and installing it manually:
-   ```sh
-   git clone https://github.com/gabime/spdlog.git
-   cd spdlog
-   mkdir build && cd build
-   cmake ..
-   make -j
-   sudo make install
-   ```
-
-3. **Eigen3**
+1. **Eigen3**
     - Eigen3 is a library used for linear algebra computations
     ```sh
     sudo apt-get install libeigen3-dev
     ```
-
-#### RAT-Library
-Follow the [RAT documentation](https://gitlab.com/Project-Rat/rat-documentation) to install the RAT library. This may take a while.
-- When a CUDA compatible GPU is available, make sure to follow the steps for installing CUDA. This is highly recommended as it reduces the runtime of this software by some orders of magnitude.
-- When using CUDA with WSL, it is advised to increase the allocated memory and CPU cores for WSL, see [here](https://geronimo-bergk.medium.com/optimizing-wsl2-performance-setting-memory-and-cpu-allocation-on-windows-513eba7b6086).
-
 
 
 ### Building and Running the Software
