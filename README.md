@@ -4,15 +4,15 @@ This software is designed to automatically optimize harmonic drive parameters fo
 
 ## Overview
 
-This software utilizes the [CCTools](https://github.com/ThatTilux/CCTools) library, which is built on top of the open-source [Project-Rat](https://gitlab.com/Project-Rat) library.
+This software utilizes the [CCTools](https://github.com/ThatTilux/CCTools) library, which is built on top of the open-source [RAT-Library](https://rat-gui.com/library.html).
 
 ## Installation
 
+### Prerequisites
+
 **Note: This software was made for Linux.**
 
-Follow the [Prerequisites section](https://github.com/ThatTilux/CCTools/blob/main/README.md#prerequisites) from CCTools to install required dependencies. Additionally, follow the instructions below to install necessary dependencies.
-
-#### System Packages
+Follow the [Prerequisites section](https://github.com/ThatTilux/CCTools/blob/main/README.md#prerequisites) from CCTools to install required dependencies. Additionally, install the dependencies listed below.
 
 1. **Eigen3**
     - Eigen3 is a library used for linear algebra computations
