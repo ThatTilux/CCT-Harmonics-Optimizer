@@ -29,12 +29,10 @@ find_package(Armadillo REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem)
 find_package(Eigen3 REQUIRED)
 
-
 # find ZLIB
 if(POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW)
 endif()
-
 find_package(ZLIB REQUIRED)
 
 # Fetch CCTools at configure time
@@ -48,31 +46,39 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(CCTools)
 
+# Fetch googletest
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/release-1.12.1.tar.gz
+)
+
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+FetchContent_MakeAvailable(googletest)
 
 # Get all source files in src directory
-file(GLOB SOURCES "src/*.cpp")
-list(REMOVE_ITEM SOURCES "${CMAKE_SOURCE_DIR}/src/main.cpp")
-
+file(GLOB CCTHARMONICSOPTIMIZER_SOURCES "src/*.cpp")
+list(REMOVE_ITEM CCTHARMONICSOPTIMIZER_SOURCES "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
 # Create the main executable
-add_executable(main ${CMAKE_SOURCE_DIR}/src/main.cpp ${SOURCES})
-target_include_directories(main PRIVATE ${EIGEN3_INCLUDE_DIR} ${CCTools_SOURCE_DIR}/include)
-target_link_libraries(main PRIVATE CCTools)
-
+add_executable(cct-harmonics-optimizer_main ${CMAKE_SOURCE_DIR}/src/main.cpp ${CCTHARMONICSOPTIMIZER_SOURCES})
+target_include_directories(cct-harmonics-optimizer_main PRIVATE ${EIGEN3_INCLUDE_DIR})
+target_link_libraries(cct-harmonics-optimizer_main PRIVATE CCTools)
 
 # Get all test files in test directory
-file(GLOB TEST_SOURCES "test/*.cpp")
+file(GLOB CCTHARMONICSOPTIMIZER_TEST_SOURCES "test/*.cpp")
 
 # Enable testing
 enable_testing()
 
 # Create the test executable
-add_executable(runTests ${SOURCES} ${TEST_SOURCES})
-target_include_directories(runTests PRIVATE ${EIGEN3_INCLUDE_DIR})
-target_link_libraries(runTests PRIVATE gtest_main CCTools)
+add_executable(cct-harmonics-optimizer_test ${CCTHARMONICSOPTIMIZER_SOURCES} ${CCTHARMONICSOPTIMIZER_TEST_SOURCES})
+target_include_directories(cct-harmonics-optimizer_test PRIVATE ${EIGEN3_INCLUDE_DIR})
+target_link_libraries(cct-harmonics-optimizer_test PRIVATE GTest::gtest_main CCTools)
 
 # Add tests
-add_test(NAME runTests COMMAND runTests)
+add_test(NAME cct-harmonics-optimizer_test COMMAND cct-harmonics-optimizer_test)
 
 # Suppress DartConfiguration.tcl warnings
 set(CMAKE_SUPPRESS_REGENERATION true)
