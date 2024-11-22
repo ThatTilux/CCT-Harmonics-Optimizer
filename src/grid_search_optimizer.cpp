@@ -2,7 +2,6 @@
 
 using CCTools::Logger;
 
-// Optimizes a model by performing several grid searches and extrapolating the optimal configuration for all custom CCT harmonics
 GridSearchOptimizer::GridSearchOptimizer(std::vector<std::shared_ptr<AbstractObjective>> criteria,
                                          std::vector<double> thresholds, std::vector<double> search_factors,
                                          const int grid_num_steps,
@@ -15,7 +14,6 @@ GridSearchOptimizer::GridSearchOptimizer(std::vector<std::shared_ptr<AbstractObj
     setup();
 }
 
-// Constructor with no user interaction - to be used for testing
 GridSearchOptimizer::GridSearchOptimizer(CCTools::ModelHandler &model_handler, std::vector<std::shared_ptr<AbstractObjective>> criteria,
                                          std::vector<double> thresholds, std::vector<double> search_factors,
                                          const int grid_num_steps,
@@ -26,7 +24,6 @@ GridSearchOptimizer::GridSearchOptimizer(CCTools::ModelHandler &model_handler, s
     setup();
 }
 
-// Setup function called from the constructors
 void GridSearchOptimizer::setup()
 {
     // perform some model checks
@@ -39,7 +36,6 @@ void GridSearchOptimizer::setup()
     computeMagnetEllBounds();
 }
 
-// Function to get the parameter ranges for a specific component. The component is 1-indexed. Format: {{offset_min, offset_max}, {slope_min, slope_max}}
 std::pair<std::pair<double, double>, std::pair<double, double>> GridSearchOptimizer::getParamRange(int component)
 {
     // assert that component is between 1 and 10
@@ -51,7 +47,6 @@ std::pair<std::pair<double, double>, std::pair<double, double>> GridSearchOptimi
     return param_ranges_[component - 1];
 }
 
-// Function to get Labels of the criteria
 std::vector<std::string> GridSearchOptimizer::getCriteriaLabels()
 {
     std::vector<std::string> labels;
@@ -62,7 +57,6 @@ std::vector<std::string> GridSearchOptimizer::getCriteriaLabels()
     return labels;
 }
 
-// Function to manually inject param ranges. This will completely overwrite any current or default ranges.
 void GridSearchOptimizer::injectParamRanges(std::vector<std::pair<std::pair<double, double>, std::pair<double, double>>> param_ranges)
 {
     // make sure that a param range is provided for every harmonic
@@ -77,13 +71,11 @@ void GridSearchOptimizer::injectParamRanges(std::vector<std::pair<std::pair<doub
     Logger::debug("Injected parameter ranges.");
 }
 
-// Function to change the number of grid search steps after initialzation
 void GridSearchOptimizer::setNumSteps(int num_steps){
     grid_num_steps_ = num_steps;
 }
 
 
-// Function to initialize the granularities for the grid search, based on the set time limit.
 void GridSearchOptimizer::computeGranularities()
 {
     granularities_.resize(10);
@@ -104,8 +96,6 @@ void GridSearchOptimizer::computeGranularities()
     }
 }
 
-// Function to compute granularities given a time budget. Format: {offset_granularity, slope_granularity}
-// Granularities are set so that the spanned grid in the parameter space is equidistant in both dimensions.
 std::pair<double, double> GridSearchOptimizer::computeGranularities(std::pair<double, double> offset_range,
                                                                     std::pair<double, double> slope_range)
 {
@@ -140,7 +130,6 @@ std::pair<double, double> GridSearchOptimizer::computeGranularities(std::pair<do
     return std::make_pair(offset_granularity, slope_granularity);
 }
 
-// Function to estimate the time in s it will take to run one grid search iteration
 void GridSearchOptimizer::estimateTimePerComputation()
 {
     Logger::info("Doing dummy computations to estimate the time...");
@@ -168,7 +157,6 @@ void GridSearchOptimizer::estimateTimePerComputation()
     time_per_calc_ = time_per_computation;
 }
 
-// Function to set the parameter ranges to be around the curret cofigurations by the provided factor. New range will be [offset - factor*offset, offset + factor*offset], same for slope.
 void GridSearchOptimizer::setParamRanges(double factor)
 {
     // if ranges were manually injected, do not compute new ones
@@ -221,7 +209,6 @@ void GridSearchOptimizer::setParamRanges(double factor)
     }
 }
 
-// Function to export the optimized model and log as interim result
 void GridSearchOptimizer::exportModel()
 {
     // Save and get path
@@ -257,7 +244,6 @@ void GridSearchOptimizer::logResults()
     }
 }
 
-// Function to start the optimizer
 void GridSearchOptimizer::optimize()
 {
     estimateTimePerComputation();
@@ -292,7 +278,6 @@ void GridSearchOptimizer::optimize()
     }
 }
 
-// Function to optimize all harmonics for the class-wide criteria in interations until all harmonics' bn values are below the provided threshold
 void GridSearchOptimizer::optimize(double bn_threshold)
 {
     Logger::info("=== Optimizing all harmonics with bn threshold " + std::to_string(bn_threshold) + " ===");
@@ -398,7 +383,6 @@ bool GridSearchOptimizer::hasDriveValueChanged(CCTools::HarmonicDriveParameterMa
     return true;
 }
 
-// Function to check if the new configuration improved the bn value. If not, revert to the previous configuration
 bool GridSearchOptimizer::checkBnValue(int component, double prev_bn, CCTools::HarmonicDriveParameterMap &prev_drive_values)
 {
     double new_bn = current_bn_values_[component - 1];
@@ -423,7 +407,6 @@ bool GridSearchOptimizer::checkBnValue(int component, double prev_bn, CCTools::H
     }
 }
 
-// Function to check the sanity of the magnet model. Will revert to the fallback config if the length of the magnet changed considerably.
 void GridSearchOptimizer::checkLengthSanity(CCTools::HarmonicDriveParameterMap &fallback_drives)
 {
     static double previous_length = 0;
@@ -457,7 +440,6 @@ void GridSearchOptimizer::runGridSearch(int component, std::vector<GridSearchRes
     GridSearch grid_search(model_handler_, calculator_, component, offset_range, slope_range, granularities.first, granularities.second, results, criteria_, mag_ell_start, mag_ell_end, time_per_calc_);
 }
 
-// Function to extrapolate the optimal configuration from the grid search results. The optimal offset, slope configuration is the one that minimizes all objectives (criteria).
 std::pair<double, double> GridSearchOptimizer::extrapolateOptimalConfiguration(std::vector<GridSearchResult> &results, CCTools::HarmonicDriveParameters &current_drive)
 {
     // make sure there are at least 1 criterion
@@ -497,7 +479,6 @@ std::pair<double, double> GridSearchOptimizer::extrapolateOptimalConfiguration(s
     throw std::runtime_error("Extrapolation for more than 2 criteria is not implemented.");
 }
 
-// Function to extrapolate the optimal config given the linear functions of 2 criteria
 std::pair<double, double> GridSearchOptimizer::extrapolateOptimalConfiguration(std::pair<double, double> linear_function1, std::pair<double, double> linear_function2)
 {
     // Calculate the intersection of the linear functions
@@ -515,7 +496,6 @@ std::pair<double, double> GridSearchOptimizer::extrapolateOptimalConfiguration(s
     return *intersection;
 }
 
-// Function to extrapolate the optimal config given the linear functions of 1 criterion
 std::pair<double, double> GridSearchOptimizer::extrapolateOptimalConfiguration(std::pair<double, double> linear_function, CCTools::HarmonicDriveParameters &current_drive)
 {
     // get current drive values
@@ -526,7 +506,6 @@ std::pair<double, double> GridSearchOptimizer::extrapolateOptimalConfiguration(s
     return StatisticalAnalysis::closest_point_on_line(linear_function, {current_offset, current_slope});
 }
 
-// Function to compute and log criteria for a model - to be used for testing purposes only
 void GridSearchOptimizer::computeCriteria()
 {
     CCTools::HarmonicsDataHandler harmonics_handler;
