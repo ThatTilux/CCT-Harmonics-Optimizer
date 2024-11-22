@@ -315,38 +315,63 @@ private:
      */
     void setup();
 
-    // Vector with interim results of exported models
+    /**
+     * @brief Vector with interim results of exported models.
+     */
     std::vector<InterimResult> interim_results_;
 
-    // Vector with ranges for offset and slope for each harmonic drive. 0-indexed. Format: {{offset_min, offset_max}, {slope_min, slope_max}}
+    /**
+     * @brief Vector with ranges for offset and slope for each harmonic drive. 0-indexed.
+     * @details Format: {{offset_min, offset_max}, {slope_min, slope_max}}
+     */
     std::vector<std::pair<std::pair<double, double>, std::pair<double, double>>> param_ranges_;
 
-    // Vector with offset and slope granularities for each harmonic drive. 0-indexed. Format: {offset_granularity, slope_granularity}
+    /**
+     * @brief Vector with offset and slope granularities for each harmonic drive. 0-indexed.
+     * @details Format: {offset_granularity, slope_granularity}
+     */
     std::vector<std::pair<double, double>> granularities_;
 
-    // Criteria to be used for the grid search
+    /**
+     * @brief Criteria to be used for the grid search.
+     */
     std::vector<std::shared_ptr<AbstractObjective>> criteria_;
 
-    // Harmonics to be optimized
+    /**
+     * @brief Harmonics to be optimized.
+     */
     std::vector<int> harmonics_to_optimize_;
 
-    // bn values computed in the last harmonics calculation
+    /**
+     * @brief bn values computed in the last harmonics calculation.
+     */
     std::vector<double> current_bn_values_;
 
-    // Estimated time for one harmonics calculation (seconds)
+    /**
+     * @brief Estimated time for one harmonics calculation (seconds).
+     */
     double time_per_calc_;
 
-    // Thresholds for the bn values per optimization
+    /**
+     * @brief Thresholds for the bn values per optimization.
+     */
     std::vector<double> thresholds_;
 
-    // Search factors for parameter ranges per optimazation
+    /**
+     * @brief Search factors for parameter ranges per optimization.
+     */
     std::vector<double> search_factors_;
 
-    // Num of steps for every grid search
+    /**
+     * @brief Number of steps for every grid search.
+     */
     int grid_num_steps_;
 
-    // Flag to not compute parameter ranges because they were injected manually
+    /**
+     * @brief Flag to not compute parameter ranges because they were injected manually.
+     */
     bool injected_param_ranges_ = false;
+
 };
 
 #endif // GRID_SEARCH_OPTIMIZER_H

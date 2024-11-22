@@ -6,10 +6,9 @@ AbstractOptimizer::AbstractOptimizer(bool disable_user_interaction) : disable_us
 {
 }
 
-// Function to initialize the model
 CCTools::ModelHandler &AbstractOptimizer::initModel()
 {
-    // let user select model
+    // let user select the model
     getModelSelection();
 
     // load model
@@ -18,7 +17,6 @@ CCTools::ModelHandler &AbstractOptimizer::initModel()
     return model_handler_;
 }
 
-// Function to init the harmonics calculator using the initialized model handler
 void AbstractOptimizer::initCalculator()
 {
     // make sure the model handler is initiliazed
@@ -32,7 +30,6 @@ void AbstractOptimizer::initCalculator()
     calculator_ = CCTools::ModelCalculator(model_handler_.getTempJsonPath());
 }
 
-// Function to let the user select the desired model
 void AbstractOptimizer::getModelSelection()
 {
     try
@@ -45,13 +42,6 @@ void AbstractOptimizer::getModelSelection()
     }
 }
 
-// Function to let the user select the maximum bn value
-double AbstractOptimizer::getMaxHarmonicValue()
-{
-    return getUserInput("Enter the maximum absolute value for harmonic values", LINEAR_OPTIMIZER_DEFAULT_MAX_VALUE);
-}
-
-// Function to get, print and return all custom CCT harmonics in the loaded model. Will ask for user's confirmation to proceed (if not disabled by flag)
 CCTools::HarmonicDriveParameterMap AbstractOptimizer::initHarmonicDrives()
 {
     // Get all the scaling values for the custom CCT harmonics
@@ -80,7 +70,6 @@ CCTools::HarmonicDriveParameterMap AbstractOptimizer::initHarmonicDrives()
     return harmonic_drive_values;
 }
 
-// Function to assert that there are only custom harmonics with an 'amplitude' of linear. Throws std::runtime_error if not
 void AbstractOptimizer::assertOnlyLinearDrives()
 {
     CCTools::HarmonicDriveParameterMap params = model_handler_.getHarmonicDriveValues();
@@ -91,7 +80,6 @@ void AbstractOptimizer::assertOnlyLinearDrives()
     }
 }
 
-// Function to assert that there are custom harmonics for all harmonics from 1 to 10 (except for the main one). Throws std::runtime_error if not. Sets the main component.
 void AbstractOptimizer::assertAllHarmonicsPresent()
 {
     CCTools::HarmonicDriveParameterMap params = model_handler_.getHarmonicDriveValues();
@@ -118,7 +106,6 @@ void AbstractOptimizer::assertAllHarmonicsPresent()
     Logger::info("Detected B" + std::to_string(main_component_) + " as the main component.");
 }
 
-// Function to assure that the main component has been set and has a bn of 10,000. Throws std::runtime_error if not. Prints the bn values
 void AbstractOptimizer::checkMainComponent()
 {
     // get the main component
@@ -140,7 +127,6 @@ void AbstractOptimizer::checkMainComponent()
     print_vector(bn_values, "bn");
 }
 
-// Function to return the ell value in mm where the magnet begins relative to the axis.
 double AbstractOptimizer::getMinMagnetEll()
 {
     if (cct_ell_bounds_.first == 0.0 && cct_ell_bounds_.second == 0.0)
@@ -150,7 +136,6 @@ double AbstractOptimizer::getMinMagnetEll()
     return cct_ell_bounds_.first;
 }
 
-// Function to return the ell value in mm where the magnet ends relative to the axis.
 double AbstractOptimizer::getMaxMagnetEll()
 {
     if (cct_ell_bounds_.first == 0.0 && cct_ell_bounds_.second == 0.0)
@@ -160,13 +145,11 @@ double AbstractOptimizer::getMaxMagnetEll()
     return cct_ell_bounds_.second;
 }
 
-// Function to return the inferred length of the magnet
 double AbstractOptimizer::getMagnetLength()
 {
     return getMaxMagnetEll() - getMinMagnetEll();
 }
 
-// Function to get the main component of the magnet, e.g. 2 for a quadrupole magnet.
 int AbstractOptimizer::getMainComponent()
 {
     if (main_component_ == -1)
@@ -176,7 +159,6 @@ int AbstractOptimizer::getMainComponent()
     return main_component_;
 }
 
-// Function to compute and set the ell bounds for the magnet. The ell bounds are the part along the length of the axis where the magnet actually is.
 void AbstractOptimizer::computeMagnetEllBounds()
 {
     // retrieve the z bounds of the magnet
@@ -207,7 +189,6 @@ void AbstractOptimizer::computeMagnetEllBounds()
     Logger::info("Magnet length: " + std::to_string(length) + " mm.");
 }
 
-// Function to export the optimized model
 void AbstractOptimizer::exportModel()
 {
     copyModelWithTimestamp(model_handler_.getTempJsonPath());
