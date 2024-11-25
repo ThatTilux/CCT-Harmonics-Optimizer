@@ -5,11 +5,19 @@
  *
  * ## Optimizers
  *
- * For detailed physics motivation of each optimizer, consult the <a href="https://github.com/ThatTilux/CCT-Harmonics-Optimizer/tree/main" target="_blank">README</a> file of this repository.
+ * For a detailed physics motivation of each optimizer, consult the <a href="https://github.com/ThatTilux/CCT-Harmonics-Optimizer/tree/main" target="_blank">README</a> file of this repository.
  *
- * ### bn Optimizer
+ * \ref BnOptimizer "bnOptimizer"
  *
- * ### an Optimizer
+ * This optimizer optimizes the scaling function of harmonic drives linearly.
+ * The objective is achieved when the absolute bn values of all components are below a specified threshold.
+ * This optimizer performs several rounds of linear optimizations until the objective is met.
+ * In each round, all harmonic drives present in the model (except for the main component) are optimized one by one. The `constant` or `slope` parameter of the scaling function (depending on the `amplitude` of the harmonic drive) is optimized linearly;
+ * the optimizer changes the parameter in small steps and calculates the bn value for each step. The optimizer then fits a linear function to the data points and extracts the root of the function as the new parameter value.
+ *
+ * \ref AnOptimizer "anOptimizer"
+ *
+ * This optimizer operates in the same way as the bn optimizer with the objective of minimizing the an values.
  *
  * \ref GridSearchOptimizer "GridSearchOptimizer"
  *
