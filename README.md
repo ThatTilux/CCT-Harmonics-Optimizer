@@ -6,6 +6,9 @@ This software is designed to automatically optimize harmonic drive parameters fo
 
 This software utilizes the [CCTools](https://github.com/ThatTilux/CCTools) library, which is built on top of the open-source [RAT-Library](https://rat-gui.com/library.html).
 
+## Documentation
+The documentation of this application can be viewed [here](https://thattilux.github.io/CCT-Harmonics-Optimizer). To run the software with an example model, follow the Installation and Example sections below.
+
 ## Installation
 
 ### Prerequisites
