@@ -34,7 +34,7 @@ void AbstractOptimizer::getModelSelection()
 {
     try
     {
-        json_file_path_ = selectJsonFile();
+        json_file_path_ = selectModelFileForOptimization();
     }
     catch (const std::exception &e)
     {
@@ -76,7 +76,7 @@ void AbstractOptimizer::assertOnlyLinearDrives()
     for (auto &param : params)
     {
         if (!param.second.isOffsetAndSlope())
-            throw std::runtime_error("The selected model has the custom harmonic "+ param.first +" with an 'amplitude' value other than 'linear'. This is not supported for this optimizer.");
+            throw std::runtime_error("The selected model has the custom harmonic " + param.first + " with an 'amplitude' value other than 'linear'. This is not supported for this optimizer.");
     }
 }
 
@@ -124,7 +124,7 @@ void AbstractOptimizer::checkMainComponent()
     }
 
     // print the bn values
-    print_vector(bn_values, "bn");
+    log_vector(bn_values, "bn");
 }
 
 double AbstractOptimizer::getMinMagnetEll()

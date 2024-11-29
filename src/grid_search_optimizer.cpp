@@ -71,10 +71,10 @@ void GridSearchOptimizer::injectParamRanges(std::vector<std::pair<std::pair<doub
     Logger::debug("Injected parameter ranges.");
 }
 
-void GridSearchOptimizer::setNumSteps(int num_steps){
+void GridSearchOptimizer::setNumSteps(int num_steps)
+{
     grid_num_steps_ = num_steps;
 }
-
 
 void GridSearchOptimizer::computeGranularities()
 {
@@ -105,7 +105,6 @@ std::pair<double, double> GridSearchOptimizer::computeGranularities(std::pair<do
     double slope_max = slope_range.second;
 
     int num_steps = grid_num_steps_;
-
 
     double offset_span = offset_max - offset_min;
     double slope_span = slope_max - slope_min;
@@ -234,13 +233,16 @@ void GridSearchOptimizer::logResults()
 
     for (int i = 0; i < interim_results_.size(); i++)
     {
-        if (i == interim_results_.size() - 1){
+        if (i == interim_results_.size() - 1)
+        {
             Logger::info("==== Final model ====");
-        } else {
-            Logger::info("==== Interim result " + std::to_string(i+1) + " ====");
+        }
+        else
+        {
+            Logger::info("==== Interim result " + std::to_string(i + 1) + " ====");
         }
         Logger::info("File location: " + interim_results_[i].file_path);
-        print_vector(interim_results_[i].bn_values, "bn");
+        log_vector(interim_results_[i].bn_values, "bn");
     }
 }
 
@@ -272,7 +274,7 @@ void GridSearchOptimizer::optimize()
 
         // Run the optimization
         optimize(thresholds_[i]);
-        
+
         // Export (interim) result
         exportModel();
     }
@@ -341,7 +343,7 @@ void GridSearchOptimizer::optimize(double bn_threshold)
             checkBnValue(i, prev_bn, prev_drive_values);
 
             // print the bn values.
-            print_vector(current_bn_values_, "bn");
+            log_vector(current_bn_values_, "bn");
 
             // Recompute ell bounds
             computeMagnetEllBounds();

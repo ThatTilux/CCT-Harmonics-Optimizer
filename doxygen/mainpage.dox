@@ -17,13 +17,13 @@
  *
  * \ref AnOptimizer "anOptimizer"
  *
- * This optimizer operates in the same way as the bn optimizer with the objective of minimizing the an values.
+ * This optimizer is identical to the bn optimizer, minimizing the absolute an values instead of absolute bn values.
  *
  * \ref GridSearchOptimizer "GridSearchOptimizer"
  *
  * This optimizer optimizes the custom CCT harmonics of the magnet to achieve specified objectives.
  * The optimizer will run multiple optimizations (determined by the size of the `thresholds` and `search_factors` vectors) with the specified (usually decreasing) parameters.
- * In each optimization, the optimizer will perform several rounds until the b_n values of all harmonics are below the specified threshold.
+ * In each optimization, the optimizer will perform several rounds until the absolute bn values of all harmonics are below the specified threshold.
  * In each round, the optimizer will perform one grid search for each harmonic drive, except the main harmonic, (unless a drive is already below the threshold).
  * This grid search is in the space of the offset and slope parameters of the scaling function of the harmonic drive. The results are used to extrapolate the optimal values for the offset and slope of the scaling function.
  *

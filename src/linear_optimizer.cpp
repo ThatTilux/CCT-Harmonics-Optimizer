@@ -28,7 +28,7 @@ void LinearOptimizer::logResults()
     Logger::info("=== All harmonics have been optimized ===");
     Logger::info("User-specified margin was: " + std::to_string(max_value_));
     print_harmonic_drive_values(initial_drive_values_);
-    print_vector(current_values_, optimized_value_label_);
+    log_vector(current_values_, optimized_value_label_);
 }
 
 double LinearOptimizer::getMaxHarmonicValue()
@@ -115,7 +115,7 @@ void LinearOptimizer::optimize()
                 // change a small step to get the second data point for the linear regression
                 double step = 0.01 * current_drive_value;
                 if (step == 0)
-                    step = OPTIMIZER_DEFAULT_STEP;
+                    step = OPTIMIZER_FALLBACK_STEP;
 
                 double new_drive_value = current_drive_value + step;
 
