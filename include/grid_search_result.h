@@ -3,7 +3,11 @@
 
 #include <vector>
 
-// Struct for storing the results of one grid search iteration. Contains the offset, slope and the criteria values.
+/**
+ * @brief Struct for storing the results of one grid search iteration. 
+ * 
+ * This struct contains the offset and slope parameter used for the iteration and a vector of the output criteria values.
+ */
 struct GridSearchResult
 {
     double offset;

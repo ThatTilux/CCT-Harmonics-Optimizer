@@ -2,7 +2,6 @@
 
 using CCTools::Logger;
 
-// Function to print harmonic drive values
 void print_harmonic_drive_values(CCTools::HarmonicDriveParameterMap &harmonic_drive_values)
 {
     Logger::info("Harmonic Drive Values: (units are m/coil and m)");
@@ -12,8 +11,7 @@ void print_harmonic_drive_values(CCTools::HarmonicDriveParameterMap &harmonic_dr
     }
 }
 
-// Function to get a single character input without echoing to the console (POSIX)
-char getch()
+static char getch()
 {
     char buf = 0;
     struct termios old = {0};
@@ -34,7 +32,6 @@ char getch()
     return buf;
 }
 
-// Function to ask the user if they want to proceed
 bool askUserToProceed()
 {
     std::string input;
@@ -43,7 +40,6 @@ bool askUserToProceed()
     return input == "Y" || input == "y";
 }
 
-// Function to get user input with a default value
 double getUserInput(const std::string &prompt, double default_value)
 {
     double value = 0;
@@ -81,8 +77,7 @@ double getUserInput(const std::string &prompt, double default_value)
     return value;
 }
 
-// Function to display files in a directory and allow user to select one
-boost::filesystem::path selectJsonFile()
+boost::filesystem::path selectModelFileForOptimization()
 {
     boost::filesystem::path dir_path(DATA_DIR_PATH);
     std::vector<boost::filesystem::path> json_files;
@@ -105,7 +100,7 @@ boost::filesystem::path selectJsonFile()
 
     // convert file names to a string
     std::vector<std::string> json_file_names;
-    for (const auto& file : json_files)
+    for (const auto &file : json_files)
     {
         json_file_names.push_back(file.filename().string());
     }
@@ -119,15 +114,15 @@ boost::filesystem::path selectJsonFile()
     return json_files[selected_index];
 }
 
-// displayes strings in the terminal and lets the user select one. Returns the selected index
-int selectFromList(std::vector<std::string> options, std::string user_prompt){
+int selectFromList(std::vector<std::string> options, std::string user_prompt)
+{
     int selected_index = 0;
     char key;
     while (true)
     {
         system("clear"); // Clear the terminal screen on POSIX systems
         std::cout << user_prompt << std::endl;
-        std::cout << "Use arrow keys and enter to select."<< std::endl;
+        std::cout << "Use arrow keys and enter to select." << std::endl;
         for (size_t i = 0; i < options.size(); ++i)
         {
             if (i == selected_index)
@@ -143,8 +138,8 @@ int selectFromList(std::vector<std::string> options, std::string user_prompt){
         key = getch();
 
         if (key == '\033')
-        { // arrow keys for POSIX
-            getch();    // skip the [
+        {            // arrow keys for POSIX
+            getch(); // skip the [
             switch (getch())
             {
             case 'A': // up
@@ -166,7 +161,6 @@ int selectFromList(std::vector<std::string> options, std::string user_prompt){
     return selected_index;
 }
 
-// Function to copy model from src to the build dir with appending timestamp. Returns the new path
 const boost::filesystem::path copyModelWithTimestamp(const boost::filesystem::path &src_path)
 {
     if (!boost::filesystem::exists(src_path))
@@ -205,8 +199,7 @@ const boost::filesystem::path copyModelWithTimestamp(const boost::filesystem::pa
     return "";
 }
 
-// exports a vector to a csv with ascending indexing
-void export_vector_to_csv(const std::vector<double>& vector, const std::string& csv_path)
+void export_vector_to_csv(const std::vector<double> &vector, const std::string &csv_path)
 {
     std::vector<std::pair<double, double>> indexed_vector;
     for (size_t i = 0; i < vector.size(); ++i)
@@ -217,8 +210,7 @@ void export_vector_to_csv(const std::vector<double>& vector, const std::string& 
     export_data_to_csv(indexed_vector, csv_path);
 }
 
-// exports a vector of pairs to a csv
-void export_data_to_csv(const std::vector<std::pair<double, double>>& vector, const std::string& csv_path)
+void export_data_to_csv(const std::vector<std::pair<double, double>> &vector, const std::string &csv_path)
 {
     std::ofstream csv_file(csv_path);
     if (!csv_file)
@@ -239,8 +231,7 @@ void export_data_to_csv(const std::vector<std::pair<double, double>>& vector, co
     Logger::info("Vector exported to CSV file: " + csv_path);
 }
 
-// Function to print values from a vector
-void print_vector(const std::vector<double>& data, std::string label)
+void log_vector(const std::vector<double> &data, std::string label)
 {
     Logger::info(label + " values:");
     for (size_t i = 0; i < data.size(); ++i)
@@ -249,8 +240,7 @@ void print_vector(const std::vector<double>& data, std::string label)
     }
 }
 
-// Function to export a vector of GridSearchResults to a CSV file
-void export_grid_search_results_to_csv(const std::vector<GridSearchResult>& results, const std::string& csv_path, std::vector<std::string> criteria_labels)
+void export_grid_search_results_to_csv(const std::vector<GridSearchResult> &results, const std::string &csv_path, std::vector<std::string> criteria_labels)
 {
     std::ofstream csv_file(csv_path);
     if (!csv_file)
@@ -279,7 +269,8 @@ void export_grid_search_results_to_csv(const std::vector<GridSearchResult>& resu
     for (size_t i = 0; i < results.size(); ++i)
     {
         // append the next line, considering the criteria values
-        csv_file << "\n" << i << "," << results[i].offset << "," << results[i].slope;
+        csv_file << "\n"
+                 << i << "," << results[i].offset << "," << results[i].slope;
         for (size_t j = 0; j < num_criteria; ++j)
         {
             csv_file << "," << results[i].criteria_values[j];

@@ -2,7 +2,6 @@
 
 using CCTools::Logger;
 
-// Function to compute the variance of y values with Bessel's correction
 double StatisticalAnalysis::computeVariance(const std::vector<double> &y)
 {
     double mean = std::accumulate(y.begin(), y.end(), 0.0) / y.size();
@@ -15,9 +14,10 @@ double StatisticalAnalysis::computeVariance(const std::vector<double> &y)
     return variance;
 }
 
-// Function to compute the Normalized Root Mean Square Error (NRMSE) of a fitted linear function
-double StatisticalAnalysis::computeNRMSE(const std::vector<std::pair<double, double>> &points, double slope, double intercept){
-    if (points.empty()) {
+double StatisticalAnalysis::computeNRMSE(const std::vector<std::pair<double, double>> &points, double slope, double intercept)
+{
+    if (points.empty())
+    {
         throw std::invalid_argument("The points vector is empty.");
     }
 
@@ -25,17 +25,20 @@ double StatisticalAnalysis::computeNRMSE(const std::vector<std::pair<double, dou
     double minY = std::numeric_limits<double>::max();
     double maxY = std::numeric_limits<double>::lowest();
 
-    for (const auto& point : points) {
+    for (const auto &point : points)
+    {
         double x = point.first;
         double y = point.second;
         double predictedY = slope * x + intercept;
         double residual = y - predictedY;
         sumSquaredResiduals += residual * residual;
 
-        if (y < minY) {
+        if (y < minY)
+        {
             minY = y;
         }
-        if (y > maxY) {
+        if (y > maxY)
+        {
             maxY = y;
         }
     }
@@ -43,7 +46,8 @@ double StatisticalAnalysis::computeNRMSE(const std::vector<std::pair<double, dou
     double rmse = std::sqrt(sumSquaredResiduals / points.size());
     double yRange = maxY - minY;
 
-    if (yRange == 0) {
+    if (yRange == 0)
+    {
         throw std::invalid_argument("Range of the observed y-values is zero, leading to division by zero in NRMSE calculation.");
     }
 
@@ -51,8 +55,6 @@ double StatisticalAnalysis::computeNRMSE(const std::vector<std::pair<double, dou
     return nrmse;
 }
 
-
-// Function to perform linear regression and return the slope and intercept
 std::pair<double, double> StatisticalAnalysis::linearRegression(const std::vector<std::pair<double, double>> &points)
 {
     size_t n = points.size();
@@ -115,7 +117,6 @@ std::tuple<double, double, double> StatisticalAnalysis::fitPlaneToData(const std
     return std::make_tuple(a, b_coef, c);
 }
 
-// Function to assess the quality of a 2D plane fit to 3D data using the R^2 metric. Returns the R^2 value, which should be close to 1 for a good fit.
 double StatisticalAnalysis::checkFitQuality(const Eigen::MatrixXd &A, const Eigen::VectorXd &b, const Eigen::VectorXd &coeffs)
 {
     Eigen::VectorXd residuals = b - A * coeffs;
@@ -127,7 +128,6 @@ double StatisticalAnalysis::checkFitQuality(const Eigen::MatrixXd &A, const Eige
     return r2;
 }
 
-// Function that converts a plane equation (ax + by + c = z) to a linear function (y = mx + d) at the intersection with the z = 0 plane. Format: (offset, slope)
 std::tuple<double, double> StatisticalAnalysis::planeToLinearFunction(double a, double b, double c)
 {
     if (b == 0)
@@ -140,7 +140,6 @@ std::tuple<double, double> StatisticalAnalysis::planeToLinearFunction(double a, 
     return std::make_tuple(d, m);
 }
 
-// Function to check if two lines intersect and find the intersection point. Input format: (offset, slope). Output format: (x, y). Returns std::nullopt if lines are parallel.
 std::optional<std::pair<double, double>> StatisticalAnalysis::findIntersection(const std::pair<double, double> &line1, const std::pair<double, double> &line2)
 {
     if (line1.second == line2.second)
@@ -154,15 +153,14 @@ std::optional<std::pair<double, double>> StatisticalAnalysis::findIntersection(c
     return std::make_pair(x, y);
 }
 
-// Function that given a linear function and a point returns the point on the linear function that is closest to the given point
 std::pair<double, double> StatisticalAnalysis::closest_point_on_line(
     const std::pair<double, double> &linear_function,
     const std::pair<double, double> &point)
 {
-    double b = linear_function.first; 
+    double b = linear_function.first;
     double m = linear_function.second;
-    double x0 = point.first;          
-    double y0 = point.second;         
+    double x0 = point.first;
+    double y0 = point.second;
 
     // Calculating the x-coordinate of the projection point
     double xp = (m * y0 + x0 - m * b) / (m * m + 1);

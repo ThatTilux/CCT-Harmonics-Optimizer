@@ -11,6 +11,11 @@
 #include <fitted_slope_objective.hh>
 #include <grid_search_optimizer.h>
 
+/**
+ * @brief Main function to run the application.
+ * 
+ * This function lets the user select the desired optimization in the terminal and runs the corresponding optimizer with some well-tested configurations.
+ */
 int main()
 {
 

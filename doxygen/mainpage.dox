@@ -1,0 +1,34 @@
+/**
+ * @mainpage CCT-Harmonics-Optimizer
+ *
+ * This software is designed to automatically optimize harmonic drive parameters for CCT (canted-cosine-theta) magnets. Three optimizers are provided to achieve different objectives.
+ *
+ * ## Optimizers
+ *
+ * For a detailed physics motivation of each optimizer, consult the <a href="https://github.com/ThatTilux/CCT-Harmonics-Optimizer/tree/main" target="_blank">README</a> file of this repository.
+ *
+ * \ref BnOptimizer "bnOptimizer"
+ *
+ * This optimizer optimizes the scaling function of harmonic drives linearly.
+ * The objective is achieved when the absolute bn values of all components are below a specified threshold.
+ * This optimizer performs several rounds of linear optimizations until the objective is met.
+ * In each round, all harmonic drives present in the model (except for the main component) are optimized one by one. The `constant` or `slope` parameter of the scaling function (depending on the `amplitude` of the harmonic drive) is optimized linearly;
+ * the optimizer changes the parameter in small steps and calculates the bn value for each step. The optimizer then fits a linear function to the data points and extracts the root of the function as the new parameter value.
+ *
+ * \ref AnOptimizer "anOptimizer"
+ *
+ * This optimizer is identical to the bn optimizer, minimizing the absolute an values instead of absolute bn values.
+ *
+ * \ref GridSearchOptimizer "GridSearchOptimizer"
+ *
+ * This optimizer optimizes the custom CCT harmonics of the magnet to achieve specified objectives.
+ * The optimizer will run multiple optimizations (determined by the size of the `thresholds` and `search_factors` vectors) with the specified (usually decreasing) parameters.
+ * In each optimization, the optimizer will perform several rounds until the absolute bn values of all harmonics are below the specified threshold.
+ * In each round, the optimizer will perform one grid search for each harmonic drive, except the main harmonic, (unless a drive is already below the threshold).
+ * This grid search is in the space of the offset and slope parameters of the scaling function of the harmonic drive. The results are used to extrapolate the optimal values for the offset and slope of the scaling function.
+ *
+ * For the standard configuration used in \ref main.cpp "main.cpp", two objectives are used:
+ *
+ * - \ref BnObjective "BnObjective": minimize the bn values of all harmonics to 0.
+ * - \ref FittedSlopeObjective "FittedSlopeObjective": optimize the Bn curves of all harmonics to a favourable shape.
+ */

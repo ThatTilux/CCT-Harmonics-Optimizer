@@ -1,4 +1,4 @@
-# CCT Harmonics Optimizer
+# CCT-Harmonics-Optimizer
 
 This software is designed to automatically optimize harmonic drive parameters for CCT (canted-cosine-theta) magnets. Three optimizers are provided to achieve different objectives. This project is part of the FCC-ee HTS4 research project at CERN.
 

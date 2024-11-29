@@ -2,7 +2,6 @@
 
 using CCTools::Logger;
 
-// Default constructor
 LinearOptimizer::LinearOptimizer(std::string optimized_value_label, std::string harmonic_drive_prefix) : AbstractOptimizer(false), optimized_value_label_(optimized_value_label)
 {
     CCTools::ModelHandler model_handler = initModel();
@@ -10,38 +9,38 @@ LinearOptimizer::LinearOptimizer(std::string optimized_value_label, std::string 
     setup(model_handler, max_value, harmonic_drive_prefix);
 }
 
-// Constructor without any user interaction
 LinearOptimizer::LinearOptimizer(std::string optimized_value_label, std::string harmonic_drive_prefix, CCTools::ModelHandler &model_handler, double max_value) : AbstractOptimizer(true), optimized_value_label_(optimized_value_label)
 {
     setup(model_handler, max_value, harmonic_drive_prefix);
 }
 
-// Setup function called from the constructors
 void LinearOptimizer::setup(CCTools::ModelHandler &model_handler, double max_value, std::string harmonic_drive_prefix)
 {
     harmonic_drive_prefix_ = harmonic_drive_prefix;
     model_handler_ = model_handler;
     initCalculator();
-    drive_values_ = initHarmonicDrives();
+    initial_drive_values_ = initHarmonicDrives();
     max_value_ = max_value;
 }
 
-// Function to log the results from the optimizer
 void LinearOptimizer::logResults()
 {
     Logger::info("=== All harmonics have been optimized ===");
     Logger::info("User-specified margin was: " + std::to_string(max_value_));
-    print_harmonic_drive_values(drive_values_);
-    print_vector(current_values_, optimized_value_label_);
+    print_harmonic_drive_values(initial_drive_values_);
+    log_vector(current_values_, optimized_value_label_);
 }
 
-// Function to get the values after optimization
+double LinearOptimizer::getMaxHarmonicValue()
+{
+    return getUserInput("Enter the maximum absolute value for harmonic values", LINEAR_OPTIMIZER_DEFAULT_MAX_VALUE);
+}
+
 std::vector<double> &LinearOptimizer::getResults()
 {
     return current_values_;
 }
 
-// Function to fit a linear function to data and extract the root
 double LinearOptimizer::fitLinearGetRoot(const std::vector<std::pair<double, double>> &points)
 {
     auto [slope, intercept] = StatisticalAnalysis::linearRegression(points);
@@ -50,26 +49,24 @@ double LinearOptimizer::fitLinearGetRoot(const std::vector<std::pair<double, dou
     return root;
 }
 
-// Get the drive value and type for a drive
-void LinearOptimizer::getDriveValueAndType(const std::string &name, double &current_drive_value, CCTools::HarmonicDriveParameterType &drive_type)
+void LinearOptimizer::getDriveValueAndType(const std::string &identifier, double &current_drive_value, CCTools::HarmonicDriveParameterType &drive_type)
 {
-    if (drive_values_[name].isConstant())
+    if (initial_drive_values_[identifier].isConstant())
     {
-        current_drive_value = drive_values_[name].getConstant();
+        current_drive_value = initial_drive_values_[identifier].getConstant();
         drive_type = CCTools::HarmonicDriveParameterType::Constant;
     }
-    else if (drive_values_[name].isSlope())
+    else if (initial_drive_values_[identifier].isSlope())
     {
-        current_drive_value = drive_values_[name].getSlope();
+        current_drive_value = initial_drive_values_[identifier].getSlope();
         drive_type = CCTools::HarmonicDriveParameterType::Slope;
     }
     else
     {
-        throw std::logic_error("This Optimizer only optimizes custom harmonics with constant/linear scaling functions. The scaling function for " + name + " is neither.");
+        throw std::logic_error("This Optimizer only optimizes custom harmonics with constant/linear scaling functions. The scaling function for " + identifier + " is neither.");
     }
 }
 
-// Function to optimize all harmonic drive values (only constant/slope params) so the corresponding (absolute) values are all within the max_value
 void LinearOptimizer::optimize()
 {
     Logger::info("== Starting " + optimized_value_label_ + " optimizer ==");
@@ -92,7 +89,7 @@ void LinearOptimizer::optimize()
         all_within_margin = true;
 
         // optimize each harmonic drive value
-        for (auto &harmonic : drive_values_)
+        for (auto &harmonic : initial_drive_values_)
         {
             // get current drive value and type
             double current_drive_value;
@@ -118,7 +115,7 @@ void LinearOptimizer::optimize()
                 // change a small step to get the second data point for the linear regression
                 double step = 0.01 * current_drive_value;
                 if (step == 0)
-                    step = OPTIMIZER_DEFAULT_STEP;
+                    step = OPTIMIZER_FALLBACK_STEP;
 
                 double new_drive_value = current_drive_value + step;
 
