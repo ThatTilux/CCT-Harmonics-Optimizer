@@ -1,0 +1,5 @@
+<map id="AnOptimizer" name="AnOptimizer">
+<area shape="rect" id="node1" title="Optimizer to minimize the an values linearly." alt="" coords="24,155,127,181"/>
+<area shape="rect" id="node2" href="$classLinearOptimizer.html" title="Optimizer to optimize the scaling function of harmonic drives linearly." alt="" coords="12,80,139,107"/>
+<area shape="rect" id="node3" href="$classAbstractOptimizer.html" title="Abstract class for optimization algorithms." alt="" coords="5,5,145,32"/>
+</map>

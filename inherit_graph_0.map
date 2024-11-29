@@ -1,0 +1,6 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classAbstractObjective.html" title="Abstract class to define objectives for some optimizers." alt="" coords="5,56,144,83"/>
+<area shape="rect" id="node2" href="$classAnObjective.html" title="Defines the absolute an value of a component as the objective of an optimizer." alt="" coords="220,5,321,32"/>
+<area shape="rect" id="node3" href="$classBnObjective.html" title="Defines the absolute bn value of a component as the objective of an optimizer." alt="" coords="220,56,321,83"/>
+<area shape="rect" id="node4" href="$classFittedSlopeObjective.html" title="Defines the slope of a component&#39;s Bn curve as an optimization objective." alt="" coords="192,107,349,133"/>
+</map>

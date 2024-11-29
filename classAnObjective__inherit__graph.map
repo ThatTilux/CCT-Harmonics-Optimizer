@@ -1,0 +1,4 @@
+<map id="AnObjective" name="AnObjective">
+<area shape="rect" id="node1" title="Defines the absolute an value of a component as the objective of an optimizer." alt="" coords="24,80,125,107"/>
+<area shape="rect" id="node2" href="$classAbstractObjective.html" title="Abstract class to define objectives for some optimizers." alt="" coords="5,5,144,32"/>
+</map>

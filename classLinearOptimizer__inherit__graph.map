@@ -1,0 +1,6 @@
+<map id="LinearOptimizer" name="LinearOptimizer">
+<area shape="rect" id="node1" title="Optimizer to optimize the scaling function of harmonic drives linearly." alt="" coords="56,80,183,107"/>
+<area shape="rect" id="node3" href="$classAnOptimizer.html" title="Optimizer to minimize the an values linearly." alt="" coords="5,155,108,181"/>
+<area shape="rect" id="node4" href="$classBnOptimizer.html" title="Optimizer to minimize the bn values linearly." alt="" coords="132,155,235,181"/>
+<area shape="rect" id="node2" href="$classAbstractOptimizer.html" title="Abstract class for optimization algorithms." alt="" coords="49,5,189,32"/>
+</map>
