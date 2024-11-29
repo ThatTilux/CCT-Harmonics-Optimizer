@@ -5,21 +5,48 @@
 #include "constants.h"
 #include "input_output.h"
 
-// Class to define the following objective: take the Bn data and fit a linear function. The objective is the slope of the fitted line
+/**
+ * @brief Defines the slope of a component's Bn curve as an optimization objective.
+ * 
+ * This class serves as an objective for optimizers that support modular objective injection.
+ * It defines the objective for a harmonic component as the slope of a fitted linear function to the component's Bn data.
+ * The goal is to minimize this slope, favoring a constant Bn function, which indicates minimal variation in the magnetic field component along the magnet's length (ell).
+ * The class also allows specifying magnet ell bounds, restricting the slope calculation to the ell range where the magnet physically is.
+ */
 class FittedSlopeObjective : public AbstractObjective
 {
 public:
+
+    /**
+     * @brief Construct an FittedSlopeObjective object.
+     */
     FittedSlopeObjective()
     {
         label_ = "fitted_slope";
     };
 
+    /**
+     * @brief Evaluate the objective.
+     * @param harmonics_handler Result of the harmonics calculation
+     * @param component Harmonics component to be evaluated. 1-indexed
+     * 
+     * This function evaluates the objective for a specific harmonics component based on the results of a harmonics calculation.
+     */
     double evaluate(CCTools::HarmonicsDataHandler harmonics_handler, int component) override
     {
         return evaluate(harmonics_handler, component, std::numeric_limits<double>::min(), std::numeric_limits<double>::max());
     }
 
-    // Evaluate with mag ell bounds
+    /**
+     * @brief Evaluate the objective.
+     * @param harmonics_handler Result of the harmonics calculation
+     * @param component Harmonics component to be evaluated. 1-indexed
+     * @param mag_start_pos Starting position of the magnet relative to the harmonic calculation's axis (ell).
+     * @param mag_end_pos Ending position of the magnet relative to the harmonic calculation's axis (ell).
+     * @param export_Bn Flag to export the Bn data to a CSV file for debugging purposes.
+     * 
+     * This function evaluates the objective for a specific harmonics component based on the results of a harmonics calculation.
+     */
     double evaluate(CCTools::HarmonicsDataHandler harmonics_handler, int component, double mag_start_pos, double mag_end_pos, bool export_Bn = false)
     {
         // get the Bn and ell
@@ -39,7 +66,16 @@ public:
         return slope;
     }
 
-    // Funtion to apply transformations to the ell & Bn data before fitting a linear function
+    /**
+     * @brief Apply transformations to the ell & Bn data before fitting a linear function.
+     * @param Bn_data Vector of pairs of ell and Bn values.
+     * @param mag_start_pos Starting position of the magnet relative to the harmonic calculation's axis (ell).
+     * @param mag_end_pos Ending position of the magnet relative to the harmonic calculation's axis (ell).
+     * 
+     * This function applies transformations to the ell & Bn data before fitting a linear function.
+     * It removes all the pairs where the ell value is not inside the set bounds.
+     * It scales the ell values so that the first one is -0.5 and last one 0.5.
+     */
     void apply_transformations(std::vector<std::pair<double, double>> &Bn_data, double mag_start_pos, double mag_end_pos)
     {
         // remove all the pairs where the ell value is not inside the set bounds
