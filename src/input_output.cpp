@@ -11,6 +11,12 @@ void print_harmonic_drive_values(CCTools::HarmonicDriveParameterMap &harmonic_dr
     }
 }
 
+/**
+ * @brief Function to get a single character input without echoing to the console (POSIX).
+ * @return The character input by the user.
+ * 
+ * This function is static and private to the file.
+ */
 static char getch()
 {
     char buf = 0;
