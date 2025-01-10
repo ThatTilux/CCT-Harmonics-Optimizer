@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['linearoptimizer_139',['LinearOptimizer',['../classLinearOptimizer.html',1,'']]]
+  ['linearoptimizer_0',['LinearOptimizer',['../classLinearOptimizer.html',1,'']]]
 ];

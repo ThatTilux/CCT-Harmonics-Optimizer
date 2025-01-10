@@ -1,7 +1,11 @@
 <map id="AbstractOptimizer" name="AbstractOptimizer">
-<area shape="rect" id="node1" title="Abstract class for optimization algorithms." alt="" coords="97,5,237,32"/>
-<area shape="rect" id="node2" href="$classGridSearchOptimizer.html" title="Optimizes a model by performing several grid searches and extrapolating the optimal configuration for..." alt="" coords="5,80,163,107"/>
-<area shape="rect" id="node3" href="$classLinearOptimizer.html" title="Optimizer to optimize the scaling function of harmonic drives linearly." alt="" coords="187,80,314,107"/>
-<area shape="rect" id="node4" href="$classAnOptimizer.html" title="Optimizer to minimize the an values linearly." alt="" coords="135,155,238,181"/>
-<area shape="rect" id="node5" href="$classBnOptimizer.html" title="Optimizer to minimize the bn values linearly." alt="" coords="262,155,365,181"/>
+<area shape="rect" id="Node000001" title="Abstract class for optimization algorithms." alt="" coords="97,5,237,31"/>
+<area shape="rect" id="Node000002" href="$classGridSearchOptimizer.html" title="Optimizes a model by performing several grid searches and extrapolating the optimal configuration for..." alt="" coords="5,79,163,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="145,42,99,80,96,76,141,38"/>
+<area shape="rect" id="Node000003" href="$classLinearOptimizer.html" title="Optimizer to optimize the scaling function of harmonic drives linearly." alt="" coords="187,79,314,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="192,38,239,76,235,80,189,42"/>
+<area shape="rect" id="Node000004" href="$classAnOptimizer.html" title="Optimizer to minimize the an values linearly." alt="" coords="135,152,238,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="233,116,199,154,195,150,229,113"/>
+<area shape="rect" id="Node000005" href="$classBnOptimizer.html" title="Optimizer to minimize the bn values linearly." alt="" coords="262,152,365,177"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="272,113,305,150,301,154,268,116"/>
 </map>

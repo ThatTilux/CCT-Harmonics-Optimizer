@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['fittedslopeobjective_134',['FittedSlopeObjective',['../classFittedSlopeObjective.html',1,'']]]
+  ['fittedslopeobjective_0',['FittedSlopeObjective',['../classFittedSlopeObjective.html',1,'']]]
 ];

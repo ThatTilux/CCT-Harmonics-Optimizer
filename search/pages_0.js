@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['cct_2dharmonics_2doptimizer_265',['CCT-Harmonics-Optimizer',['../index.html',1,'']]]
+  ['cct_20harmonics_20optimizer_0',['CCT-Harmonics-Optimizer',['../index.html',1,'']]]
 ];

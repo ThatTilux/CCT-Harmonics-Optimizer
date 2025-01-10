@@ -1,6 +1,9 @@
 <map id="AbstractObjective" name="AbstractObjective">
-<area shape="rect" id="node1" title="Abstract class to define objectives for some optimizers." alt="" coords="112,5,251,32"/>
-<area shape="rect" id="node2" href="$classAnObjective.html" title="Defines the absolute an value of a component as the objective of an optimizer." alt="" coords="5,80,107,107"/>
-<area shape="rect" id="node3" href="$classBnObjective.html" title="Defines the absolute bn value of a component as the objective of an optimizer." alt="" coords="131,80,232,107"/>
-<area shape="rect" id="node4" href="$classFittedSlopeObjective.html" title="Defines the slope of a component&#39;s Bn curve as an optimization objective." alt="" coords="256,80,413,107"/>
+<area shape="rect" id="Node000001" title="Abstract class to define objectives for some optimizers." alt="" coords="112,5,251,31"/>
+<area shape="rect" id="Node000002" href="$classAnObjective.html" title="Defines the absolute an value of a component as the objective of an optimizer." alt="" coords="5,79,107,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,40,78,81,75,76,148,35"/>
+<area shape="rect" id="Node000003" href="$classBnObjective.html" title="Defines the absolute bn value of a component as the objective of an optimizer." alt="" coords="131,79,232,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="184,44,184,79,179,79,179,44"/>
+<area shape="rect" id="Node000004" href="$classFittedSlopeObjective.html" title="Defines the slope of a component&#39;s Bn curve as an optimization objective." alt="" coords="256,79,413,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="219,34,311,76,308,81,217,39"/>
 </map>
