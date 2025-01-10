@@ -133,7 +133,7 @@ The optimizer will run these rounds until all harmonic bn values are below the u
 
 **Limitations**
 
-For some magnets, the optimal configuration (with all bn values 0) breaks the magnet (e.g., by increasing length of the magnet by a few orders of magnitude). In this case, the optimizer will try to approach the optimal solution as close as possible. This can be solved by changing the magnet model manually (e.g., changing the shape of current leads; this is the issue in many cases).
+For some magnets, the optimal configuration (with all bn values 0) breaks the magnet (e.g., by increasing length of the magnet by a few orders of magnitude). In this case, the optimizer will try to approach the optimal solution as close as possible. This can be solved by changing the magnet model manually (e.g., by removing current leads and layer connectors or changing their shape; this is the issue in most cases).
 
 In certain cases of this, the optimizer might not terminate as it continuously gets closer to the optimal solution, never reaching it.
 
