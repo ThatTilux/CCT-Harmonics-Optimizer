@@ -14,7 +14,7 @@ protected:
     // the calculation
     static void SetUpTestSuite()
     {
-        test_file = TEST_DATA_DIR + "quad_test.json";
+        test_file = TEST_DATA_DIR + "quad_test_noBinormal.json";
         CCTools::ModelCalculator calculator(test_file);
         calculator.calc_harmonics(handler, true);
     }

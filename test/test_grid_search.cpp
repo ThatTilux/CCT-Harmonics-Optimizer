@@ -14,7 +14,7 @@ protected:
     void SetUp() override
     {
         // Initialize the model handler
-        model_handler_ = new CCTools::ModelHandler(TEST_DATA_DIR + "quad_test_all_linear.json");
+        model_handler_ = new CCTools::ModelHandler(TEST_DATA_DIR + "quad_test_all_linear_noBinormal.json");
 
         // Initialize the criteria
         criteria_.push_back(std::make_shared<BnObjective>());

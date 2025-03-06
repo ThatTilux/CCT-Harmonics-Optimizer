@@ -1,10 +1,10 @@
 {
-	"date" : "11-09-2024",
+	"date" : "06-03-2025",
 	"major_version" : 2,
 	"minor_version" : 17,
-	"num_nodes" : 198,
+	"num_nodes" : 99,
 	"patch_version" : 9,
-	"time" : "15:01:13",
+	"time" : "10:29:55",
 	"tree" : 
 	{
 		"calc_tree" : 
@@ -17,10 +17,10 @@
 						"type" : "cmn::null"
 					},
 					"enable" : true,
-					"id" : 190,
+					"id" : 91,
 					"model" : 
 					{
-						"target_index" : 188,
+						"target_index" : 89,
 						"type" : "cmn::link"
 					},
 					"name" : "Mesh",
@@ -33,7 +33,7 @@
 						"direct_tresh" : 1048576.0,
 						"fmm_enable_gpu" : true,
 						"gpu_devices" : [],
-						"id" : 189,
+						"id" : 90,
 						"large_ilist" : false,
 						"m2l_sorting" : 2,
 						"max_levels" : 10,
@@ -79,14 +79,14 @@
 					},
 					"compensate_curvature" : false,
 					"enable" : true,
-					"id" : 193,
+					"id" : 94,
 					"input_path" : 
 					{
 						"axis" : 122,
 						"dl" : 0.002,
 						"ell" : 0.59999999999999998,
 						"enable" : true,
-						"id" : 192,
+						"id" : 93,
 						"name" : "Axis",
 						"position_x" : 0.0,
 						"position_y" : 0.0,
@@ -97,7 +97,7 @@
 					},
 					"model" : 
 					{
-						"target_index" : 188,
+						"target_index" : 89,
 						"type" : "cmn::link"
 					},
 					"name" : "Cylyndrical Harmonics",
@@ -113,7 +113,7 @@
 						"direct_tresh" : 1048576.0,
 						"fmm_enable_gpu" : true,
 						"gpu_devices" : [],
-						"id" : 191,
+						"id" : 92,
 						"large_ilist" : true,
 						"m2l_sorting" : 2,
 						"max_levels" : 10,
@@ -161,10 +161,10 @@
 					},
 					"enable" : true,
 					"group_circuits" : false,
-					"id" : 195,
+					"id" : 96,
 					"model" : 
 					{
-						"target_index" : 188,
+						"target_index" : 89,
 						"type" : "cmn::link"
 					},
 					"name" : "Length",
@@ -177,7 +177,7 @@
 						"direct_tresh" : 1048576.0,
 						"fmm_enable_gpu" : true,
 						"gpu_devices" : [],
-						"id" : 194,
+						"id" : 95,
 						"large_ilist" : false,
 						"m2l_sorting" : 2,
 						"max_levels" : 10,
@@ -218,7 +218,7 @@
 				}
 			],
 			"enable" : true,
-			"id" : 196,
+			"id" : 97,
 			"name" : "Calculation Tree",
 			"num_times" : 1,
 			"output_dir" : "",
@@ -236,7 +236,7 @@
 			"R" : 0.11953800171613693
 		},
 		"enable" : true,
-		"id" : 197,
+		"id" : 98,
 		"material" : 
 		{
 			"type" : "cmn::null"
@@ -250,7 +250,7 @@
 				"R" : 0.11953800171613693
 			},
 			"enable" : true,
-			"id" : 188,
+			"id" : 89,
 			"is_part" : false,
 			"material" : 
 			{
@@ -269,7 +269,7 @@
 					"current_drive" : 
 					{
 						"enable" : true,
-						"id" : 123,
+						"id" : 87,
 						"name" : "",
 						"scaling" : 1.0,
 						"tree_open" : false,
@@ -277,14 +277,14 @@
 					},
 					"enable" : true,
 					"enable_current_sharing" : false,
-					"id" : 124,
+					"id" : 88,
 					"input_cross" : 
 					{
 						"dn" : 0.001,
 						"dt" : 0.001,
 						"enable" : true,
 						"enable_gauss" : false,
-						"id" : 121,
+						"id" : 85,
 						"n1" : -0.001,
 						"n2" : 0.001,
 						"name" : "rectangle",
@@ -299,7 +299,7 @@
 						"ell_trans1" : 0.0,
 						"ell_trans2" : 0.0,
 						"enable" : true,
-						"id" : 120,
+						"id" : 84,
 						"input_paths" : 
 						[
 							{
@@ -330,7 +330,7 @@
 									}
 								],
 								"transverse_direction" : 120,
-								"tree_open" : true,
+								"tree_open" : false,
 								"type" : "rat::mdl::pathaxis"
 							},
 							{
@@ -338,7 +338,7 @@
 								"ell_trans1" : 0.0040000000000000001,
 								"ell_trans2" : 0.0030000000000000001,
 								"enable" : true,
-								"id" : 119,
+								"id" : 83,
 								"input_paths" : 
 								[
 									{
@@ -354,7 +354,7 @@
 										"flip_second" : false,
 										"fn" : 1.0,
 										"ft" : 1.0,
-										"id" : 117,
+										"id" : 81,
 										"input_paths" : 
 										[
 											{
@@ -397,7 +397,7 @@
 															"enable" : true,
 															"id" : 33,
 															"name" : "",
-															"scaling" : -0.00024645416164351607,
+															"scaling" : 0.0,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
@@ -439,7 +439,7 @@
 															"enable" : true,
 															"id" : 37,
 															"name" : "",
-															"scaling" : 5.0274900000000002e-05,
+															"scaling" : 0.0,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
@@ -460,7 +460,7 @@
 															"enable" : true,
 															"id" : 39,
 															"name" : "",
-															"scaling" : -0.00018617604979581347,
+															"scaling" : 0.0,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
@@ -481,7 +481,7 @@
 															"enable" : true,
 															"id" : 41,
 															"name" : "",
-															"scaling" : -0.00020169498553400584,
+															"scaling" : 0.0,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
@@ -502,7 +502,7 @@
 															"enable" : true,
 															"id" : 43,
 															"name" : "",
-															"scaling" : -0.001462563623493985,
+															"scaling" : 0.0,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
@@ -598,199 +598,9 @@
 														"tree_open" : false,
 														"type" : "rat::mdl::cctharmonicdrive",
 														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 53,
-															"name" : "Linear",
-															"offset" : 0.0,
-															"slope" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivelinear"
-														},
-														"id" : 54,
-														"is_skew" : true,
-														"name" : "A1",
-														"normalize_length" : true,
-														"num_poles" : 1,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 55,
-															"name" : "DC",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 56,
-														"is_skew" : true,
-														"name" : "A3",
-														"normalize_length" : true,
-														"num_poles" : 3,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 57,
-															"name" : "DC",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 58,
-														"is_skew" : true,
-														"name" : "A4",
-														"normalize_length" : true,
-														"num_poles" : 4,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 59,
-															"name" : "DC",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 60,
-														"is_skew" : true,
-														"name" : "A5",
-														"normalize_length" : true,
-														"num_poles" : 5,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 61,
-															"name" : "DC",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 62,
-														"is_skew" : true,
-														"name" : "A6",
-														"normalize_length" : true,
-														"num_poles" : 6,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 63,
-															"name" : "DC",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 64,
-														"is_skew" : true,
-														"name" : "A7",
-														"normalize_length" : true,
-														"num_poles" : 7,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 65,
-															"name" : "DC",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 66,
-														"is_skew" : true,
-														"name" : "A8",
-														"normalize_length" : true,
-														"num_poles" : 8,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 67,
-															"name" : "DC",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 68,
-														"is_skew" : true,
-														"name" : "A9",
-														"normalize_length" : true,
-														"num_poles" : 9,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 69,
-															"name" : "DC",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 70,
-														"is_skew" : true,
-														"name" : "A10",
-														"normalize_length" : true,
-														"num_poles" : 10,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
 													}
 												],
-												"id" : 71,
+												"id" : 53,
 												"is_reverse" : true,
 												"is_reverse_solenoid" : false,
 												"is_solenoid" : false,
@@ -847,7 +657,7 @@
 												"theta_lead2" : 0.78539816339744828,
 												"theta_lead3" : 0.78539816339744828,
 												"theta_lead4" : 0.78539816339744828,
-												"tree_open" : true,
+												"tree_open" : false,
 												"twist" : 
 												{
 													"enable" : true,
@@ -858,7 +668,7 @@
 													"type" : "rat::mdl::drivedc"
 												},
 												"type" : "rat::mdl::pathcctcustom",
-												"use_binormal" : true,
+												"use_binormal" : false,
 												"use_field_style_omega" : false,
 												"use_frenet_serret" : true,
 												"use_layer_jumps" : false,
@@ -887,13 +697,13 @@
 														"harmonic_drive" : 
 														{
 															"enable" : true,
-															"id" : 76,
+															"id" : 58,
 															"name" : "",
 															"scaling" : 0.87266462599716477,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
-														"id" : 77,
+														"id" : 59,
 														"is_skew" : false,
 														"name" : "quad",
 														"normalize_length" : true,
@@ -908,13 +718,13 @@
 														"harmonic_drive" : 
 														{
 															"enable" : true,
-															"id" : 78,
+															"id" : 60,
 															"name" : "",
-															"scaling" : -0.00024645416164351607,
+															"scaling" : 0.0,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
-														"id" : 79,
+														"id" : 61,
 														"is_skew" : false,
 														"name" : "B4",
 														"normalize_length" : true,
@@ -929,13 +739,13 @@
 														"harmonic_drive" : 
 														{
 															"enable" : true,
-															"id" : 80,
+															"id" : 62,
 															"name" : "DC",
 															"scaling" : 0.0,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
-														"id" : 81,
+														"id" : 63,
 														"is_skew" : true,
 														"name" : "skew Dipole",
 														"normalize_length" : true,
@@ -950,13 +760,13 @@
 														"harmonic_drive" : 
 														{
 															"enable" : true,
-															"id" : 82,
+															"id" : 64,
 															"name" : "",
-															"scaling" : 5.0274900000000002e-05,
+															"scaling" : 0.0,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
-														"id" : 83,
+														"id" : 65,
 														"is_skew" : false,
 														"name" : "B1",
 														"normalize_length" : true,
@@ -971,13 +781,13 @@
 														"harmonic_drive" : 
 														{
 															"enable" : true,
-															"id" : 84,
+															"id" : 66,
 															"name" : "",
-															"scaling" : -0.00018617604979581347,
+															"scaling" : 0.0,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
-														"id" : 85,
+														"id" : 67,
 														"is_skew" : false,
 														"name" : "B3",
 														"normalize_length" : true,
@@ -992,13 +802,13 @@
 														"harmonic_drive" : 
 														{
 															"enable" : true,
-															"id" : 86,
+															"id" : 68,
 															"name" : "",
-															"scaling" : -0.00020169498553400584,
+															"scaling" : 0.0,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
-														"id" : 87,
+														"id" : 69,
 														"is_skew" : false,
 														"name" : "B5",
 														"normalize_length" : true,
@@ -1013,13 +823,13 @@
 														"harmonic_drive" : 
 														{
 															"enable" : true,
-															"id" : 88,
+															"id" : 70,
 															"name" : "",
-															"scaling" : -0.001462563623493985,
+															"scaling" : 0.0,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
-														"id" : 89,
+														"id" : 71,
 														"is_skew" : false,
 														"name" : "B6",
 														"normalize_length" : true,
@@ -1034,13 +844,13 @@
 														"harmonic_drive" : 
 														{
 															"enable" : true,
-															"id" : 90,
+															"id" : 72,
 															"name" : "",
 															"scaling" : 0.0,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
-														"id" : 91,
+														"id" : 73,
 														"is_skew" : false,
 														"name" : "B7",
 														"normalize_length" : true,
@@ -1055,13 +865,13 @@
 														"harmonic_drive" : 
 														{
 															"enable" : true,
-															"id" : 92,
+															"id" : 74,
 															"name" : "",
 															"scaling" : 0.0,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
-														"id" : 93,
+														"id" : 75,
 														"is_skew" : false,
 														"name" : "B8",
 														"normalize_length" : true,
@@ -1076,13 +886,13 @@
 														"harmonic_drive" : 
 														{
 															"enable" : true,
-															"id" : 94,
+															"id" : 76,
 															"name" : "",
 															"scaling" : 0.0,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
-														"id" : 95,
+														"id" : 77,
 														"is_skew" : false,
 														"name" : "B9",
 														"normalize_length" : true,
@@ -1097,13 +907,13 @@
 														"harmonic_drive" : 
 														{
 															"enable" : true,
-															"id" : 96,
+															"id" : 78,
 															"name" : "",
 															"scaling" : 0.0,
 															"tree_open" : false,
 															"type" : "rat::mdl::drivedc"
 														},
-														"id" : 97,
+														"id" : 79,
 														"is_skew" : false,
 														"name" : "B10",
 														"normalize_length" : true,
@@ -1111,199 +921,9 @@
 														"tree_open" : false,
 														"type" : "rat::mdl::cctharmonicdrive",
 														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 98,
-															"name" : "Linear",
-															"offset" : 0.0,
-															"slope" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivelinear"
-														},
-														"id" : 99,
-														"is_skew" : true,
-														"name" : "A1",
-														"normalize_length" : true,
-														"num_poles" : 1,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 100,
-															"name" : "DC",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 101,
-														"is_skew" : true,
-														"name" : "A3",
-														"normalize_length" : true,
-														"num_poles" : 3,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 102,
-															"name" : "DC",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 103,
-														"is_skew" : true,
-														"name" : "A4",
-														"normalize_length" : true,
-														"num_poles" : 4,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 104,
-															"name" : "DC",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 105,
-														"is_skew" : true,
-														"name" : "A5",
-														"normalize_length" : true,
-														"num_poles" : 5,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 106,
-															"name" : "DC",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 107,
-														"is_skew" : true,
-														"name" : "A6",
-														"normalize_length" : true,
-														"num_poles" : 6,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 108,
-															"name" : "DC",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 109,
-														"is_skew" : true,
-														"name" : "A7",
-														"normalize_length" : true,
-														"num_poles" : 7,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 110,
-															"name" : "DC",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 111,
-														"is_skew" : true,
-														"name" : "A8",
-														"normalize_length" : true,
-														"num_poles" : 8,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 112,
-															"name" : "DC",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 113,
-														"is_skew" : true,
-														"name" : "A9",
-														"normalize_length" : true,
-														"num_poles" : 9,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 114,
-															"name" : "DC",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 115,
-														"is_skew" : true,
-														"name" : "A10",
-														"normalize_length" : true,
-														"num_poles" : 10,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
 													}
 												],
-												"id" : 116,
+												"id" : 80,
 												"is_reverse" : false,
 												"is_reverse_solenoid" : false,
 												"is_solenoid" : false,
@@ -1315,7 +935,7 @@
 												"normal_scaling" : 
 												{
 													"enable" : true,
-													"id" : 75,
+													"id" : 57,
 													"name" : "DC",
 													"scaling" : 1.0,
 													"tree_open" : false,
@@ -1334,7 +954,7 @@
 												"omega" : 
 												{
 													"enable" : true,
-													"id" : 72,
+													"id" : 54,
 													"name" : "",
 													"scaling" : 0.0035000000000000001,
 													"tree_open" : false,
@@ -1346,7 +966,7 @@
 													"b2" : -0.40000000000000002,
 													"enable" : true,
 													"fstr" : 0.0,
-													"id" : 73,
+													"id" : 55,
 													"is_skew" : false,
 													"name" : "RCCT-Drive",
 													"num_poles" : 2,
@@ -1360,18 +980,18 @@
 												"theta_lead2" : 0.17453292519943295,
 												"theta_lead3" : 0.17453292519943295,
 												"theta_lead4" : 0.17453292519943295,
-												"tree_open" : true,
+												"tree_open" : false,
 												"twist" : 
 												{
 													"enable" : true,
-													"id" : 74,
+													"id" : 56,
 													"name" : "DC",
 													"scaling" : 0.0,
 													"tree_open" : false,
 													"type" : "rat::mdl::drivedc"
 												},
 												"type" : "rat::mdl::pathcctcustom",
-												"use_binormal" : true,
+												"use_binormal" : false,
 												"use_field_style_omega" : false,
 												"use_frenet_serret" : true,
 												"use_layer_jumps" : false,
@@ -1487,7 +1107,7 @@
 										"dl" : 0.002,
 										"ell" : 0.01,
 										"enable" : true,
-										"id" : 118,
+										"id" : 82,
 										"name" : "lead north lower",
 										"position_x" : 0.072000000000000008,
 										"position_y" : 0.0,
@@ -1999,808 +1619,7 @@
 					"temperature_drive" : 
 					{
 						"enable" : true,
-						"id" : 122,
-						"name" : "",
-						"scaling" : 1.0,
-						"tree_open" : false,
-						"type" : "rat::mdl::drivedc"
-					},
-					"tree_open" : true,
-					"type" : "rat::mdl::modelcoil",
-					"use_current_density" : false,
-					"use_custom_color" : true
-				},
-				{
-					"circuit_index" : 0,
-					"color" : 
-					{
-						"B" : 0.74071687459945679,
-						"G" : 0.84065932035446167,
-						"R" : 0.087761156260967255
-					},
-					"current_drive" : 
-					{
-						"enable" : true,
-						"id" : 186,
-						"name" : "",
-						"scaling" : 1.0,
-						"tree_open" : false,
-						"type" : "rat::mdl::drivedc"
-					},
-					"enable" : false,
-					"enable_current_sharing" : false,
-					"id" : 187,
-					"input_cross" : 
-					{
-						"dn" : 0.001,
-						"dt" : 0.001,
-						"enable" : true,
-						"enable_gauss" : false,
-						"id" : 184,
-						"n1" : -0.00080000000000000004,
-						"n2" : 0.00080000000000000004,
-						"name" : "rectangle",
-						"t1" : -0.0021000000000000003,
-						"t2" : 0.0020499999999999997,
-						"tree_open" : false,
-						"type" : "rat::mdl::crossrectangle"
-					},
-					"input_path" : 
-					{
-						"element_size" : 0.002,
-						"ell_trans1" : 0.0,
-						"ell_trans2" : 0.0,
-						"enable" : true,
-						"id" : 183,
-						"input_paths" : 
-						[
-							{
-								"axis" : 122,
-								"dl" : 0.002,
-								"ell" : 0.01,
-								"enable" : true,
-								"id" : 127,
-								"name" : "lead north upper",
-								"position_x" : 0.080000000000000002,
-								"position_y" : 0.0,
-								"position_z" : 0.11,
-								"trans" : 
-								[
-									{
-										"enable" : true,
-										"id" : 125,
-										"name" : "reverse",
-										"tree_open" : false,
-										"type" : "rat::mdl::transreverse"
-									},
-									{
-										"enable" : true,
-										"id" : 126,
-										"name" : "flip",
-										"tree_open" : false,
-										"type" : "rat::mdl::transflip"
-									}
-								],
-								"transverse_direction" : 120,
-								"tree_open" : true,
-								"type" : "rat::mdl::pathaxis"
-							},
-							{
-								"element_size" : 0.002,
-								"ell_trans1" : 0.0040000000000000001,
-								"ell_trans2" : 0.0030000000000000001,
-								"enable" : true,
-								"id" : 182,
-								"input_paths" : 
-								[
-									{
-										"element_size" : 0.002,
-										"ell_trans1" : 0.0018000000000000002,
-										"ell_trans2" : 0.0,
-										"enable" : true,
-										"id" : 180,
-										"input_paths" : 
-										[
-											{
-												"bending_arc_length" : 0.0,
-												"bending_origin" : false,
-												"bending_radius" : 0.0,
-												"enable" : true,
-												"enable_lead1" : false,
-												"enable_lead2" : false,
-												"enable_lead3" : false,
-												"enable_lead4" : false,
-												"harmonics" : 
-												[
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 132,
-															"name" : "",
-															"scaling" : 1.0471975511965976,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 133,
-														"is_skew" : false,
-														"name" : "quad",
-														"normalize_length" : true,
-														"num_poles" : 2,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : true
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 134,
-															"name" : "",
-															"scaling" : -0.00024645416164351607,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 135,
-														"is_skew" : false,
-														"name" : "B4",
-														"normalize_length" : true,
-														"num_poles" : 4,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 136,
-															"name" : "",
-															"scaling" : -2.0000000000000002e-05,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 137,
-														"is_skew" : true,
-														"name" : "dipole",
-														"normalize_length" : true,
-														"num_poles" : 1,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 138,
-															"name" : "",
-															"scaling" : 5.0274900000000002e-05,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 139,
-														"is_skew" : false,
-														"name" : "B1",
-														"normalize_length" : true,
-														"num_poles" : 1,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 140,
-															"name" : "",
-															"scaling" : -0.00018617604979581347,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 141,
-														"is_skew" : false,
-														"name" : "B3",
-														"normalize_length" : true,
-														"num_poles" : 3,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 142,
-															"name" : "",
-															"scaling" : -0.00020169498553400584,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 143,
-														"is_skew" : false,
-														"name" : "B5",
-														"normalize_length" : true,
-														"num_poles" : 5,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 144,
-															"name" : "",
-															"scaling" : -0.001462563623493985,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 145,
-														"is_skew" : false,
-														"name" : "B6",
-														"normalize_length" : true,
-														"num_poles" : 6,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 146,
-															"name" : "",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 147,
-														"is_skew" : false,
-														"name" : "B7",
-														"normalize_length" : true,
-														"num_poles" : 7,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 148,
-															"name" : "",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 149,
-														"is_skew" : false,
-														"name" : "B8",
-														"normalize_length" : true,
-														"num_poles" : 8,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 150,
-															"name" : "",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 151,
-														"is_skew" : false,
-														"name" : "B9",
-														"normalize_length" : true,
-														"num_poles" : 9,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 152,
-															"name" : "",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 153,
-														"is_skew" : false,
-														"name" : "B10",
-														"normalize_length" : true,
-														"num_poles" : 10,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													}
-												],
-												"id" : 154,
-												"is_reverse" : true,
-												"is_reverse_solenoid" : false,
-												"is_solenoid" : false,
-												"leadness1" : 0.050000000000000003,
-												"leadness2" : 0.050000000000000003,
-												"leadness3" : 0.050000000000000003,
-												"leadness4" : 0.050000000000000003,
-												"name" : "custom cct outer",
-												"normal_scaling" : 
-												{
-													"amplitude" : 0.10000000000000001,
-													"enable" : true,
-													"frequency" : 12.0,
-													"id" : 131,
-													"name" : "AC",
-													"offset" : 1.1000000000000001,
-													"phase" : -1.5707963267948966,
-													"phase_velocity" : 0.0,
-													"tree_open" : false,
-													"type" : "rat::mdl::driveac"
-												},
-												"normalize_length" : true,
-												"nt1" : -6.8460000000000001,
-												"nt1nrm" : -0.5,
-												"nt2" : 7.0,
-												"nt2nrm" : 0.5,
-												"nt3" : 0.0,
-												"nt4" : 0.0,
-												"num_layers" : 1,
-												"num_nodes_per_turn" : 360,
-												"num_sect_per_turn" : 36,
-												"omega" : 
-												{
-													"enable" : true,
-													"id" : 128,
-													"name" : "",
-													"scaling" : 0.0020499999999999997,
-													"tree_open" : false,
-													"type" : "rat::mdl::drivedc"
-												},
-												"rho" : 
-												{
-													"alpha" : 1.1344640137963142,
-													"b2" : 0.0,
-													"enable" : true,
-													"fstr" : 0.0,
-													"id" : 129,
-													"is_skew" : false,
-													"name" : "RCCT-Drive",
-													"num_poles" : 2,
-													"radius" : 0.080000000000000002,
-													"tree_open" : false,
-													"type" : "rat::mdl::drivercct"
-												},
-												"rho_increment" : 0.0,
-												"same_alpha" : false,
-												"theta_lead1" : 0.78539816339744828,
-												"theta_lead2" : 0.78539816339744828,
-												"theta_lead3" : 0.78539816339744828,
-												"theta_lead4" : 0.78539816339744828,
-												"tree_open" : true,
-												"twist" : 
-												{
-													"amplitude" : 0.0,
-													"enable" : true,
-													"frequency" : 6.0,
-													"id" : 130,
-													"name" : "AC",
-													"offset" : 0.0,
-													"phase" : -1.5707963267948966,
-													"phase_velocity" : 0.0,
-													"tree_open" : false,
-													"type" : "rat::mdl::driveac"
-												},
-												"type" : "rat::mdl::pathcctcustom",
-												"use_binormal" : true,
-												"use_field_style_omega" : false,
-												"use_frenet_serret" : true,
-												"use_layer_jumps" : false,
-												"use_local_radius" : false,
-												"use_omega_normal" : true,
-												"use_radius" : false,
-												"zlead1" : 0.10000000000000001,
-												"zlead2" : 0.10000000000000001,
-												"zlead3" : 0.10000000000000001,
-												"zlead4" : 0.10000000000000001
-											},
-											{
-												"bending_arc_length" : 0.0,
-												"bending_origin" : false,
-												"bending_radius" : 0.0,
-												"enable" : true,
-												"enable_lead1" : false,
-												"enable_lead2" : false,
-												"enable_lead3" : false,
-												"enable_lead4" : false,
-												"harmonics" : 
-												[
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 159,
-															"name" : "",
-															"scaling" : 1.0471975511965976,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 160,
-														"is_skew" : false,
-														"name" : "quad",
-														"normalize_length" : true,
-														"num_poles" : 2,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : true
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 161,
-															"name" : "",
-															"scaling" : -0.00024645416164351607,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 162,
-														"is_skew" : false,
-														"name" : "B4",
-														"normalize_length" : true,
-														"num_poles" : 4,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 163,
-															"name" : "",
-															"scaling" : 5.0274900000000002e-05,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 164,
-														"is_skew" : false,
-														"name" : "B1",
-														"normalize_length" : true,
-														"num_poles" : 1,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 165,
-															"name" : "",
-															"scaling" : -0.00018617604979581347,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 166,
-														"is_skew" : false,
-														"name" : "B3",
-														"normalize_length" : true,
-														"num_poles" : 3,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 167,
-															"name" : "",
-															"scaling" : -0.00020169498553400584,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 168,
-														"is_skew" : false,
-														"name" : "B5",
-														"normalize_length" : true,
-														"num_poles" : 5,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 169,
-															"name" : "",
-															"scaling" : -0.001462563623493985,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 170,
-														"is_skew" : false,
-														"name" : "B6",
-														"normalize_length" : true,
-														"num_poles" : 6,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 171,
-															"name" : "",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 172,
-														"is_skew" : false,
-														"name" : "B7",
-														"normalize_length" : true,
-														"num_poles" : 7,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 173,
-															"name" : "",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 174,
-														"is_skew" : false,
-														"name" : "B8",
-														"normalize_length" : true,
-														"num_poles" : 8,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 175,
-															"name" : "",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 176,
-														"is_skew" : false,
-														"name" : "B9",
-														"normalize_length" : true,
-														"num_poles" : 9,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													},
-													{
-														"b2" : 0.0,
-														"enable" : true,
-														"harmonic_drive" : 
-														{
-															"enable" : true,
-															"id" : 177,
-															"name" : "",
-															"scaling" : 0.0,
-															"tree_open" : false,
-															"type" : "rat::mdl::drivedc"
-														},
-														"id" : 178,
-														"is_skew" : false,
-														"name" : "B10",
-														"normalize_length" : true,
-														"num_poles" : 10,
-														"tree_open" : false,
-														"type" : "rat::mdl::cctharmonicdrive",
-														"use_skew_angle" : false
-													}
-												],
-												"id" : 179,
-												"is_reverse" : false,
-												"is_reverse_solenoid" : false,
-												"is_solenoid" : false,
-												"leadness1" : 0.050000000000000003,
-												"leadness2" : 0.050000000000000003,
-												"leadness3" : 0.050000000000000003,
-												"leadness4" : 0.050000000000000003,
-												"name" : "custom cct inner",
-												"normal_scaling" : 
-												{
-													"amplitude" : 0.10000000000000001,
-													"enable" : true,
-													"frequency" : 12.0,
-													"id" : 158,
-													"name" : "AC",
-													"offset" : 1.1000000000000001,
-													"phase" : -1.5707963267948966,
-													"phase_velocity" : 0.0,
-													"tree_open" : false,
-													"type" : "rat::mdl::driveac"
-												},
-												"normalize_length" : true,
-												"nt1" : -6.9950000000000001,
-												"nt1nrm" : -0.5,
-												"nt2" : 7.0,
-												"nt2nrm" : 0.5,
-												"nt3" : 0.0,
-												"nt4" : 0.0,
-												"num_layers" : 1,
-												"num_nodes_per_turn" : 360,
-												"num_sect_per_turn" : 36,
-												"omega" : 
-												{
-													"enable" : true,
-													"id" : 155,
-													"name" : "",
-													"scaling" : 0.0030000000000000001,
-													"tree_open" : false,
-													"type" : "rat::mdl::drivedc"
-												},
-												"rho" : 
-												{
-													"alpha" : 1.1344640137963142,
-													"b2" : 0.0,
-													"enable" : true,
-													"fstr" : 0.0,
-													"id" : 156,
-													"is_skew" : false,
-													"name" : "RCCT-Drive",
-													"num_poles" : 2,
-													"radius" : 0.070000000000000007,
-													"tree_open" : false,
-													"type" : "rat::mdl::drivercct"
-												},
-												"rho_increment" : 0.0080000000000000002,
-												"same_alpha" : false,
-												"theta_lead1" : 0.17453292519943295,
-												"theta_lead2" : 0.17453292519943295,
-												"theta_lead3" : 0.17453292519943295,
-												"theta_lead4" : 0.17453292519943295,
-												"tree_open" : true,
-												"twist" : 
-												{
-													"amplitude" : 0.0,
-													"enable" : true,
-													"frequency" : 6.0,
-													"id" : 157,
-													"name" : "AC",
-													"offset" : 0.0,
-													"phase" : -1.5707963267948966,
-													"phase_velocity" : 0.0,
-													"tree_open" : false,
-													"type" : "rat::mdl::driveac"
-												},
-												"type" : "rat::mdl::pathcctcustom",
-												"use_binormal" : true,
-												"use_field_style_omega" : false,
-												"use_frenet_serret" : true,
-												"use_layer_jumps" : false,
-												"use_local_radius" : false,
-												"use_omega_normal" : true,
-												"use_radius" : false,
-												"zlead1" : 0.050000000000000003,
-												"zlead2" : 0.10000000000000001,
-												"zlead3" : 0.050000000000000003,
-												"zlead4" : 0.10000000000000001
-											}
-										],
-										"name" : "connect south",
-										"str1" : 0.0052000000000000006,
-										"str2" : 0.0040000000000000001,
-										"str3" : 0.0040000000000000001,
-										"str4" : 0.001,
-										"tree_open" : true,
-										"type" : "rat::mdl::pathconnect",
-										"use_binormal" : true
-									},
-									{
-										"axis" : 122,
-										"dl" : 0.002,
-										"ell" : 0.01,
-										"enable" : true,
-										"id" : 181,
-										"name" : "lead north lower",
-										"position_x" : 0.070000000000000007,
-										"position_y" : 0.0,
-										"position_z" : 0.11025,
-										"transverse_direction" : 120,
-										"tree_open" : false,
-										"type" : "rat::mdl::pathaxis"
-									}
-								],
-								"name" : "connect north lower",
-								"str1" : 0.0018000000000000002,
-								"str2" : 0.0018000000000000002,
-								"str3" : -0.0001,
-								"str4" : 0.0,
-								"tree_open" : true,
-								"type" : "rat::mdl::pathconnect",
-								"use_binormal" : true
-							}
-						],
-						"name" : "connect north upper",
-						"str1" : 0.0090000000000000011,
-						"str2" : 0.0033999999999999998,
-						"str3" : -0.001,
-						"str4" : 0.0044000000000000003,
-						"tree_open" : true,
-						"type" : "rat::mdl::pathconnect",
-						"use_binormal" : true
-					},
-					"material" : 
-					{
-						"type" : "cmn::null"
-					},
-					"name" : "Slot (binormal)",
-					"num_gauss" : 1,
-					"number_turns" : 10.0,
-					"operating_current" : 0.0,
-					"operating_current_density" : 0.0,
-					"operating_temperature" : 40.0,
-					"softening" : 1.3999999999999999,
-					"temperature_drive" : 
-					{
-						"enable" : true,
-						"id" : 185,
+						"id" : 86,
 						"name" : "",
 						"scaling" : 1.0,
 						"tree_open" : false,

@@ -9,7 +9,7 @@ class HarmonicsCalculatorTest : public ::testing::Test
 protected:
     void SetUp() override
     {
-        test_file = TEST_DATA_DIR + "quad_test.json";
+        test_file = TEST_DATA_DIR + "quad_test_noBinormal.json";
     }
 
     boost::filesystem::path test_file;

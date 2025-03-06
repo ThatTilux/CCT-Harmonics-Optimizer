@@ -17,7 +17,7 @@ class BnOptimizerTest : public ::testing::Test
 protected:
     void SetUp() override
     {
-        test_file = TEST_DATA_DIR + "quad_test_unoptimized.json";
+        test_file = TEST_DATA_DIR + "quad_double_test_B1unoptimized.json";
     }
 
     boost::filesystem::path test_file;
@@ -28,7 +28,7 @@ TEST_F(BnOptimizerTest, BnOptimizer)
 {
     // initialize variables
     CCTools::ModelHandler model_handler(test_file);
-    double max_harmonic_value = 0.1;
+    double max_harmonic_value = 1;
 
     // create optimizer object and call optimization
     BnOptimizer optimizer(model_handler, max_harmonic_value);

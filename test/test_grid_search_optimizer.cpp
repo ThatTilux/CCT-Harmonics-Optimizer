@@ -42,7 +42,7 @@ protected:
         std::vector<int> harmonics = {1};
 
         // Set up the model handlers for different test cases
-        CCTools::ModelHandler handler1(TEST_DATA_DIR + "quad_test_all_linear.json");
+        CCTools::ModelHandler handler1(TEST_DATA_DIR + "quad_test_all_linear_noBinormal.json");
         opt_alllinear = new TestGridSearchOptimizer(handler1, criteria, thresholds, search_factors, grid_min_steps, harmonics);
     }
 
@@ -78,17 +78,17 @@ TEST_F(GridSearchOptimizerTest, checkBnValue)
 {
     CCTools::ModelHandler model_handler = opt_alllinear->getModelHandler();
 
-    // Set initial params to get B1 bn to 5.25
+    // Set initial params 
     CCTools::HarmonicDriveParameterMap initial_drive_values = model_handler.getHarmonicDriveValues();
     CCTools::HarmonicDriveParameterMap prev_drive_values = initial_drive_values;
-    prev_drive_values["B1"] = CCTools::HarmonicDriveParameters(prev_drive_values["B1"].getOffset(), 0.0005);
+    prev_drive_values["B1"] = CCTools::HarmonicDriveParameters(prev_drive_values["B1"].getOffset(), 0);
     model_handler.apply_params(prev_drive_values);
 
     // Compute initial bns
     opt_alllinear->recompute_bn();
     double prev_bn = opt_alllinear->getCurrentBnValues()[0];
 
-    // Change params for the worse
+    // Change params for the worse 
     prev_drive_values["B1"] = CCTools::HarmonicDriveParameters(prev_drive_values["B1"].getOffset(), 0.0001);
     model_handler.apply_params(prev_drive_values);
     opt_alllinear->recompute_bn();
@@ -96,8 +96,8 @@ TEST_F(GridSearchOptimizerTest, checkBnValue)
     // Call checkBnValue and expect the drives to be reset
     ASSERT_FALSE(opt_alllinear->checkBnValue(1, prev_bn, initial_drive_values));
 
-    // Apply good params and recompute bn
-    prev_drive_values["B1"] = CCTools::HarmonicDriveParameters(prev_drive_values["B1"].getOffset(), 0);
+    // Apply good params and recompute bn 
+    prev_drive_values["B1"] = CCTools::HarmonicDriveParameters(prev_drive_values["B1"].getOffset(), 0.00001);
     model_handler.apply_params(prev_drive_values);
     opt_alllinear->recompute_bn();
 

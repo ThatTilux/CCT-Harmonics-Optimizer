@@ -18,8 +18,8 @@ class AnOptimizerTest : public ::testing::Test
 protected:
     void SetUp() override
     {
-        test_file = TEST_DATA_DIR + "quad_test_unoptimized_allA.json";
-        test_file_2 = TEST_DATA_DIR + "quad_test_unoptimized_allA_linear.json";
+        test_file = TEST_DATA_DIR + "quad_test_unoptimized_allA_noBinormal.json";
+        test_file_2 = TEST_DATA_DIR + "quad_test_unoptimized_allA_linear_noBinormal.json";
     }
 
     boost::filesystem::path test_file;
