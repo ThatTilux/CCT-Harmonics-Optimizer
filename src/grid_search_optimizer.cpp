@@ -342,8 +342,8 @@ void GridSearchOptimizer::optimize(double bn_threshold)
             // Check if the bn value actually got better
             checkBnValue(i, prev_bn, prev_drive_values);
 
-            // print the bn values.
-            log_vector(current_bn_values_, "bn");
+            // Log the criteria values for new config
+            logCriteriaValues();
 
             // Recompute ell bounds
             computeMagnetEllBounds();
@@ -508,7 +508,7 @@ std::pair<double, double> GridSearchOptimizer::extrapolateOptimalConfiguration(s
     return StatisticalAnalysis::closest_point_on_line(linear_function, {current_offset, current_slope});
 }
 
-void GridSearchOptimizer::computeCriteria()
+void GridSearchOptimizer::logCriteriaValues()
 {
     CCTools::HarmonicsDataHandler harmonics_handler;
     calculator_.reload_and_calc_harmonics(model_handler_.getTempJsonPath(), harmonics_handler);
@@ -516,20 +516,19 @@ void GridSearchOptimizer::computeCriteria()
     for (int i = 1; i <= 10; i++)
     {
         // Evaluate the criteria
-        Logger::info("Evaluating criteria for harmonic B" + std::to_string(i));
         for (auto &criterion : criteria_)
         {
             double value;
             // if the criteria is FittedSlopeObjective, pass more params
             if (criterion->getLabel() == "fitted_slope")
             {
-                value = std::dynamic_pointer_cast<FittedSlopeObjective>(criterion)->evaluate(harmonics_handler, i, getMinMagnetEll(), getMaxMagnetEll(), true);
+                value = std::dynamic_pointer_cast<FittedSlopeObjective>(criterion)->evaluate(harmonics_handler, i, getMinMagnetEll(), getMaxMagnetEll());
             }
             else
             {
                 value = criterion->evaluate(harmonics_handler, i);
             }
-            Logger::info_double(criterion->getLabel(), value);
+            Logger::info_double("B" + std::to_string(i) + " " + criterion->getLabel(), value);
         }
     }
 }
