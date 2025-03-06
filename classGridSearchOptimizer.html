@@ -145,9 +145,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3250e8c340a8251b4ece35e30b3765ae" id="r_a3250e8c340a8251b4ece35e30b3765ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridSearchOptimizer.html#a3250e8c340a8251b4ece35e30b3765ae">setNumSteps</a> (int num_steps)</td></tr>
 <tr class="memdesc:a3250e8c340a8251b4ece35e30b3765ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to overwrite the <code>grid_num_steps_</code> variable.  <br /></td></tr>
 <tr class="separator:a3250e8c340a8251b4ece35e30b3765ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab7b0fe1f036597187c2268f344b407a3" id="r_ab7b0fe1f036597187c2268f344b407a3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridSearchOptimizer.html#ab7b0fe1f036597187c2268f344b407a3">computeCriteria</a> ()</td></tr>
-<tr class="memdesc:ab7b0fe1f036597187c2268f344b407a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to compute and log all <code>crieria_</code> values.  <br /></td></tr>
-<tr class="separator:ab7b0fe1f036597187c2268f344b407a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad20c962e61889b74cecfcf0c247d7b07" id="r_ad20c962e61889b74cecfcf0c247d7b07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridSearchOptimizer.html#ad20c962e61889b74cecfcf0c247d7b07">logCriteriaValues</a> ()</td></tr>
+<tr class="memdesc:ad20c962e61889b74cecfcf0c247d7b07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to compute and log all <code>crieria_</code> values.  <br /></td></tr>
+<tr class="separator:ad20c962e61889b74cecfcf0c247d7b07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2332c11c1b128881e64e9a5cf2f8374" id="r_ae2332c11c1b128881e64e9a5cf2f8374"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridSearchOptimizer.html#ae2332c11c1b128881e64e9a5cf2f8374">~GridSearchOptimizer</a> ()</td></tr>
 <tr class="separator:ae2332c11c1b128881e64e9a5cf2f8374"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classAbstractOptimizer"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classAbstractOptimizer')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classAbstractOptimizer.html">AbstractOptimizer</a></td></tr>
@@ -511,26 +511,6 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 <p>The function checks if the length of the magnet model has changed considerably since the last call of this function. If the length has changed by more than 30% (e.g., because of edge regressions in the model), the function reverts to the previous configuration <code>fallback_drives</code>. </p>
-
-</div>
-</div>
-<a id="ab7b0fe1f036597187c2268f344b407a3" name="ab7b0fe1f036597187c2268f344b407a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab7b0fe1f036597187c2268f344b407a3">&#9670;&#160;</a></span>computeCriteria()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void GridSearchOptimizer::computeCriteria </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Function to compute and log all <code>crieria_</code> values. </p>
-<p>The function computes the criteria values for the current model and logs them. This function is designed for testing purposes and will have no effect besides logging. </p>
 
 </div>
 </div>
@@ -1047,6 +1027,26 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 <p>This function injects a value for the <code>param_ranges_</code> variable. Must be called prior to the optimization. When injected, the optimizer will not compute the parameter ranges itself. This function is designed for testing purposes. Caution is advised when using this function for non-testing purposes. </p>
+
+</div>
+</div>
+<a id="ad20c962e61889b74cecfcf0c247d7b07" name="ad20c962e61889b74cecfcf0c247d7b07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad20c962e61889b74cecfcf0c247d7b07">&#9670;&#160;</a></span>logCriteriaValues()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GridSearchOptimizer::logCriteriaValues </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Function to compute and log all <code>crieria_</code> values. </p>
+<p>The function computes the criteria values for the current model and logs them. This function is designed for testing purposes and will have no effect besides logging. </p>
 
 </div>
 </div>
